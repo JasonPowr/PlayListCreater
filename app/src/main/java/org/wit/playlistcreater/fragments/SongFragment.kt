@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.databinding.FragmentSongBinding
 import org.wit.playlistcreater.main.PlaylistCreater
-import org.wit.playlistcreater.models.SongManager
+import org.wit.playlistcreater.models.AppManager
 
 class SongFragment : Fragment() {
 
@@ -28,8 +28,8 @@ class SongFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentSongBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerView.adapter = SongAdapter(SongManager.findAll())
+        fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
+        fragBinding.recyclerViewForSongs.adapter = SongAdapter(AppManager.findAllSongsInStore())
         return root
     }
 

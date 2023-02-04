@@ -10,12 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.databinding.FragmentSongBinding
-import org.wit.playlistcreater.main.PlaylistCreater
 import org.wit.playlistcreater.models.songModel.Song
 
 class SongFragment : Fragment() {
 
-    lateinit var app: PlaylistCreater
     private var _fragBinding: FragmentSongBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var songViewModel: SongViewModel
@@ -31,7 +29,7 @@ class SongFragment : Fragment() {
         _fragBinding = FragmentSongBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
-        fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
         songViewModel.observableSongsList.observe(viewLifecycleOwner, Observer {
                 songs ->
@@ -42,13 +40,13 @@ class SongFragment : Fragment() {
     }
 
     private fun render(songList: List<Song?>) {
-        fragBinding.recyclerView.adapter = SongAdapter(songList)
+        fragBinding.recyclerViewForSongs.adapter = SongAdapter(songList)
         if (songList.isEmpty()) {
-            fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.recyclerViewForSongs.visibility = View.GONE
             fragBinding.loading.visibility = View.VISIBLE
             fragBinding.loadingSymbol.visibility = View.VISIBLE
         } else {
-            fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.recyclerViewForSongs.visibility = View.VISIBLE
             fragBinding.loading.visibility = View.GONE
             fragBinding.loadingSymbol.visibility = View.GONE
         }

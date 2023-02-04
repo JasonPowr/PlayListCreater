@@ -5,9 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.wit.playlistcreater.models.ApiInterface
-import org.wit.playlistcreater.models.Retro
-import org.wit.playlistcreater.models.SongManager
+import org.wit.playlistcreater.models.api.ApiInterface
+import org.wit.playlistcreater.models.api.Retro
+import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.songModel.Song
 import org.wit.playlistcreater.models.songModel.SongModel
 import retrofit2.Call
@@ -28,13 +28,13 @@ class SongViewModel : ViewModel() {
     fun load() {
         getSongs()
         Handler().postDelayed({
-            songList.value = SongManager.findAll()  //delay a bit so that the get songs function has time to retrieve data from the api and load it into mem
+            songList.value = AppManager.findAllSongsInStore()  //delay a bit so that the get songs function has time to retrieve data from the api and load it into mem
         }, 3000)
         //https://stackoverflow.com/questions/43348623/how-to-call-a-function-after-delay-in-kotlin
     }
 
     private fun getSongs() {
-        if (SongManager.songs.isEmpty()) {
+        if (AppManager.songs.isEmpty()) {
             val listOfSongs = mutableListOf<SongModel?>()
             val retro = Retro().getRetroClient().create(ApiInterface::class.java)
             retro.getSongs().enqueue(object : Callback<SongModel> {
@@ -43,7 +43,7 @@ class SongViewModel : ViewModel() {
                     response: Response<SongModel>
                 ) {
                         listOfSongs.addAll(listOf(response.body()))
-                        SongManager.addAll(listOfSongs)
+                        AppManager.addAllSongsToStore(listOfSongs)
                 }
 
                 override fun onFailure(call: Call<SongModel>, t: Throwable) {

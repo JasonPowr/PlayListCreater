@@ -6,9 +6,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.R
+import org.wit.playlistcreater.adapters.PlaylistAdapter
+import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
 import org.wit.playlistcreater.main.PlaylistCreater
+import org.wit.playlistcreater.models.AppManager
+import org.wit.playlistcreater.models.playlistModel.PlaylistModel
+import org.wit.playlistcreater.ui.songList.SongViewModel
 
 class PlaylistFragment : Fragment() {
 
@@ -18,47 +24,41 @@ class PlaylistFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //app = activity?.application as DonationXApp
-        setHasOptionsMenu(true)
-        //navController = Navigation.findNavController(activity!!, R.id.nav_host_fragment)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+      savedInstanceState: Bundle?): View? {
         _fragBinding = FragmentPlaylistBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
+        fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
-        playlistViewModel.observableStatus.observe(viewLifecycleOwner, Observer {
-                status -> status?.let { render(status) }
+        playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer {
+                songs ->
+            songs?.let { render(songs) }
         })
 
         return root;
     }
 
-    private fun render(status: Boolean) {
-        when (status) {
-            true -> {
-                view?.let {
-                    //Uncomment this if you want to immediately return to Report
-                    //findNavController().popBackStack()
-                }
-            }
-            false -> Toast.makeText(context,getString(R.string.playlistError), Toast.LENGTH_LONG).show()
+    private fun render(playlistList: List<PlaylistModel>) {
+        fragBinding.recyclerViewForPlaylists.adapter = PlaylistAdapter(playlistList)
+        if (playlistList.isEmpty()) {
+            fragBinding.recyclerViewForPlaylists.visibility = View.GONE
+            fragBinding.noPlaylistTxt.visibility = View.VISIBLE
+        } else {
+            fragBinding.recyclerViewForPlaylists.visibility = View.VISIBLE
+            fragBinding.noPlaylistTxt.visibility = View.GONE
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playlistViewModel.load()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
-    }
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            PlaylistFragment().apply {
-                arguments = Bundle().apply {}
-            }
     }
 }

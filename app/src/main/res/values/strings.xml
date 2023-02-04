@@ -10,9 +10,16 @@
     <string name="nav_header_subtitle">placeholder@gnail.com</string>
     <string name="nav_header_desc">Main Menu</string>
 
-    <string name="playlistError">Error : Couldn\'t Create a Playlist...</string>
-    <string name="noPlaylists">No Playlists Created...\n Please create one</string>
+    <string name="playlistError">Error : Couldn\'t Create a Playlist…</string>
+    <string name="noPlaylists">No Playlists Created…\n Please create one</string>
     <string name="loading_songs">Loading Songs :)</string>
-    <string name="create_playlist">Create Playlist</string>
+    <string name="create_playlist">Create a Playlist</string>
+    <string name="no_playlists_found_n_start_by_creating_one">No Playlists Found…\n Start by creating one!</string>
+    <string name="playlist_title">Playlist Title</string>
+    <string name="create_a_playlist">Create a playlist</string>
+    <string name="cancel_create">Cancel Create</string>
+    <string name="enter_a_title_for_your_playlist">Enter a title for your playlist :</string>
+    <string name="playlist_Title" />
+    <string name="song_name">Song Name</string>
 
 </resources>

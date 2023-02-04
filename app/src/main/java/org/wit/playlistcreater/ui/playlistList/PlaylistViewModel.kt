@@ -3,20 +3,21 @@ package org.wit.playlistcreater.ui.playlistList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import org.wit.playlistcreater.models.AppManager
+import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 
 class PlaylistViewModel : ViewModel() {
 
-    private val status = MutableLiveData<Boolean>()
+    private val playlistList = MutableLiveData<List<PlaylistModel>>()
 
-    val observableStatus: LiveData<Boolean>
-        get() = status
-//
-//    fun addDonation(donation: DonationModel) {
-//        status.value = try {
-//            DonationManager.create(donation)
-//            true
-//        } catch (e: IllegalArgumentException) {
-//            false
-//        }
-//    }
+    val observablePlaylistList: LiveData<List<PlaylistModel>>
+        get() = playlistList
+
+    init {
+        load()
+    }
+
+    fun load() {
+        playlistList.value = AppManager.findAllPlaylistsInStore()
+    }
 }

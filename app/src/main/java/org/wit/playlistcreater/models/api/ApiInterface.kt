@@ -1,4 +1,4 @@
-package org.wit.playlistcreater.models
+package org.wit.playlistcreater.models.api
 
 import org.wit.playlistcreater.BuildConfig
 import org.wit.playlistcreater.models.songModel.SongModel

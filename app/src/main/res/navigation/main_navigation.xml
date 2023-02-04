@@ -20,6 +20,12 @@
             app:destination="@id/createPlaylistFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_songFragment_to_songInfoFragment"
+            app:destination="@id/songInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" >
+        </action>
     </fragment>
     <fragment
         android:id="@+id/playlistFragment"
@@ -52,5 +58,17 @@
             app:destination="@id/songFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/songInfoFragment"
+        android:name="org.wit.playlistcreater.ui.songInfo.SongInfoFragment"
+        android:label="fragment_song_info"
+        tools:layout="@layout/fragment_song_info" >
+        <action
+            android:id="@+id/action_songInfoFragment_to_songFragment"
+            app:destination="@id/songFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument android:name="songId" />
     </fragment>
 </navigation>

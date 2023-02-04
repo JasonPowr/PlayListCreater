@@ -21,5 +21,7 @@
     <string name="enter_a_title_for_your_playlist">Enter a title for your playlist :</string>
     <string name="playlist_Title" />
     <string name="song_name">Song Name</string>
+    <string name="songname">SongName</string>
+    <string name="artistname">artistName</string>
 
 </resources>

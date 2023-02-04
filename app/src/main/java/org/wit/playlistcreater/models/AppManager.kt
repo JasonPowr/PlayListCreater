@@ -31,4 +31,8 @@ object AppManager : AppStore {
         songs.addAll(songItemList)
     }
 
+    override fun findSongByID(id: String): Song? {
+        return songs[0]!!.items.find { s -> s.track.id == id  }
+    }
+
 }

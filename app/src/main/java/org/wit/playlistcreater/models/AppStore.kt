@@ -10,4 +10,5 @@ interface AppStore {
     fun findAllPlaylistsInStore() : List<PlaylistModel>
     fun findAllSongsInStore() : List<Song?>
     fun addAllSongsToStore(songItemList: List<SongModel?>)
+    fun findSongByID(id: String): Song?
 }

@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import org.wit.playlistcreater.databinding.CardSongBinding
 import org.wit.playlistcreater.models.songModel.Song
 
-class SongAdapter(private var songs: List<Song?>)
+interface SongClickListener {
+    fun onSongClick(song: Song?)
+}
+
+class SongAdapter(private var songs: List<Song?>, private val listener: SongClickListener)
     : RecyclerView.Adapter<SongAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -26,6 +30,7 @@ class SongAdapter(private var songs: List<Song?>)
     inner class MainHolder(val binding : CardSongBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(song: Song) {
             binding.song = song
+            binding.root.setOnClickListener{listener.onSongClick(song)}
             binding.executePendingBindings()
         }
     }

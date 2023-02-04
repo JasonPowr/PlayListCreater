@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.adapters.SongAdapter
+import org.wit.playlistcreater.adapters.SongClickListener
 import org.wit.playlistcreater.databinding.FragmentSongBinding
 import org.wit.playlistcreater.models.songModel.Song
 
-class SongFragment : Fragment() {
+class SongFragment : Fragment(), SongClickListener {
 
     private var _fragBinding: FragmentSongBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -40,7 +42,7 @@ class SongFragment : Fragment() {
     }
 
     private fun render(songList: List<Song?>) {
-        fragBinding.recyclerViewForSongs.adapter = SongAdapter(songList)
+        fragBinding.recyclerViewForSongs.adapter = SongAdapter(songList, this)
         if (songList.isEmpty()) {
             fragBinding.recyclerViewForSongs.visibility = View.GONE
             fragBinding.loading.visibility = View.VISIBLE
@@ -50,6 +52,11 @@ class SongFragment : Fragment() {
             fragBinding.loading.visibility = View.GONE
             fragBinding.loadingSymbol.visibility = View.GONE
         }
+    }
+
+    override fun onSongClick(song: Song?) {
+        val action = SongFragmentDirections.actionSongFragmentToSongInfoFragment(song!!.track.id)
+        findNavController().navigate(action)
     }
 
     override fun onResume() {

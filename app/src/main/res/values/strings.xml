@@ -13,5 +13,6 @@
     <string name="playlistError">Error : Couldn\'t Create a Playlist...</string>
     <string name="noPlaylists">No Playlists Created...\n Please create one</string>
     <string name="loading_songs">Loading Songs :)</string>
+    <string name="create_playlist">Create Playlist</string>
 
 </resources>

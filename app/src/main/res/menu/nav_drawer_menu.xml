@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/createPlaylistFragment"
+            android:icon="@drawable/ic_baseline_playlist_add_24"
+            android:title="@string/create_playlist" />
+        <item
             android:id="@+id/playlistFragment"
             android:icon="@drawable/ic_baseline_playlist_play_24"
             android:title="@string/your_playlists" />

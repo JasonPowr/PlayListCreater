@@ -15,6 +15,11 @@
             app:destination="@id/playlistFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_songFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/playlistFragment"
@@ -23,6 +28,27 @@
         tools:layout="@layout/fragment_playlist" >
         <action
             android:id="@+id/action_playlistFragment_to_songFragment"
+            app:destination="@id/songFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_playlistFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/createPlaylistFragment"
+        android:name="org.wit.playlistcreater.ui.createPlaylist.CreatePlaylistFragment"
+        android:label="fragment_create_playlist"
+        tools:layout="@layout/fragment_create_playlist" >
+        <action
+            android:id="@+id/action_createPlaylistFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_createPlaylistFragment_to_songFragment"
             app:destination="@id/songFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />

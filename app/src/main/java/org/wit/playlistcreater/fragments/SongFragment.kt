@@ -22,16 +22,16 @@ class SongFragment : Fragment() {
         app = activity?.application as PlaylistCreater
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _fragBinding = FragmentSongBinding.inflate(inflater, container, false)
-        val root = fragBinding.root
-        fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
-        fragBinding.recyclerViewForSongs.adapter = SongAdapter(AppManager.findAllSongsInStore())
-        return root
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater, container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+//        _fragBinding = FragmentSongBinding.inflate(inflater, container, false)
+//        val root = fragBinding.root
+//        fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
+//        fragBinding.recyclerViewForSongs.adapter = SongAdapter(AppManager.findAllSongsInStore(), this)
+//        return root
+//    }
 
     companion object {
         @JvmStatic

@@ -2,19 +2,13 @@ package org.wit.playlistcreater.ui.playlistList
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.wit.playlistcreater.R
 import org.wit.playlistcreater.adapters.PlaylistAdapter
-import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
-import org.wit.playlistcreater.main.PlaylistCreater
-import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
-import org.wit.playlistcreater.ui.songList.SongViewModel
 
 class PlaylistFragment : Fragment() {
 

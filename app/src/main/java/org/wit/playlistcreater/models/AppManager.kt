@@ -68,4 +68,9 @@ object AppManager : AppStore {
         return foundPlaylist!!.songs
     }
 
+    override fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel) {
+        val foundSong = findSongByID(songId)
+        playlist.songs.remove(foundSong)
+    }
+
 }

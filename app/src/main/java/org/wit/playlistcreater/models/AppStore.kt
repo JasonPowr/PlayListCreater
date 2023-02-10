@@ -16,4 +16,5 @@ interface AppStore {
     fun findSongByID(id: String): Song?
     fun addSongToPlaylist(songId: String, playlist: PlaylistModel) : Boolean
     fun findAllSongsInPlaylist(playlistId: Long) : MutableList<Song>
+    fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel)
 }

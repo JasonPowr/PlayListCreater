@@ -27,6 +27,13 @@ object AppManager : AppStore {
         }
     }
 
+    override fun deletePlaylist(playlistId: Long) {
+        val foundPlaylist = findPlaylistById(playlistId)
+        if (foundPlaylist != null) {
+            playlists.remove(foundPlaylist)
+        }
+    }
+
     override fun findAllPlaylistsInStore(): List<PlaylistModel> {
         return playlists
     }

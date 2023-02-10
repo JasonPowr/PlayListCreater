@@ -8,6 +8,7 @@ import org.wit.playlistcreater.models.songModel.SongModel
 interface AppStore {
     fun createPlaylist(newPlaylist: PlaylistModel)
     fun updatePlaylist(playlistId: Long, updatedPlaylist: PlaylistModel)
+    fun deletePlaylist(playlistId: Long)
     fun findAllPlaylistsInStore() : List<PlaylistModel>
     fun findAllSongsInStore() : List<Song?>
     fun addAllSongsToStore(songItemList: List<SongModel?>)

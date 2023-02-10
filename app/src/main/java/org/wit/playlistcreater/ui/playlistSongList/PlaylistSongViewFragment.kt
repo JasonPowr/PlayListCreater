@@ -57,7 +57,8 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
 
     private fun setDelBtnListener(layout: FragmentPlaylistSongViewBinding) {
         layout.deleteBtn.setOnClickListener {
-
+            playlistSongViewViewModel.deletePlaylist(args.playlistId)
+            findNavController().popBackStack()
         }
     }
 

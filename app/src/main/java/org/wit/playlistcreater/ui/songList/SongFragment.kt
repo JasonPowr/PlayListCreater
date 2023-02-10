@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.adapters.SongClickListener
 import org.wit.playlistcreater.databinding.FragmentSongBinding
-import org.wit.playlistcreater.models.songModel.Song
+import org.wit.playlistcreater.models.songModel.Songs
 
 class SongFragment : Fragment(), SongClickListener {
 
@@ -33,7 +33,7 @@ class SongFragment : Fragment(), SongClickListener {
 
         fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-        songViewModel.observableSongsList.observe(viewLifecycleOwner, Observer {
+        songViewModel.observableSongs.observe(viewLifecycleOwner, Observer {
                 songs ->
             songs?.let { render(songs) }
         })
@@ -41,9 +41,9 @@ class SongFragment : Fragment(), SongClickListener {
         return root
     }
 
-    private fun render(songList: List<Song?>) {
-        fragBinding.recyclerViewForSongs.adapter = SongAdapter(songList, this)
-        if (songList.isEmpty()) {
+    private fun render(songs: List<Songs?>) {
+        fragBinding.recyclerViewForSongs.adapter = SongAdapter(songs, this)
+        if (songs.isEmpty()) {
             fragBinding.recyclerViewForSongs.visibility = View.GONE
             fragBinding.loading.visibility = View.VISIBLE
             fragBinding.loadingSymbol.visibility = View.VISIBLE
@@ -54,8 +54,8 @@ class SongFragment : Fragment(), SongClickListener {
         }
     }
 
-    override fun onSongClick(song: Song?) {
-        val action = SongFragmentDirections.actionSongFragmentToSongInfoFragment(song!!.track.id)
+    override fun onSongClick(songs: Songs?) {
+        val action = SongFragmentDirections.actionSongFragmentToSongInfoFragment(songs!!.track.id)
         findNavController().navigate(action)
     }
 

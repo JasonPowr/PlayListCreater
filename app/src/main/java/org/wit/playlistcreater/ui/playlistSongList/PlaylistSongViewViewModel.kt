@@ -5,16 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
-import org.wit.playlistcreater.models.songModel.Song
+import org.wit.playlistcreater.models.songModel.Songs
 
 class PlaylistSongViewViewModel : ViewModel() {
-    private val playlistSongList = MutableLiveData<List<Song?>>()
+    private val playlistSongs = MutableLiveData<List<Songs?>>()
 
-    val observablePlaylistSongList: LiveData<List<Song?>>
-        get() = playlistSongList
+    val observablePlaylistSongs: LiveData<List<Songs?>>
+        get() = playlistSongs
 
     fun getSongsInPlaylist(playlistId: Long) {
-        playlistSongList.value = AppManager.findAllSongsInPlaylist(playlistId)
+        playlistSongs.value = AppManager.findAllSongsInPlaylist(playlistId)
     }
 
     fun getPlaylist(playlistId: Long): PlaylistModel? {

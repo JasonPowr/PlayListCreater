@@ -43,7 +43,6 @@ class CreatePlaylistFragment : Fragment() {
         }
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null

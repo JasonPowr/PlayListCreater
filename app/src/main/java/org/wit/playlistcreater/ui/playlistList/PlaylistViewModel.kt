@@ -20,4 +20,8 @@ class PlaylistViewModel : ViewModel() {
     fun load() {
         playlistList.value = AppManager.findAllPlaylistsInStore()
     }
+
+    fun addSongToPlaylist(songId: String, playlist: PlaylistModel) {
+        AppManager.addSongToPlaylist(songId,playlist)
+    }
 }

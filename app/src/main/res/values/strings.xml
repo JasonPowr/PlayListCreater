@@ -23,5 +23,6 @@
     <string name="song_name">Song Name</string>
     <string name="songname">SongName</string>
     <string name="artistname">artistName</string>
+    <string name="no_songs_found_in_playlist_n_start_by_adding_some">No Songs found in playlist...\n start by adding some</string>
 
 </resources>

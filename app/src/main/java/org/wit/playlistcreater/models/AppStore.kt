@@ -10,5 +10,8 @@ interface AppStore {
     fun findAllPlaylistsInStore() : List<PlaylistModel>
     fun findAllSongsInStore() : List<Song?>
     fun addAllSongsToStore(songItemList: List<SongModel?>)
+    fun findPlaylistById(playlistId: Long): PlaylistModel?
     fun findSongByID(id: String): Song?
+    fun addSongToPlaylist(songId: String, playlist: PlaylistModel)
+    fun findAllSongsInPlaylist(playlistId: Long) : MutableList<Song>
 }

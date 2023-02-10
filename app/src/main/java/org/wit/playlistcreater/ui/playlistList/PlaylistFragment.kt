@@ -1,7 +1,6 @@
 package org.wit.playlistcreater.ui.playlistList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -69,10 +68,17 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
                     playlist.id
                 )
             findNavController().navigate(action)
-        }else{
+        } else {
+            when (args.delete) {
+                true -> deleteFromPlaylist(playlist)
+                false -> addToPlaylist(playlist)
+            }
+        }
+    }
+
+    private fun addToPlaylist(playlist: PlaylistModel){
             val error = playlistViewModel.addSongToPlaylist(args.songId, playlist)
             findNavController().popBackStack()
-
             when (error) {
                 true -> {
                     Toast.makeText(context,
@@ -80,6 +86,11 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
                 }
                 false -> Toast.makeText(context,"Error Adding "+ AppManager.findSongByID(args.songId)?.track!!.name+" to "+playlist.title,Toast.LENGTH_LONG).show()
             }
-        }
     }
+
+    private fun deleteFromPlaylist(playlist: PlaylistModel) {
+        playlistViewModel.deleteSongFromPlaylist(args.songId, playlist)
+        findNavController().popBackStack()
+    }
+
 }

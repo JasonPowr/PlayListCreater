@@ -25,4 +25,8 @@ class PlaylistViewModel : ViewModel() {
         val error = AppManager.addSongToPlaylist(songId,playlist)
         return error
     }
+
+    fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel){
+        AppManager.deleteSongFromPlaylist(songId, playlist)
+    }
 }

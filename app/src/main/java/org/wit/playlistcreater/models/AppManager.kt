@@ -27,6 +27,13 @@ object AppManager : AppStore {
         }
     }
 
+    override fun deletePlaylist(playlistId: Long) {
+        val foundPlaylist = findPlaylistById(playlistId)
+        if (foundPlaylist != null) {
+            playlists.remove(foundPlaylist)
+        }
+    }
+
     override fun findAllPlaylistsInStore(): List<PlaylistModel> {
         return playlists
     }
@@ -59,6 +66,11 @@ object AppManager : AppStore {
     override fun findAllSongsInPlaylist(playlistId: Long): MutableList<Song> {
        val foundPlaylist = findPlaylistById(playlistId)
         return foundPlaylist!!.songs
+    }
+
+    override fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel) {
+        val foundSong = findSongByID(songId)
+        playlist.songs.remove(foundSong)
     }
 
 }

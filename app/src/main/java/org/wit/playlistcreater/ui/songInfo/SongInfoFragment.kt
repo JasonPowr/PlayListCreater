@@ -40,12 +40,20 @@ class SongInfoFragment : Fragment() {
         })
         setMediaPlayerListner(fragBinding)
         setAddToPlaylistBtn(fragBinding)
+        setDeleteFromPlaylistBtn(fragBinding)
         return root;
     }
 
     private fun setAddToPlaylistBtn(layout: FragmentSongInfoBinding) {
         layout.addSongToPlaylistBtn.setOnClickListener {
             val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment().setSongId(args.songId)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun setDeleteFromPlaylistBtn(layout: FragmentSongInfoBinding) {
+        layout.deleteSongFromPlaylistBtn.setOnClickListener {
+            val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment().setSongId(args.songId).setDelete(true)
             findNavController().navigate(action)
         }
     }

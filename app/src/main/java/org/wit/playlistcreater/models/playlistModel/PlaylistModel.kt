@@ -7,6 +7,6 @@ import org.wit.playlistcreater.models.songModel.Song
 @Parcelize
 data class PlaylistModel(
     var id: Long,
-    val title: String,
+    var title: String,
     val songs: MutableList<Song>
 ) : Parcelable

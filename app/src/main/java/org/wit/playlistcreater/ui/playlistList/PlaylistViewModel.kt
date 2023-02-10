@@ -21,7 +21,8 @@ class PlaylistViewModel : ViewModel() {
         playlistList.value = AppManager.findAllPlaylistsInStore()
     }
 
-    fun addSongToPlaylist(songId: String, playlist: PlaylistModel) {
-        AppManager.addSongToPlaylist(songId,playlist)
+    fun addSongToPlaylist(songId: String, playlist: PlaylistModel) : Boolean {
+        val error = AppManager.addSongToPlaylist(songId,playlist)
+        return error
     }
 }

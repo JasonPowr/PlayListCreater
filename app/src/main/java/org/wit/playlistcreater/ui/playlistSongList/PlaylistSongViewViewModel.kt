@@ -17,4 +17,8 @@ class PlaylistSongViewViewModel : ViewModel() {
         playlistSongList.value = AppManager.findAllSongsInPlaylist(playlistId)
     }
 
+    fun getPlaylist(playlistId: Long): PlaylistModel? {
+        return AppManager.findPlaylistById(playlistId)
+    }
+
 }

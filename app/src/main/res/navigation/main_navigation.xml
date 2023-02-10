@@ -59,8 +59,8 @@
     <fragment
         android:id="@+id/createPlaylistFragment"
         android:name="org.wit.playlistcreater.ui.createPlaylist.CreatePlaylistFragment"
-        android:label="fragment_create_playlist"
-        tools:layout="@layout/fragment_create_playlist" >
+        android:label="Create a Playlist"
+        tools:layout="@layout/fragment_create_playlist">
         <action
             android:id="@+id/action_createPlaylistFragment_to_playlistFragment"
             app:destination="@id/playlistFragment"
@@ -71,12 +71,20 @@
             app:destination="@id/songFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="edit"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="playlistId"
+            app:argType="long"
+            android:defaultValue="-1L" />
     </fragment>
     <fragment
         android:id="@+id/songInfoFragment"
         android:name="org.wit.playlistcreater.ui.songInfo.SongInfoFragment"
-        android:label="fragment_song_info"
-        tools:layout="@layout/fragment_song_info" >
+        android:label="Song Info"
+        tools:layout="@layout/fragment_song_info">
         <action
             android:id="@+id/action_songInfoFragment_to_songFragment"
             app:destination="@id/songFragment"
@@ -87,7 +95,7 @@
             android:id="@+id/action_songInfoFragment_to_playlistFragment"
             app:destination="@id/playlistFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" >
+            app:exitAnim="@anim/nav_default_exit_anim">
             <argument
                 android:name="songId"
                 android:defaultValue="defaultValue" />
@@ -96,14 +104,25 @@
     <fragment
         android:id="@+id/playlistSongViewFragment"
         android:name="org.wit.playlistcreater.ui.playlistSongList.PlaylistSongViewFragment"
-        android:label="fragment_playlist_song_view"
-        tools:layout="@layout/fragment_playlist_song_view" >
+        android:label="Your Songs"
+        tools:layout="@layout/fragment_playlist_song_view">
         <action
             android:id="@+id/action_playlistSongViewFragment_to_playlistFragment"
             app:destination="@id/playlistFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
-        <argument android:name="playlistId"
+        <argument
+            android:name="playlistId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_playlistSongViewFragment_to_songInfoFragment"
+            app:destination="@id/songInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_playlistSongViewFragment_to_createPlaylistFragment"
+            app:destination="@id/createPlaylistFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 </navigation>

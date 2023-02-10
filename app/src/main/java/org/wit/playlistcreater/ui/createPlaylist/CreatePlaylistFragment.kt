@@ -9,12 +9,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.databinding.FragmentCreatePlaylistBinding
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
+import org.wit.playlistcreater.ui.playlistSongList.PlaylistSongViewFragmentArgs
 
 class CreatePlaylistFragment : Fragment() {
 
+    private val args by navArgs<CreatePlaylistFragmentArgs>()
     private var _fragBinding: FragmentCreatePlaylistBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var createPlaylistViewModel: CreatePlaylistViewModel
@@ -36,9 +39,16 @@ class CreatePlaylistFragment : Fragment() {
     fun setButtonListener(layout: FragmentCreatePlaylistBinding) {
         layout.createPlaylistBtn.setOnClickListener {
             if(layout.editTextTextPersonName.text.isNotEmpty()){
-                val playlistTitle = layout.editTextTextPersonName.text.toString()
-                createPlaylistViewModel.createPlaylist(PlaylistModel(0,playlistTitle, mutableListOf()))
-                findNavController().popBackStack()
+                if (args.edit && (args.playlistId != -1L)){
+                    val playlistTitle = layout.editTextTextPersonName.text.toString()
+                    val updatedPlaylist = PlaylistModel(0,playlistTitle, mutableListOf())
+                    createPlaylistViewModel.updatePlaylist(args.playlistId, updatedPlaylist)
+                    findNavController().popBackStack()
+                }else{
+                    val playlistTitle = layout.editTextTextPersonName.text.toString()
+                    createPlaylistViewModel.createPlaylist(PlaylistModel(0,playlistTitle, mutableListOf()))
+                    findNavController().popBackStack()
+                }
             }
         }
     }

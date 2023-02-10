@@ -69,14 +69,6 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
                 )
             findNavController().navigate(action)
         } else {
-            when (args.delete) {
-                true -> deleteFromPlaylist(playlist)
-                false -> addToPlaylist(playlist)
-            }
-        }
-    }
-
-    private fun addToPlaylist(playlist: PlaylistModel){
             val error = playlistViewModel.addSongToPlaylist(args.songId, playlist)
             findNavController().popBackStack()
             when (error) {
@@ -86,11 +78,6 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
                 }
                 false -> Toast.makeText(context,"Error Adding "+ AppManager.findSongByID(args.songId)?.track!!.name+" to "+playlist.title,Toast.LENGTH_LONG).show()
             }
+        }
     }
-
-    private fun deleteFromPlaylist(playlist: PlaylistModel) {
-        playlistViewModel.deleteSongFromPlaylist(args.songId, playlist)
-        findNavController().popBackStack()
-    }
-
 }

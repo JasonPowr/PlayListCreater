@@ -1,7 +1,7 @@
 package org.wit.playlistcreater.models
 
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
-import org.wit.playlistcreater.models.songModel.Song
+import org.wit.playlistcreater.models.songModel.Songs
 import org.wit.playlistcreater.models.songModel.SongModel
 
 
@@ -38,7 +38,7 @@ object AppManager : AppStore {
         return playlists
     }
 
-    override fun findAllSongsInStore(): List<Song?> {
+    override fun findAllSongsInStore(): List<Songs?> {
         return songs[0]!!.items
     }
 
@@ -50,26 +50,28 @@ object AppManager : AppStore {
         return playlists.find { p -> p.id == playlistId }
     }
 
-    override fun findSongByID(id: String): Song? {
+    override fun findSongByID(id: String): Songs? {
         return songs[0]!!.items.find { s -> s.track.id == id  }
     }
 
     override fun addSongToPlaylist(songId: String, playlist: PlaylistModel) : Boolean {
         val foundSong = findSongByID(songId)
         if (foundSong != null) {
+            foundSong.isInPlaylist = true
             playlist.songs.add(foundSong)
             return true
         }
         return false
     }
 
-    override fun findAllSongsInPlaylist(playlistId: Long): MutableList<Song> {
+    override fun findAllSongsInPlaylist(playlistId: Long): MutableList<Songs> {
        val foundPlaylist = findPlaylistById(playlistId)
         return foundPlaylist!!.songs
     }
 
     override fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel) {
         val foundSong = findSongByID(songId)
+        foundSong!!.isInPlaylist = false
         playlist.songs.remove(foundSong)
     }
 

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="song"
-            type="org.wit.playlistcreater.models.songModel.Song" />
+            type="org.wit.playlistcreater.models.songModel.Songs" />
     </data>
 
 

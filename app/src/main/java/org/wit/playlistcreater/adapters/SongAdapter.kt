@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.wit.playlistcreater.databinding.CardSongBinding
-import org.wit.playlistcreater.models.songModel.Song
+import org.wit.playlistcreater.models.songModel.Songs
 
 interface SongClickListener {
-    fun onSongClick(song: Song?)
+    fun onSongClick(songs: Songs?)
 }
 
-class SongAdapter(private var songs: List<Song?>, private val listener: SongClickListener)
+class SongAdapter(private var songs: List<Songs?>, private val listener: SongClickListener)
     : RecyclerView.Adapter<SongAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -28,9 +28,9 @@ class SongAdapter(private var songs: List<Song?>, private val listener: SongClic
     override fun getItemCount(): Int = songs.size
 
     inner class MainHolder(val binding : CardSongBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(song: Song) {
-            binding.song = song
-            binding.root.setOnClickListener{listener.onSongClick(song)}
+        fun bind(songs: Songs) {
+            binding.song = songs
+            binding.root.setOnClickListener{listener.onSongClick(songs)}
             binding.executePendingBindings()
         }
     }

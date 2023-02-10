@@ -3,6 +3,7 @@ package org.wit.playlistcreater.ui.songInfo
 import android.media.MediaPlayer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import org.wit.playlistcreater.databinding.FragmentSongInfoBinding
-import org.wit.playlistcreater.models.songModel.Song
-import org.wit.playlistcreater.ui.playlistList.PlaylistFragmentDirections
+import org.wit.playlistcreater.models.songModel.Songs
 
 class SongInfoFragment : Fragment() {
 
@@ -26,7 +26,6 @@ class SongInfoFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _fragBinding = FragmentSongInfoBinding.inflate(inflater, container, false)
@@ -34,7 +33,7 @@ class SongInfoFragment : Fragment() {
 
         songInfoViewModel = ViewModelProvider(this)[SongInfoViewModel::class.java]
         songInfoViewModel.getSong(args.songId)
-        songInfoViewModel.observableSong.observe(viewLifecycleOwner, Observer {
+        songInfoViewModel.observableSongs.observe(viewLifecycleOwner, Observer {
                 song ->
             song?.let { render(song) }
         })
@@ -45,29 +44,37 @@ class SongInfoFragment : Fragment() {
     }
 
     private fun setAddToPlaylistBtn(layout: FragmentSongInfoBinding) {
+        if (songInfoViewModel.observableSongs.value!!.isInPlaylist) {
+            layout.addSongToPlaylistBtn.visibility = View.GONE
+        } else {
         layout.addSongToPlaylistBtn.setOnClickListener {
             val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment().setSongId(args.songId)
             findNavController().navigate(action)
         }
+        }
     }
 
     private fun setDeleteFromPlaylistBtn(layout: FragmentSongInfoBinding) {
+        if (!songInfoViewModel.observableSongs.value!!.isInPlaylist || !args.cameFromPlaylist) {
+            layout.deleteSongFromPlaylistBtn.visibility = View.GONE
+        } else {
         layout.deleteSongFromPlaylistBtn.setOnClickListener {
-            val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment().setSongId(args.songId).setDelete(true)
-            findNavController().navigate(action)
+            songInfoViewModel.deleteSongFromPlaylist(args.songId, songInfoViewModel.getPlaylist(args.playlistId)!!)
+            findNavController().popBackStack()
+            }
         }
     }
 
     private fun setMediaPlayerListner(layout: FragmentSongInfoBinding){
         var isStopped = false
         mediaPlayer = MediaPlayer()
-        mediaPlayer.setDataSource(songInfoViewModel.observableSong.value!!.track.preview_url)
+        mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track.preview_url)
         mediaPlayer.prepare()
 
         layout.playBtn.setOnClickListener{
             if(isStopped){
                 mediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource(songInfoViewModel.observableSong.value!!.track.preview_url)
+                mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track.preview_url)
                 mediaPlayer.prepare()
                 mediaPlayer.start()
             }else{
@@ -93,8 +100,8 @@ class SongInfoFragment : Fragment() {
     }
 
 
-    private fun render(song: Song) {
-        fragBinding.songName.text = song.track.name
+    private fun render(songs: Songs) {
+        fragBinding.songName.text = songs.track.name
     }
 
 

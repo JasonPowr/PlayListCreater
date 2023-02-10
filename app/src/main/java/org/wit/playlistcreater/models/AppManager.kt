@@ -20,6 +20,13 @@ object AppManager : AppStore {
         playlists.add(newPlaylist)
     }
 
+    override fun updatePlaylist(playlistId: Long, updatedPlaylist: PlaylistModel) {
+       val foundPlaylist = findPlaylistById(playlistId)
+        if (foundPlaylist != null) {
+            foundPlaylist.title = updatedPlaylist.title
+        }
+    }
+
     override fun findAllPlaylistsInStore(): List<PlaylistModel> {
         return playlists
     }
@@ -40,11 +47,13 @@ object AppManager : AppStore {
         return songs[0]!!.items.find { s -> s.track.id == id  }
     }
 
-    override fun addSongToPlaylist(songId: String, playlist: PlaylistModel) {
+    override fun addSongToPlaylist(songId: String, playlist: PlaylistModel) : Boolean {
         val foundSong = findSongByID(songId)
         if (foundSong != null) {
             playlist.songs.add(foundSong)
+            return true
         }
+        return false
     }
 
     override fun findAllSongsInPlaylist(playlistId: Long): MutableList<Song> {

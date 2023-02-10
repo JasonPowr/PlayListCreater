@@ -10,4 +10,8 @@ class CreatePlaylistViewModel : ViewModel() {
         AppManager.createPlaylist(playlist)
     }
 
+    fun updatePlaylist(playlistId: Long, updatedPlaylist: PlaylistModel){
+        AppManager.updatePlaylist(playlistId, updatedPlaylist)
+    }
+
 }

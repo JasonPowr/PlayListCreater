@@ -3,6 +3,7 @@ package org.wit.playlistcreater.ui.playlistList
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.adapters.PlayistClickListner
 import org.wit.playlistcreater.adapters.PlaylistAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
+import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 
 class PlaylistFragment : Fragment(), PlayistClickListner {
@@ -68,8 +70,16 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
                 )
             findNavController().navigate(action)
         }else{
-            playlistViewModel.addSongToPlaylist(args.songId, playlist)
+            val error = playlistViewModel.addSongToPlaylist(args.songId, playlist)
             findNavController().popBackStack()
+
+            when (error) {
+                true -> {
+                    Toast.makeText(context,
+                        AppManager.findSongByID(args.songId)?.track!!.name+" Added to Playlist: "+playlist.title,Toast.LENGTH_LONG).show()
+                }
+                false -> Toast.makeText(context,"Error Adding "+ AppManager.findSongByID(args.songId)?.track!!.name+" to "+playlist.title,Toast.LENGTH_LONG).show()
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ object AppManager : AppStore {
     val songs = ArrayList<SongModel?>()
 
     override fun createPlaylist(newPlaylist: PlaylistModel) {
+        newPlaylist.id = getId()
         playlists.add(newPlaylist)
     }
 
@@ -31,8 +32,24 @@ object AppManager : AppStore {
         songs.addAll(songItemList)
     }
 
+    override fun findPlaylistById(playlistId: Long): PlaylistModel? {
+        return playlists.find { p -> p.id == playlistId }
+    }
+
     override fun findSongByID(id: String): Song? {
         return songs[0]!!.items.find { s -> s.track.id == id  }
+    }
+
+    override fun addSongToPlaylist(songId: String, playlist: PlaylistModel) {
+        val foundSong = findSongByID(songId)
+        if (foundSong != null) {
+            playlist.songs.add(foundSong)
+        }
+    }
+
+    override fun findAllSongsInPlaylist(playlistId: Long): MutableList<Song> {
+       val foundPlaylist = findPlaylistById(playlistId)
+        return foundPlaylist!!.songs
     }
 
 }

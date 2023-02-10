@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import org.wit.playlistcreater.databinding.CardPlaylistBinding
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 
-class PlaylistAdapter(private var playlists: List<PlaylistModel>)
+interface PlayistClickListner {
+    fun onPlaylistClick(playlist: PlaylistModel)
+}
+
+class PlaylistAdapter(private var playlists: List<PlaylistModel>, private val listner: PlayistClickListner)
     : RecyclerView.Adapter<PlaylistAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -26,6 +30,7 @@ class PlaylistAdapter(private var playlists: List<PlaylistModel>)
     inner class MainHolder(val binding : CardPlaylistBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(playlist: PlaylistModel) {
             binding.playlist = playlist
+            binding.root.setOnClickListener{listner.onPlaylistClick(playlist)}
             binding.executePendingBindings()
         }
     }

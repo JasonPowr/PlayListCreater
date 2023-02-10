@@ -42,6 +42,19 @@
             app:destination="@id/createPlaylistFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_playlistFragment_to_playlistSongViewFragment"
+            app:destination="@id/playlistSongViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="songId"
+            android:defaultValue="default" />
+        <action
+            android:id="@+id/action_playlistFragment_to_songInfoFragment"
+            app:destination="@id/songInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/createPlaylistFragment"
@@ -70,5 +83,27 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
         <argument android:name="songId" />
+        <action
+            android:id="@+id/action_songInfoFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" >
+            <argument
+                android:name="songId"
+                android:defaultValue="defaultValue" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/playlistSongViewFragment"
+        android:name="org.wit.playlistcreater.ui.playlistSongList.PlaylistSongViewFragment"
+        android:label="fragment_playlist_song_view"
+        tools:layout="@layout/fragment_playlist_song_view" >
+        <action
+            android:id="@+id/action_playlistSongViewFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument android:name="playlistId"
+            app:argType="long" />
     </fragment>
 </navigation>

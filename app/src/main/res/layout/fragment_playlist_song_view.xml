@@ -9,8 +9,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForSongsInPlaylist"
-        android:layout_width="390dp"
-        android:layout_height="488dp"
+        android:layout_width="386dp"
+        android:layout_height="454dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.476"
@@ -26,15 +26,18 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.682" />
 
     <TextView
         android:id="@+id/playlistTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="328dp"
+        android:layout_height="59dp"
         android:layout_marginTop="40dp"
         android:text="TextView"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +47,8 @@
         android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="252dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginStart="256dp"
+        android:layout_marginBottom="84dp"
         android:clickable="true"
         android:contentDescription="TODO"
         android:src="@drawable/ic_baseline_edit_24"
@@ -56,12 +59,18 @@
         android:id="@+id/deleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="84dp"
         android:clickable="true"
         android:src="@drawable/ic_baseline_delete_24"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewForSongsInPlaylist"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintHorizontal_bias="0.723"
         app:layout_constraintStart_toEndOf="@+id/editBtn" />
+
+    <SearchView
+        android:layout_width="409dp"
+        android:layout_height="82dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="176dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,18 +16,11 @@
             android:id="@+id/songFragment"
             android:icon="@drawable/ic_baseline_library_music_24"
             android:title="@string/browse_songs" />
+        <item
+            android:id="@+id/profileFragment"
+            android:icon="@drawable/ic_baseline_supervised_user_circle_24"
+            android:title="@string/your_profile" />
+        
     </group>
 
-    <item android:title="@string/group_communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_baseline_share_24"
-                android:title="@string/action_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_baseline_send_24"
-                android:title="@string/action_send" />
-        </menu>
-    </item>
 </menu>

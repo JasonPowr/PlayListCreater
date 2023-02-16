@@ -1,14 +1,13 @@
 package org.wit.playlistcreater.ui.songInfo
 
 import android.media.MediaPlayer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import org.wit.playlistcreater.databinding.FragmentSongInfoBinding
@@ -26,15 +25,16 @@ class SongInfoFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _fragBinding = FragmentSongInfoBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
         songInfoViewModel = ViewModelProvider(this)[SongInfoViewModel::class.java]
         songInfoViewModel.getSong(args.songId)
-        songInfoViewModel.observableSongs.observe(viewLifecycleOwner, Observer {
-                song ->
+        songInfoViewModel.observableSongs.observe(viewLifecycleOwner, Observer { song ->
             song?.let { render(song) }
         })
         setMediaPlayerListner(fragBinding)
@@ -47,10 +47,11 @@ class SongInfoFragment : Fragment() {
         if (songInfoViewModel.observableSongs.value!!.isInPlaylist) {
             layout.addSongToPlaylistBtn.visibility = View.GONE
         } else {
-        layout.addSongToPlaylistBtn.setOnClickListener {
-            val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment().setSongId(args.songId)
-            findNavController().navigate(action)
-        }
+            layout.addSongToPlaylistBtn.setOnClickListener {
+                val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment3()
+                    .setSongId(args.songId)
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -58,37 +59,40 @@ class SongInfoFragment : Fragment() {
         if (!songInfoViewModel.observableSongs.value!!.isInPlaylist || !args.cameFromPlaylist) {
             layout.deleteSongFromPlaylistBtn.visibility = View.GONE
         } else {
-        layout.deleteSongFromPlaylistBtn.setOnClickListener {
-            songInfoViewModel.deleteSongFromPlaylist(args.songId, songInfoViewModel.getPlaylist(args.playlistId)!!)
-            findNavController().popBackStack()
+            layout.deleteSongFromPlaylistBtn.setOnClickListener {
+                songInfoViewModel.deleteSongFromPlaylist(
+                    args.songId,
+                    songInfoViewModel.getPlaylist(args.playlistId)!!
+                )
+                findNavController().popBackStack()
             }
         }
     }
 
-    private fun setMediaPlayerListner(layout: FragmentSongInfoBinding){
+    private fun setMediaPlayerListner(layout: FragmentSongInfoBinding) {
         var isStopped = false
         mediaPlayer = MediaPlayer()
         mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track.preview_url)
         mediaPlayer.prepare()
 
-        layout.playBtn.setOnClickListener{
-            if(isStopped){
+        layout.playBtn.setOnClickListener {
+            if (isStopped) {
                 mediaPlayer = MediaPlayer()
                 mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track.preview_url)
                 mediaPlayer.prepare()
                 mediaPlayer.start()
-            }else{
+            } else {
                 mediaPlayer.start()
             }
         }
 
-        layout.pauseBtn.setOnClickListener{
+        layout.pauseBtn.setOnClickListener {
             if (mediaPlayer.isPlaying) {
                 mediaPlayer.pause()
             }
         }
 
-        layout.stopBtn.setOnClickListener{
+        layout.stopBtn.setOnClickListener {
             if (mediaPlayer.isPlaying) {
                 mediaPlayer.stop()
                 mediaPlayer.reset()

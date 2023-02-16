@@ -179,5 +179,9 @@ object AppManager : AppStore {
             .update("songs", FieldValue.arrayRemove(foundSong.track.id))
     }
 
+    fun deleteAll() {
+        playlists.removeAll(findAllPlaylistsInStore())
+    }
+
 
 }

@@ -1,7 +1,11 @@
 package org.wit.playlistcreater.ui.profile
 
 import androidx.lifecycle.ViewModel
+import org.wit.playlistcreater.models.AppManager
 
 class ProfileViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+
+    fun removeAllFromMem() {
+        AppManager.deleteAll()
+    }
 }

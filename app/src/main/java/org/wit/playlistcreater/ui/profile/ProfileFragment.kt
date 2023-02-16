@@ -41,6 +41,7 @@ class ProfileFragment : Fragment() {
     private fun setLogoutBtnListener(layout: FragmentProfileBinding) {
         layout.logoutBtn.setOnClickListener {
             Firebase.auth.signOut()
+            profileViewModel.removeAllFromMem()
             val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
             findNavController().navigate(action)
         }

@@ -26,10 +26,12 @@
     <string name="no_songs_found_in_playlist_n_start_by_adding_some">No Songs found in playlist…\n start by adding some</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
+    <string name="email">  Email</string>
+    <string name="password">  Password</string>
     <string name="log_out">Log out</string>
     <string name="your_profile">Your Profile</string>
     <string name="or">Or</string>
+    <string name="applogo">appLogo</string>
+    <string name="welcome_n_to_continue_please_login_or_register_below">Welcome! \n to continue please Login or Register below</string>
 
 </resources>

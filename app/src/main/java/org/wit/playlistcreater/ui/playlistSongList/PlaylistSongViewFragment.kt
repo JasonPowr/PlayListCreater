@@ -1,10 +1,10 @@
 package org.wit.playlistcreater.ui.playlistSongList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -36,23 +36,26 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         fragBinding.recyclerViewForSongsInPlaylist.layoutManager = LinearLayoutManager(activity)
         playlistSongViewViewModel = ViewModelProvider(this)[PlaylistSongViewViewModel::class.java]
         playlistSongViewViewModel.getSongsInPlaylist(args.playlistId)
-        playlistSongViewViewModel.observablePlaylistSongs.observe(viewLifecycleOwner, Observer {
-                song ->
-            song?.let { render(song) }
-        })
+        playlistSongViewViewModel.observablePlaylistSongs.observe(
+            viewLifecycleOwner,
+            Observer { song ->
+                song?.let { render(song) }
+            })
         setEditPlaylistBtnListener(fragBinding)
         setDelPlaylistBtnListener(fragBinding)
 
         return root
     }
 
-    private fun setEditPlaylistBtnListener(layout: FragmentPlaylistSongViewBinding){
+    private fun setEditPlaylistBtnListener(layout: FragmentPlaylistSongViewBinding) {
 
         layout.editBtn.setOnClickListener {
-            val action = PlaylistSongViewFragmentDirections.actionPlaylistSongViewFragmentToCreatePlaylistFragment().setEdit(true).setPlaylistId(args.playlistId)
+            val action =
+                PlaylistSongViewFragmentDirections.actionPlaylistSongViewFragmentToCreatePlaylistFragment()
+                    .setEdit(true).setPlaylistId(args.playlistId)
             findNavController().navigate(action)
-            }
         }
+    }
 
     private fun setDelPlaylistBtnListener(layout: FragmentPlaylistSongViewBinding) {
         layout.deleteBtn.setOnClickListener {
@@ -63,7 +66,8 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
 
     private fun render(songs: List<Songs?>) {
         fragBinding.recyclerViewForSongsInPlaylist.adapter = SongAdapter(songs, this)
-        fragBinding.playlistTitle.text = playlistSongViewViewModel.getPlaylist(args.playlistId)!!.title
+        fragBinding.playlistTitle.text =
+            playlistSongViewViewModel.getPlaylist(args.playlistId)!!.title
         if (songs.isEmpty()) {
             fragBinding.editBtn.visibility = View.GONE
             fragBinding.deleteBtn.visibility = View.GONE
@@ -86,8 +90,10 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
     }
 
     override fun onSongClick(songs: Songs?) {
-        val action = PlaylistSongViewFragmentDirections.actionPlaylistSongViewFragmentToSongInfoFragment(
-            songs!!.track.id).setCameFromPlaylist(true).setPlaylistId(args.playlistId)
+        val action =
+            PlaylistSongViewFragmentDirections.actionPlaylistSongViewFragmentToSongInfoFragment(
+                songs!!.track.id
+            ).setCameFromPlaylist(true).setPlaylistId(args.playlistId)
         findNavController().navigate(action)
     }
 

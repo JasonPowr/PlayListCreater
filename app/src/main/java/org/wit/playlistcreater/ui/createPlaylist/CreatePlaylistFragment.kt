@@ -1,19 +1,15 @@
 package org.wit.playlistcreater.ui.createPlaylist
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import org.wit.playlistcreater.R
 import org.wit.playlistcreater.databinding.FragmentCreatePlaylistBinding
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
-import org.wit.playlistcreater.ui.playlistSongList.PlaylistSongViewFragmentArgs
 
 class CreatePlaylistFragment : Fragment() {
 
@@ -26,8 +22,10 @@ class CreatePlaylistFragment : Fragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _fragBinding = FragmentCreatePlaylistBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
@@ -36,18 +34,39 @@ class CreatePlaylistFragment : Fragment() {
         return root;
     }
 
+    fun playlistAlreadyExists(playlistName: String): Boolean {
+        val playlists = createPlaylistViewModel.returnAllPlaylists()
+
+        for (playlist in playlists) {
+            if (playlist.title == playlistName) {
+                return true
+            }
+        }
+        return false
+    }
+
     fun setButtonListener(layout: FragmentCreatePlaylistBinding) {
         layout.createPlaylistBtn.setOnClickListener {
-            if(layout.editTextTextPersonName.text.isNotEmpty()){
-                if (args.edit && (args.playlistId != -1L)){
-                    val playlistTitle = layout.editTextTextPersonName.text.toString()
-                    val updatedPlaylist = PlaylistModel(0,playlistTitle, mutableListOf())
+            val playlistTitle = layout.editTextTextPersonName.text.toString()
+            val updatedPlaylist = PlaylistModel(0, playlistTitle, mutableListOf())
+
+            if (layout.editTextTextPersonName.text.isNotEmpty()) {
+                if (args.edit && (args.playlistId != -1L)) {
                     createPlaylistViewModel.updatePlaylist(args.playlistId, updatedPlaylist)
-                    findNavController().popBackStack()
-                }else{
-                    val playlistTitle = layout.editTextTextPersonName.text.toString()
-                    createPlaylistViewModel.createPlaylist(PlaylistModel(0,playlistTitle, mutableListOf()))
-                    findNavController().popBackStack()
+                } else {
+                    if (!playlistAlreadyExists(playlistTitle)) {
+                        createPlaylistViewModel.createPlaylist(
+                            PlaylistModel(
+                                0,
+                                playlistTitle,
+                                mutableListOf()
+                            )
+                        )
+                    } else {
+                        Toast.makeText(
+                            context, "Playlist already Exists", Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         }

@@ -41,6 +41,7 @@ class LoginOrRegisterFragment : Fragment() {
                     .setUserId(
                         currentUser.uid
                     )
+            findNavController().navigate(action)
         }
 
         setRegisterBtnListener(fragBinding)
@@ -57,19 +58,21 @@ class LoginOrRegisterFragment : Fragment() {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(requireActivity()) { task -> //https://stackoverflow.com/questions/65817683/android-kotlin-firebase-addoncompletelistener-showing-error
                     if (task.isSuccessful) {
-                        val user = auth.currentUser
+                        loginOrRegisterViewModel.createUser(
+                            auth.currentUser!!.uid,
+                            auth.currentUser!!.email.toString()
+                        )
+
                         val action =
                             LoginOrRegisterFragmentDirections.actionLoginFragmentToPlaylistFragment()
                                 .setUserId(
-                                    user!!.uid
+                                    auth.currentUser!!.uid
                                 )
                         findNavController().navigate(action)
                     } else {
                         Toast.makeText(context, "Registration Failed", Toast.LENGTH_LONG).show()
                     }
                 }
-
-
         }
 
     }

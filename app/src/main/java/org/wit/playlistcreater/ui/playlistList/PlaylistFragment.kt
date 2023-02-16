@@ -1,7 +1,9 @@
 package org.wit.playlistcreater.ui.playlistList
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -26,28 +28,33 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         _fragBinding = FragmentPlaylistBinding.inflate(inflater, container, false)
         val root = fragBinding.root
 
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
-        playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer {
-                songs ->
-            songs?.let { render(songs) }
+        playlistViewModel.load()
+        playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer { playlists ->
+            playlists?.let { render(playlists) }
         })
         return root;
     }
 
     private fun render(playlistList: List<PlaylistModel>) {
         fragBinding.recyclerViewForPlaylists.adapter = PlaylistAdapter(playlistList, this)
+        fragBinding.noPlaylistTxt.visibility = View.GONE
         if (playlistList.isEmpty()) {
             fragBinding.recyclerViewForPlaylists.visibility = View.GONE
-            fragBinding.noPlaylistTxt.visibility = View.VISIBLE
+            fragBinding.loadingPlaylists.visibility = View.VISIBLE
+            fragBinding.loadingPlaylistsTxt.visibility = View.VISIBLE
         } else {
             fragBinding.recyclerViewForPlaylists.visibility = View.VISIBLE
-            fragBinding.noPlaylistTxt.visibility = View.GONE
+            fragBinding.loadingPlaylists.visibility = View.GONE
+            fragBinding.loadingPlaylistsTxt.visibility = View.GONE
         }
     }
 
@@ -73,10 +80,17 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
             findNavController().popBackStack()
             when (error) {
                 true -> {
-                    Toast.makeText(context,
-                        AppManager.findSongByID(args.songId)?.track!!.name+" Added to Playlist: "+playlist.title,Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        context,
+                        AppManager.findSongByID(args.songId)?.track!!.name + " Added to Playlist: " + playlist.title,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-                false -> Toast.makeText(context,"Error Adding "+ AppManager.findSongByID(args.songId)?.track!!.name+" to "+playlist.title,Toast.LENGTH_LONG).show()
+                false -> Toast.makeText(
+                    context,
+                    "Error Adding " + AppManager.findSongByID(args.songId)?.track!!.name + " to " + playlist.title,
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

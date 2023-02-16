@@ -30,5 +30,6 @@
     <string name="password">Password</string>
     <string name="log_out">Log out</string>
     <string name="your_profile">Your Profile</string>
+    <string name="or">Or</string>
 
 </resources>

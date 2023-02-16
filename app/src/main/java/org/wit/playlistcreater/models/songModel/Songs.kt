@@ -10,6 +10,6 @@ data class Songs(
     val is_local: Boolean,
     val sharing_info: SharingInfo,
     val track: Track,
-    var isInPlaylist: Boolean = false
-   // val video_thumbnail: VideoThumbnail,
+    var isInPlaylist: Boolean = false,
+    //val video_thumbnail: VideoThumbnail,
 ) : Parcelable

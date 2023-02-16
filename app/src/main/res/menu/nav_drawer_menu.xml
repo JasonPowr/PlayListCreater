@@ -20,7 +20,6 @@
             android:id="@+id/profileFragment"
             android:icon="@drawable/ic_baseline_supervised_user_circle_24"
             android:title="@string/your_profile" />
-        
     </group>
 
 </menu>

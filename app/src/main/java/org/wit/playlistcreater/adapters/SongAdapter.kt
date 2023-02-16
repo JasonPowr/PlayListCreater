@@ -3,6 +3,7 @@ package org.wit.playlistcreater.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import org.wit.playlistcreater.databinding.CardSongBinding
 import org.wit.playlistcreater.models.songModel.Songs
 
@@ -10,8 +11,8 @@ interface SongClickListener {
     fun onSongClick(songs: Songs?)
 }
 
-class SongAdapter(private var songs: List<Songs?>, private val listener: SongClickListener)
-    : RecyclerView.Adapter<SongAdapter.MainHolder>() {
+class SongAdapter(private var songs: List<Songs?>, private val listener: SongClickListener) :
+    RecyclerView.Adapter<SongAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardSongBinding
@@ -27,10 +28,11 @@ class SongAdapter(private var songs: List<Songs?>, private val listener: SongCli
 
     override fun getItemCount(): Int = songs.size
 
-    inner class MainHolder(val binding : CardSongBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MainHolder(val binding: CardSongBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(songs: Songs) {
             binding.song = songs
-            binding.root.setOnClickListener{listener.onSongClick(songs)}
+            Picasso.get().load(songs.track.album.images[0].url).into(binding.songThumbnail)
+            binding.root.setOnClickListener { listener.onSongClick(songs) }
             binding.executePendingBindings()
         }
     }

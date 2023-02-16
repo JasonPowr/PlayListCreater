@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import org.wit.playlistcreater.R
 import org.wit.playlistcreater.databinding.FragmentLoginBinding
 
 class LoginOrRegisterFragment : Fragment() {
@@ -22,17 +25,8 @@ class LoginOrRegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _fragBinding = FragmentLoginBinding.inflate(inflater, container, false)
-        val root = fragBinding.root
-        loginOrRegisterViewModel = ViewModelProvider(this)[LoginOrRegisterViewModel::class.java]
         auth = Firebase.auth
-
         val currentUser = auth.currentUser
 
         if (currentUser != null) {
@@ -43,10 +37,24 @@ class LoginOrRegisterFragment : Fragment() {
                     )
             findNavController().navigate(action)
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _fragBinding = FragmentLoginBinding.inflate(inflater, container, false)
+        val root = fragBinding.root
+        loginOrRegisterViewModel = ViewModelProvider(this)[LoginOrRegisterViewModel::class.java]
+
+        (activity as AppCompatActivity).supportActionBar?.hide() //https://stackoverflow.com/questions/26998455/how-to-get-toolbar-from-fragment
+        (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
+            .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
         setRegisterBtnListener(fragBinding)
         setLoginBtnListener(fragBinding)
-        return root;
+
+        return root
     }
 
     private fun setRegisterBtnListener(layout: FragmentLoginBinding) {

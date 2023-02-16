@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.wit.playlistcreater.R
 import org.wit.playlistcreater.adapters.PlayistClickListner
 import org.wit.playlistcreater.adapters.PlaylistAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
@@ -41,6 +44,9 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer { playlists ->
             playlists?.let { render(playlists) }
         })
+        (activity as AppCompatActivity).supportActionBar?.show()
+        (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
+            .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         return root;
     }
 

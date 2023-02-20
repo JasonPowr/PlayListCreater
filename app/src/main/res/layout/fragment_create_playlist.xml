@@ -5,47 +5,151 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.createPlaylist.CreatePlaylistFragment">
+    tools:context=".ui.createPlaylist.CreatePlaylistFragment"
+    android:background="@drawable/background_colour">
 
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/enter_a_title"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        android:textColor="@color/white" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
-        android:layout_width="262dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="104dp"
+        android:id="@+id/editTextPlaylistTitle"
+        android:layout_width="289dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="9dp"
         android:autofillHints="Enter the name of your playlist you wish to create"
+        android:background="@drawable/rounded_corners_edit_text"
         android:ems="10"
         android:hint="@string/enter_a_title_for_your_playlist"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+    <Button
         android:id="@+id/createPlaylistBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginBottom="72dp"
-        android:clickable="true"
-        android:contentDescription="@string/create_a_playlist"
-        android:src="@drawable/ic_baseline_playlist_add_24"
+        android:layout_marginBottom="44dp"
+        android:text="@string/create_playlist"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cancelCreateBtn"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/pink" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/cancelCreateBtn"
+    <TextView
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="84dp"
-        android:layout_marginBottom="72dp"
-        android:clickable="true"
-        android:contentDescription="@string/cancel_create"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginStart="178dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="176dp"
+        android:text="@string/create_your_playlist"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textColor="@color/white" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/slectGenre"
+        android:layout_width="253dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/rock"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/rock"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pink" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/pop"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pop"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pink" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/jazz"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/jazz"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pink" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/blues"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blues"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pink" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/hipHop"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hip_hop"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pink" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/classical"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/classical"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pink" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/country"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/country"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/pink" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="@string/Select_a_genre"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPlaylistTitle"
+        android:textColor="@color/white" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

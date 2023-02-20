@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -41,6 +42,9 @@ class ProfileFragment : Fragment() {
         layout.logoutBtn.setOnClickListener {
             Firebase.auth.signOut()
             profileViewModel.removeAllFromMem()
+
+            val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
+            findNavController().navigate(action)
         }
 
     }

@@ -33,5 +33,22 @@
     <string name="or">Or</string>
     <string name="applogo">appLogo</string>
     <string name="welcome_n_to_continue_please_login_or_register_below">Welcome! \n to continue please Login or Register below</string>
+    <string name="create_your_playlist">Create Your Playlist</string>
+    <string name="title">Title:</string>
+    <string name="genre">Genre:</string>
+    <string name="Select_a_genre">Select a genre</string>
+    <string name="enter_a_title">Enter a Title</string>
+    <string name="enter_a_genre">Enter a Genre</string>
+    <string name="add_an_image">Add an image</string>
+    <string name="rock">Rock</string>
+    <string name="pop">Pop</string>
+    <string name="jazz">Jazz</string>
+    <string name="hip_hop">Hip Hop</string>
+    <string name="classical">Classical</string>
+    <string name="country">Country</string>
+    <string name="blues">Blues</string>
+    <string name="your_playlist_s">Your Playlist\'s</string>
+    <string name="songs">Songs</string>
+    <string name="count">Count</string>
 
 </resources>

@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.adapters.PlayistClickListner
@@ -19,6 +20,7 @@ import org.wit.playlistcreater.adapters.PlaylistAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
 import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
+
 
 class PlaylistFragment : Fragment(), PlayistClickListner {
 
@@ -52,16 +54,26 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
 
     private fun render(playlistList: List<PlaylistModel>) {
         fragBinding.recyclerViewForPlaylists.adapter = PlaylistAdapter(playlistList, this)
+        fragBinding.recyclerViewForPlaylists.layoutManager = GridLayoutManager(
+            activity,
+            2
+        ) //https://stackoverflow.com/questions/50697791/android-recyclerview-item-side-by-sid
+
         fragBinding.noPlaylistTxt.visibility = View.GONE
-        if (playlistList.isEmpty()) {
-            fragBinding.recyclerViewForPlaylists.visibility = View.GONE
-            fragBinding.loadingPlaylists.visibility = View.VISIBLE
-            fragBinding.loadingPlaylistsTxt.visibility = View.VISIBLE
-        } else {
-            fragBinding.recyclerViewForPlaylists.visibility = View.VISIBLE
+        if (playlistViewModel.getIsLoaded()) {
             fragBinding.loadingPlaylists.visibility = View.GONE
             fragBinding.loadingPlaylistsTxt.visibility = View.GONE
+
+            if (playlistList.isEmpty()) {
+                fragBinding.noPlaylistTxt.visibility = View.VISIBLE
+                fragBinding.recyclerViewForPlaylists.visibility = View.GONE
+            } else {
+                fragBinding.noPlaylistTxt.visibility = View.GONE
+                fragBinding.recyclerViewForPlaylists.visibility = View.VISIBLE
+            }
+
         }
+
     }
 
     override fun onResume() {

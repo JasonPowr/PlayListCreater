@@ -28,6 +28,7 @@ object AppManager : AppStore {
     @SuppressLint("StaticFieldLeak")
     private var db = Firebase.firestore
     private var auth: FirebaseAuth = Firebase.auth
+    var isLoaded: Boolean = false
 
     private val playlists = ArrayList<PlaylistModel>()
     val songs = ArrayList<SongModel?>()
@@ -85,12 +86,14 @@ object AppManager : AppStore {
                         playlists.add(
                             PlaylistModel(
                                 document.id.toLong(),
+                                document.data["playListGenre"].toString(),
                                 document.data["title"].toString(),
                                 mutableListOf()
                             )
                         )
                         addBackIntoPlaylist(document.id.toLong(), songData)
                     }
+                    isLoaded = true
                 }
                 .addOnFailureListener { exception ->
                     Log.e("data", "Error getting playlists: ", exception)
@@ -122,6 +125,7 @@ object AppManager : AppStore {
         val foundPlaylist = findPlaylistById(playlistId)
         if (foundPlaylist != null) {
             foundPlaylist.title = updatedPlaylist.title
+            foundPlaylist.playListGenre = updatedPlaylist.playListGenre
             db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
                 .document(playlistId.toString()).update("title", updatedPlaylist.title)
         }

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="playlist"
             type="org.wit.playlistcreater.models.playlistModel.PlaylistModel" />
@@ -11,29 +12,82 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:elevation="24dp">
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:elevation="24dp"
+        app:cardCornerRadius="10dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp">
+            android:background="@drawable/card_background">
 
             <TextView
                 android:id="@+id/playlistName"
-                android:layout_width="288dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@string/playlist_title"
                 android:text="@{playlist.title}"
-                android:textSize="24sp"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text=" " />
+                tools:text=" "
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/playlistGenre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
+                android:contentDescription="@string/playlist_title"
+                android:text="@{playlist.playListGenre}"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text=" "
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/playlistSongCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="112dp"
+                android:layout_marginBottom="18dp"
+                android:contentDescription="@string/playlist_title"
+                android:text="@{Integer.toString(playlist.songs.size())}"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.363"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text=" "
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="18dp"
+                android:text="@string/songs"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/playlistSongCount"
+                android:textColor="@color/white" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.cardview.widget.CardView>
 </layout>

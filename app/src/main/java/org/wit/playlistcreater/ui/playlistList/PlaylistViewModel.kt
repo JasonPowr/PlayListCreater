@@ -17,15 +17,18 @@ class PlaylistViewModel : ViewModel() {
     init {
         Handler().postDelayed({
             load()
-        }, 3000)
+        }, 3000) //Allows time for the playlists to be read from db
     }
 
     fun load() {
         playlistList.value = AppManager.findAllPlaylistsInStore()
     }
 
-
     fun addSongToPlaylist(songId: String, playlist: PlaylistModel): Boolean {
         return AppManager.addSongToPlaylist(songId, playlist)
+    }
+
+    fun getIsLoaded(): Boolean {
+        return AppManager.isLoaded
     }
 }

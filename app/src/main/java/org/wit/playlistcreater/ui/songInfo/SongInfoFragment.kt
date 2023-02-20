@@ -44,7 +44,7 @@ class SongInfoFragment : Fragment() {
     }
 
     private fun setAddToPlaylistBtn(layout: FragmentSongInfoBinding) {
-        if (songInfoViewModel.observableSongs.value!!.isInPlaylist) {
+        if (args.cameFromPlaylist) {
             layout.addSongToPlaylistBtn.visibility = View.GONE
         } else {
             layout.addSongToPlaylistBtn.setOnClickListener {

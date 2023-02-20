@@ -5,11 +5,12 @@
     android:id="@+id/frameLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_colour"
     tools:context=".ui.playlistSongList.PlaylistSongViewFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForSongsInPlaylist"
-        android:layout_width="386dp"
+        android:layout_width="match_parent"
         android:layout_height="454dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,6 +25,7 @@
         android:layout_height="wrap_content"
         android:text="@string/no_songs_found_in_playlist_n_start_by_adding_some"
         android:textAlignment="center"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -33,13 +35,14 @@
 
     <TextView
         android:id="@+id/playlistTitle"
-        android:layout_width="328dp"
-        android:layout_height="59dp"
-        android:layout_marginTop="40dp"
-        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/title"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,30 +50,65 @@
         android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="256dp"
-        android:layout_marginBottom="84dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="39dp"
+        android:backgroundTint="@color/white"
         android:clickable="true"
         android:contentDescription="TODO"
         android:src="@drawable/ic_baseline_edit_24"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewForSongsInPlaylist"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/deleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="84dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="38dp"
+        android:backgroundTint="@color/white"
         android:clickable="true"
         android:src="@drawable/ic_baseline_delete_24"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewForSongsInPlaylist"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.723"
-        app:layout_constraintStart_toEndOf="@+id/editBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/editBtn" />
 
-    <SearchView
-        android:layout_width="409dp"
-        android:layout_height="82dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="176dp" />
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="13dp"
+        android:text="@string/genre"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playlistTitle" />
+
+    <TextView
+        android:id="@+id/count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/count"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genre" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/songs"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/count"
+        app:layout_constraintTop_toBottomOf="@+id/genre" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

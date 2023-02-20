@@ -43,7 +43,6 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
             })
         setEditPlaylistBtnListener(fragBinding)
         setDelPlaylistBtnListener(fragBinding)
-
         return root
     }
 
@@ -68,18 +67,16 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         fragBinding.recyclerViewForSongsInPlaylist.adapter = SongAdapter(songs, this)
         fragBinding.playlistTitle.text =
             playlistSongViewViewModel.getPlaylist(args.playlistId)!!.title
+        fragBinding.genre.text =
+            playlistSongViewViewModel.getPlaylist(args.playlistId)!!.playListGenre
+        fragBinding.count.text =
+            playlistSongViewViewModel.observablePlaylistSongs.value!!.size.toString()
+
         if (songs.isEmpty()) {
-            fragBinding.editBtn.visibility = View.GONE
-            fragBinding.deleteBtn.visibility = View.GONE
-            fragBinding.playlistTitle.visibility = View.GONE
             fragBinding.noSongsInPlaylist.visibility = View.VISIBLE
             fragBinding.recyclerViewForSongsInPlaylist.visibility = View.GONE
         } else {
-            fragBinding.editBtn.visibility = View.VISIBLE
-            fragBinding.deleteBtn.visibility = View.VISIBLE
-            fragBinding.playlistTitle.visibility = View.VISIBLE
             fragBinding.recyclerViewForSongsInPlaylist.visibility = View.VISIBLE
-
             fragBinding.noSongsInPlaylist.visibility = View.GONE
         }
     }

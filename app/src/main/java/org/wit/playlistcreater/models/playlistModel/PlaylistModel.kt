@@ -1,5 +1,6 @@
 package org.wit.playlistcreater.models.playlistModel
 
+import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import org.wit.playlistcreater.models.songModel.Songs
@@ -7,6 +8,7 @@ import org.wit.playlistcreater.models.songModel.Songs
 @Parcelize
 data class PlaylistModel(
     var id: Long,
+    var playListGenre: String,
     var title: String,
     val songs: MutableList<Songs>
 ) : Parcelable

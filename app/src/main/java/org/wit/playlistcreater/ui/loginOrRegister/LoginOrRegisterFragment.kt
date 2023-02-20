@@ -109,6 +109,10 @@ class LoginOrRegisterFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null

@@ -33,8 +33,7 @@ class SongFragment : Fragment(), SongClickListener {
 
         fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-        songViewModel.observableSongs.observe(viewLifecycleOwner, Observer {
-                songs ->
+        songViewModel.observableSongs.observe(viewLifecycleOwner, Observer { songs ->
             songs?.let { render(songs) }
         })
 

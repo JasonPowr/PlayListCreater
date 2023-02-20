@@ -18,7 +18,7 @@
     <string name="playlist_title">Playlist Title</string>
     <string name="create_a_playlist">Create a playlist</string>
     <string name="cancel_create">Cancel Create</string>
-    <string name="enter_a_title_for_your_playlist">Enter a title for your playlist :</string>
+    <string name="enter_a_title_for_your_playlist">   Enter a title for your playlist :</string>
     <string name="playlist_Title" />
     <string name="song_name">Song Name</string>
     <string name="songname">SongName</string>
@@ -50,5 +50,9 @@
     <string name="your_playlist_s">Your Playlist\'s</string>
     <string name="songs">Songs</string>
     <string name="count">Count</string>
+    <string name="browse_irelands_top_50">Browse Ireland\'s \n Top 50</string>
+    <string name="song_preview">Song Preview</string>
+    <string name="user_display_name">User Display Name</string>
+    <string name="user_email">User Email</string>
 
 </resources>

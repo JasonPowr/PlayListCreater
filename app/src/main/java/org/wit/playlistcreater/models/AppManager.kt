@@ -27,7 +27,7 @@ object AppManager : AppStore {
 
     @SuppressLint("StaticFieldLeak")
     private var db = Firebase.firestore
-    private var auth: FirebaseAuth = Firebase.auth
+    var auth: FirebaseAuth = Firebase.auth
     var isLoaded: Boolean = false
 
     private val playlists = ArrayList<PlaylistModel>()

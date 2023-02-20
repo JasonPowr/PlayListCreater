@@ -19,7 +19,7 @@
         <activity
             android:name=".activities.Home"
             android:exported="true"
-            android:theme="@style/Theme.PlaylistCreater.NoActionBar">
+            android:theme="@style/Theme.PlaylistCreater">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

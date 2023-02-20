@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.squareup.picasso.Picasso
 import org.wit.playlistcreater.databinding.FragmentSongInfoBinding
 import org.wit.playlistcreater.models.songModel.Songs
 
@@ -43,12 +44,19 @@ class SongInfoFragment : Fragment() {
         return root;
     }
 
+    private fun render(songs: Songs) {
+        fragBinding.songName.text = songs.track.name
+        Picasso.get().load(songs.track.album.images[0].url).into(fragBinding.songImg)
+        fragBinding.albumName.text = songs.track.album.name
+        fragBinding.artistName.text = songs.track.artists[0].name
+    }
+
     private fun setAddToPlaylistBtn(layout: FragmentSongInfoBinding) {
         if (args.cameFromPlaylist) {
             layout.addSongToPlaylistBtn.visibility = View.GONE
         } else {
             layout.addSongToPlaylistBtn.setOnClickListener {
-                val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment3()
+                val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment()
                     .setSongId(args.songId)
                 findNavController().navigate(action)
             }
@@ -101,11 +109,6 @@ class SongInfoFragment : Fragment() {
             }
         }
         //https://www.geeksforgeeks.org/play-audio-from-url-in-android-using-kotlin/
-    }
-
-
-    private fun render(songs: Songs) {
-        fragBinding.songName.text = songs.track.name
     }
 
 

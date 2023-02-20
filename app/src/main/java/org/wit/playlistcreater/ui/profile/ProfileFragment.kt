@@ -7,17 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import org.wit.playlistcreater.databinding.FragmentProfileBinding
+import org.wit.playlistcreater.models.AppManager.auth
 
 class ProfileFragment : Fragment() {
 
     private var _fragBinding: FragmentProfileBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var profileViewModel: ProfileViewModel
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,21 +27,19 @@ class ProfileFragment : Fragment() {
         _fragBinding = FragmentProfileBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         profileViewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
-        auth = Firebase.auth
 
         val currentUser = auth.currentUser
-
+        fragBinding.userEmail.text = currentUser!!.email
         setLogoutBtnListener(fragBinding)
+        
         return root;
     }
 
     private fun setLogoutBtnListener(layout: FragmentProfileBinding) {
         layout.logoutBtn.setOnClickListener {
-            Firebase.auth.signOut()
+            auth.signOut()
             profileViewModel.removeAllFromMem()
-
-            val action = ProfileFragmentDirections.actionProfileFragmentToLoginFragment()
-            findNavController().navigate(action)
+            findNavController().popBackStack()
         }
 
     }

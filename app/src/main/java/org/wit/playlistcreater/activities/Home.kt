@@ -1,5 +1,6 @@
 package org.wit.playlistcreater.activities
 
+
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -13,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.databinding.HomeBinding
 
+
 class Home : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
@@ -25,7 +27,6 @@ class Home : AppCompatActivity() {
         homeBinding = HomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
         drawerLayout = homeBinding.drawerLayout
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
@@ -35,17 +36,17 @@ class Home : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
+                R.id.createPlaylistFragment,
                 R.id.playlistFragment,
                 R.id.songFragment,
-                R.id.createPlaylistFragment,
                 R.id.profileFragment
             ), drawerLayout
         )
-
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

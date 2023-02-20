@@ -43,12 +43,14 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
         playlistViewModel.load()
+
         playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer { playlists ->
             playlists?.let { render(playlists) }
         })
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
             .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+
         return root;
     }
 

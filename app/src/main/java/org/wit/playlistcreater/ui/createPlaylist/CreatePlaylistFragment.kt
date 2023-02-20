@@ -30,15 +30,21 @@ class CreatePlaylistFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentCreatePlaylistBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+
         createPlaylistViewModel = ViewModelProvider(this)[CreatePlaylistViewModel::class.java]
         setButtonListener(fragBinding)
+
+        if (args.edit) {
+            fragBinding.createPlaylistBtn.text = "Update Playlist"
+            fragBinding.createPlaylistHeader.text = "Update Your Playlist"
+        }
+
         return root;
     }
 
 
-    fun playlistAlreadyExists(playlistName: String): Boolean {
+    private fun playlistAlreadyExists(playlistName: String): Boolean {
         val playlists = createPlaylistViewModel.returnAllPlaylists()
-
         for (playlist in playlists) {
             if (playlist.title == playlistName) {
                 return true
@@ -50,7 +56,6 @@ class CreatePlaylistFragment : Fragment() {
 
     fun setButtonListener(layout: FragmentCreatePlaylistBinding) {
         layout.createPlaylistBtn.setOnClickListener {
-
             val playlistTitle = layout.editTextPlaylistTitle.text.toString()
             var playlistGenre = ""
 
@@ -72,7 +77,9 @@ class CreatePlaylistFragment : Fragment() {
                     val updatedPlaylist =
                         PlaylistModel(0, playlistGenre, playlistTitle, mutableListOf())
                     createPlaylistViewModel.updatePlaylist(args.playlistId, updatedPlaylist)
-
+                    Toast.makeText(
+                        context, "Playlist Updated!", Toast.LENGTH_LONG
+                    ).show()
                     findNavController().popBackStack()
                 } else {
                     if (!playlistAlreadyExists(playlistTitle)) {
@@ -84,9 +91,10 @@ class CreatePlaylistFragment : Fragment() {
                                 mutableListOf()
                             )
                         )
-                        val action =
-                            CreatePlaylistFragmentDirections.actionCreatePlaylistFragmentToPlaylistFragment()
-                        findNavController().navigate(action)
+
+                        Toast.makeText(
+                            context, "Playlist Created!", Toast.LENGTH_LONG
+                        ).show()
                     } else {
                         Toast.makeText(
                             context, "Playlist already Exists", Toast.LENGTH_LONG
@@ -101,5 +109,4 @@ class CreatePlaylistFragment : Fragment() {
         super.onDestroyView()
         _fragBinding = null
     }
-
 }

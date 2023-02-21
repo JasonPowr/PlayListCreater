@@ -8,4 +8,5 @@ class LoginOrRegisterViewModel : ViewModel() {
     fun createUser(uid: String, email: String) {
         AppManager.createUser(uid, email)
     }
+
 }

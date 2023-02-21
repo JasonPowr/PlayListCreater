@@ -37,7 +37,6 @@ class LoginOrRegisterFragment : Fragment() {
                     .setUserId(
                         currentUser.uid
                     )
-            setNavHeader()
             findNavController().navigate(action)
         }
     }
@@ -74,7 +73,13 @@ class LoginOrRegisterFragment : Fragment() {
                                 auth.currentUser!!.uid,
                                 auth.currentUser!!.email.toString()
                             )
-                            setNavHeader()
+                            val navigationView =
+                                (activity as AppCompatActivity).findViewById<NavigationView>(R.id.nav_view)
+                            val header = navigationView.getHeaderView(0)
+                            val userEmail = header.findViewById<View>(R.id.userEmail) as TextView
+                            userEmail.text = auth.currentUser!!.email
+                            //https://stackoverflow.com/questions/38987012/how-to-programmatically-change-the-text-and-image-of-the-navigation-header-for-a
+
                             val action =
                                 LoginOrRegisterFragmentDirections.actionLoginFragmentToPlaylistFragment()
                                     .setUserId(
@@ -92,16 +97,6 @@ class LoginOrRegisterFragment : Fragment() {
 
     }
 
-    private fun setNavHeader() {
-        val navigationView =
-            (activity as AppCompatActivity).findViewById<NavigationView>(R.id.nav_view)
-        val header = navigationView.getHeaderView(0)
-        val userEmail = header.findViewById<View>(R.id.userEmail) as TextView
-        userEmail.text = auth.currentUser!!.email
-        //https://stackoverflow.com/questions/38987012/how-to-programmatically-change-the-text-and-image-of-the-navigation-header-for-a
-    }
-
-
     private fun setLoginBtnListener(layout: FragmentLoginBinding) {
         layout.loginBtn.setOnClickListener {
 
@@ -112,7 +107,12 @@ class LoginOrRegisterFragment : Fragment() {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
-                            setNavHeader()
+                            val navigationView =
+                                (activity as AppCompatActivity).findViewById<NavigationView>(R.id.nav_view)
+                            val header = navigationView.getHeaderView(0)
+                            val userEmail = header.findViewById<View>(R.id.userEmail) as TextView
+                            userEmail.text = auth.currentUser!!.email
+
                             val user = auth.currentUser
                             val action =
                                 LoginOrRegisterFragmentDirections.actionLoginFragmentToPlaylistFragment()

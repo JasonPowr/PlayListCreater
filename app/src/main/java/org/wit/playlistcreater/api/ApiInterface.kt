@@ -1,4 +1,4 @@
-package org.wit.playlistcreater.models.api
+package org.wit.playlistcreater.api
 
 import org.wit.playlistcreater.BuildConfig
 import org.wit.playlistcreater.models.songModel.SongModel
@@ -14,4 +14,6 @@ interface ApiInterface {
     )
     @GET("playlist_tracks/?id=37i9dQZEVXbKM896FDX8L1&offset=0&limit=100")
     fun getSongs(): Call<SongModel>
+
+
 }

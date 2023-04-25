@@ -8,8 +8,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import org.wit.playlistcreater.models.api.ApiInterface
-import org.wit.playlistcreater.models.api.Retro
+import org.wit.playlistcreater.api.ApiInterface
+import org.wit.playlistcreater.api.Retro
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 import org.wit.playlistcreater.models.songModel.SongModel
 import org.wit.playlistcreater.models.songModel.Songs

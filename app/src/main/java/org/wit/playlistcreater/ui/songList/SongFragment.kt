@@ -1,5 +1,6 @@
 package org.wit.playlistcreater.ui.songList
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,16 @@ import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.adapters.SongClickListener
 import org.wit.playlistcreater.databinding.FragmentSongBinding
 import org.wit.playlistcreater.models.songModel.Songs
+import org.wit.playlistcreater.utils.createLoader
+import org.wit.playlistcreater.utils.hideLoader
+import org.wit.playlistcreater.utils.showLoader
 
 class SongFragment : Fragment(), SongClickListener {
 
     private var _fragBinding: FragmentSongBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var songViewModel: SongViewModel
+    lateinit var loader: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,27 +35,24 @@ class SongFragment : Fragment(), SongClickListener {
     ): View? {
         _fragBinding = FragmentSongBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+        loader = createLoader(requireActivity())
+
 
         fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-        songViewModel.observableSongs.observe(viewLifecycleOwner, Observer { songs ->
-            songs?.let { render(songs) }
-        })
 
+        showLoader(loader)
+        songViewModel.observableSongs.observe(viewLifecycleOwner, Observer { songs ->
+            songs?.let {
+                render(songs)
+                hideLoader(loader)
+            }
+        })
         return root
     }
 
     private fun render(songs: List<Songs?>) {
         fragBinding.recyclerViewForSongs.adapter = SongAdapter(songs, this)
-        if (songs.isEmpty()) {
-            fragBinding.recyclerViewForSongs.visibility = View.GONE
-            fragBinding.loading.visibility = View.VISIBLE
-            fragBinding.loadingSymbol.visibility = View.VISIBLE
-        } else {
-            fragBinding.recyclerViewForSongs.visibility = View.VISIBLE
-            fragBinding.loading.visibility = View.GONE
-            fragBinding.loadingSymbol.visibility = View.GONE
-        }
     }
 
     override fun onSongClick(songs: Songs?) {

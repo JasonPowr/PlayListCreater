@@ -36,8 +36,6 @@ class SongFragment : Fragment(), SongClickListener {
         _fragBinding = FragmentSongBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         loader = createLoader(requireActivity())
-
-
         fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
 
@@ -48,8 +46,19 @@ class SongFragment : Fragment(), SongClickListener {
                 hideLoader(loader)
             }
         })
+
+        setSwipeRefresh()
         return root
     }
+
+    private fun setSwipeRefresh() {
+        fragBinding.swipeRefresh.setOnRefreshListener {
+            showLoader(loader)
+            songViewModel.load()
+            fragBinding.swipeRefresh.isRefreshing = false
+        }
+    }
+
 
     private fun render(songs: List<Songs?>) {
         fragBinding.recyclerViewForSongs.adapter = SongAdapter(songs, this)

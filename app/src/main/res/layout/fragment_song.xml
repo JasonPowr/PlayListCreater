@@ -36,28 +36,4 @@
         app:layout_constraintTop_toTopOf="parent"
         android:fadeScrollbars="true" />
 
-    <TextView
-        android:id="@+id/loading"
-        android:layout_width="115dp"
-        android:layout_height="29dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/loading_songs"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loadingSymbol"
-        app:layout_constraintVertical_bias="0.049" />
-
-    <ProgressBar
-        android:id="@+id/loadingSymbol"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="236dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recyclerViewForSongs" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

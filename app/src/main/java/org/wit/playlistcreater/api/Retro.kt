@@ -1,4 +1,4 @@
-package org.wit.playlistcreater.models.api
+package org.wit.playlistcreater.api
 
 import com.google.gson.GsonBuilder
 import retrofit2.Retrofit

@@ -54,6 +54,6 @@
     <string name="song_preview">Song Preview</string>
     <string name="user_display_name">User Display Name</string>
     <string name="user_email">User Email</string>
-    <string name="loading_playlists">Loading Playlists :)</string>
+    <string name="loading_playlists">Loading…</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package org.wit.playlistcreater.ui.playlistList
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,9 @@ import org.wit.playlistcreater.adapters.PlaylistAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
 import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
+import org.wit.playlistcreater.utils.createLoader
+import org.wit.playlistcreater.utils.hideLoader
+import org.wit.playlistcreater.utils.showLoader
 
 
 class PlaylistFragment : Fragment(), PlayistClickListner {
@@ -28,6 +32,7 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
     private var _fragBinding: FragmentPlaylistBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var playlistViewModel: PlaylistViewModel
+    lateinit var loader: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +44,17 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
     ): View? {
         _fragBinding = FragmentPlaylistBinding.inflate(inflater, container, false)
         val root = fragBinding.root
+        loader = createLoader(requireActivity())
 
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
-        playlistViewModel.load()
 
+        showLoader(loader)
+        playlistViewModel.load()
         playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer { playlists ->
-            playlists?.let { render(playlists) }
+            playlists?.let {
+                render(playlists)
+            }
         })
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
@@ -63,8 +72,7 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
 
         fragBinding.noPlaylistTxt.visibility = View.GONE
         if (playlistViewModel.getIsLoaded()) {
-            fragBinding.loadingPlaylists.visibility = View.GONE
-            fragBinding.loadingPlaylistsTxt.visibility = View.GONE
+            hideLoader(loader)
 
             if (playlistList.isEmpty()) {
                 fragBinding.noPlaylistTxt.visibility = View.VISIBLE

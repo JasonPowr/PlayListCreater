@@ -1,7 +1,6 @@
 package org.wit.playlistcreater.models
 
 import android.annotation.SuppressLint
-import android.os.Handler
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -35,9 +34,7 @@ object AppManager : AppStore {
 
     init {
         getSongs()
-        Handler().postDelayed({
-            getAllPlaylistsFromDb() //allows for enough time to load all songs and playlists
-        }, 2000)
+        getAllPlaylistsFromDb()
     }
 
     private fun getSongs() {

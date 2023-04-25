@@ -17,7 +17,7 @@ class PlaylistViewModel : ViewModel() {
     init {
         Handler().postDelayed({
             load()
-        }, 3000) //Allows time for the playlists to be read from db
+        }, 3000)
     }
 
     fun load() {

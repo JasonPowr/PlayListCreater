@@ -49,11 +49,13 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
 
+        setSwipeRefresh()
         showLoader(loader)
         playlistViewModel.load()
         playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer { playlists ->
             playlists?.let {
                 render(playlists)
+                checkSwipeRefresh()
             }
         })
         (activity as AppCompatActivity).supportActionBar?.show()
@@ -61,6 +63,18 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
             .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
         return root;
+    }
+
+    fun setSwipeRefresh() {
+        fragBinding.swipeRefresh.setOnRefreshListener {
+            playlistViewModel.load()
+            fragBinding.swipeRefresh.isRefreshing = false
+        }
+    }
+
+    fun checkSwipeRefresh() {
+        if (fragBinding.swipeRefresh.isRefreshing)
+            fragBinding.swipeRefresh.isRefreshing = false
     }
 
     private fun render(playlistList: List<PlaylistModel>) {

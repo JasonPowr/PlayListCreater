@@ -10,8 +10,10 @@ interface PlayistClickListner {
     fun onPlaylistClick(playlist: PlaylistModel)
 }
 
-class PlaylistAdapter(private var playlists: List<PlaylistModel>, private val listner: PlayistClickListner)
-    : RecyclerView.Adapter<PlaylistAdapter.MainHolder>() {
+class PlaylistAdapter(
+    private var playlists: ArrayList<PlaylistModel>,
+    private val listner: PlayistClickListner
+) : RecyclerView.Adapter<PlaylistAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardPlaylistBinding
@@ -25,12 +27,19 @@ class PlaylistAdapter(private var playlists: List<PlaylistModel>, private val li
         holder.bind(playlist)
     }
 
+    fun removeAt(position: Int) {
+        playlists.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     override fun getItemCount(): Int = playlists.size
 
-    inner class MainHolder(val binding : CardPlaylistBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MainHolder(val binding: CardPlaylistBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(playlist: PlaylistModel) {
+            binding.root.tag = playlist.id
             binding.playlist = playlist
-            binding.root.setOnClickListener{listner.onPlaylistClick(playlist)}
+            binding.root.setOnClickListener { listner.onPlaylistClick(playlist) }
             binding.executePendingBindings()
         }
     }

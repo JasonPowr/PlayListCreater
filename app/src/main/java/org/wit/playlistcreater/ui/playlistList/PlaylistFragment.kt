@@ -14,13 +14,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.adapters.PlayistClickListner
 import org.wit.playlistcreater.adapters.PlaylistAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
 import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
+import org.wit.playlistcreater.utils.SwipeToDeleteCallback
 import org.wit.playlistcreater.utils.createLoader
 import org.wit.playlistcreater.utils.hideLoader
 import org.wit.playlistcreater.utils.showLoader
@@ -51,16 +54,32 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
 
         setSwipeRefresh()
         showLoader(loader)
-        playlistViewModel.load()
+
         playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer { playlists ->
             playlists?.let {
-                render(playlists)
+                render(playlists as ArrayList<PlaylistModel>)
                 checkSwipeRefresh()
             }
         })
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
             .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = fragBinding.recyclerViewForPlaylists.adapter as PlaylistAdapter
+                val playlistId = viewHolder.itemView.tag as Long
+                adapter.removeAt(viewHolder.adapterPosition)
+                playlistViewModel.swipeDelete(playlistId)
+
+                if (playlistViewModel.observablePlaylistList.value?.isEmpty() == true) {
+                    fragBinding.noPlaylistTxt.visibility = View.VISIBLE
+                }
+
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerViewForPlaylists)
 
         return root;
     }
@@ -77,7 +96,7 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
             fragBinding.swipeRefresh.isRefreshing = false
     }
 
-    private fun render(playlistList: List<PlaylistModel>) {
+    private fun render(playlistList: ArrayList<PlaylistModel>) {
         fragBinding.recyclerViewForPlaylists.adapter = PlaylistAdapter(playlistList, this)
         fragBinding.recyclerViewForPlaylists.layoutManager = GridLayoutManager(
             activity,
@@ -87,7 +106,6 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         fragBinding.noPlaylistTxt.visibility = View.GONE
         if (playlistViewModel.getIsLoaded()) {
             hideLoader(loader)
-
             if (playlistList.isEmpty()) {
                 fragBinding.noPlaylistTxt.visibility = View.VISIBLE
                 fragBinding.recyclerViewForPlaylists.visibility = View.GONE

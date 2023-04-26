@@ -23,13 +23,13 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginBtn"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.14" />
 
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="210dp"
         android:layout_height="54dp"
-        android:layout_marginTop="105dp"
+        android:layout_marginTop="48dp"
         android:backgroundTint="@color/pink"
         android:text="@string/login"
         android:textColor="@color/white"
@@ -37,6 +37,16 @@
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userPassword" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+    </LinearLayout>
 
     <EditText
         android:id="@+id/userEmail"
@@ -79,9 +89,10 @@
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/registerBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn"
+        app:layout_constraintVertical_bias="0.461" />
 
     <ImageView
         android:id="@+id/logoView"
@@ -127,5 +138,15 @@
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/white"
         android:textSize="30dp" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleSignInButton"
+        android:layout_width="235dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="32dp"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

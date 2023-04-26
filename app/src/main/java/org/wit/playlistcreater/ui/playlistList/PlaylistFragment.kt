@@ -23,10 +23,7 @@ import org.wit.playlistcreater.adapters.PlaylistAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
 import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
-import org.wit.playlistcreater.utils.SwipeToDeleteCallback
-import org.wit.playlistcreater.utils.createLoader
-import org.wit.playlistcreater.utils.hideLoader
-import org.wit.playlistcreater.utils.showLoader
+import org.wit.playlistcreater.utils.*
 
 
 class PlaylistFragment : Fragment(), PlayistClickListner {
@@ -80,6 +77,18 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerViewForPlaylists)
+
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val playlistId = viewHolder.itemView.tag as Long
+                val action =
+                    PlaylistFragmentDirections.actionPlaylistFragmentToCreatePlaylistFragment()
+                        .setEdit(true).setPlaylistId(playlistId)
+                findNavController().navigate(action)
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerViewForPlaylists)
 
         return root;
     }

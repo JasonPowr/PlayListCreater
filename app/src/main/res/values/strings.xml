@@ -58,5 +58,7 @@
     <string name="auth_failed">Auth Failed</string>
     <string name="sign_out">Sign Out</string>
     <string name="access_control">Access Control</string>
+    <string name="displayName">displayName</string>
+    <string name="user_name">User name</string>
 
 </resources>

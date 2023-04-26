@@ -64,5 +64,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="public_playlists">Public Playlists</string>
     <string name="profile">Profile</string>
+    <string name="would_you_like_to_share_this_playlist_with_others">Would you like to Share This Playlist with others?</string>
 
 </resources>

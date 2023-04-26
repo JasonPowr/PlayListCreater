@@ -57,6 +57,7 @@ class CreatePlaylistFragment : Fragment() {
     fun setButtonListener(layout: FragmentCreatePlaylistBinding) {
         layout.createPlaylistBtn.setOnClickListener {
             val playlistTitle = layout.editTextPlaylistTitle.text.toString()
+            val sharable = layout.sharable.isChecked
             var playlistGenre = ""
 
             playlistGenre = when (true) {
@@ -75,7 +76,7 @@ class CreatePlaylistFragment : Fragment() {
             if (layout.editTextPlaylistTitle.text.isNotEmpty()) {
                 if (args.edit && (args.playlistId != -1L)) {
                     val updatedPlaylist =
-                        PlaylistModel(0, playlistGenre, playlistTitle, mutableListOf())
+                        PlaylistModel(0, playlistGenre, playlistTitle, mutableListOf(), sharable)
                     createPlaylistViewModel.updatePlaylist(args.playlistId, updatedPlaylist)
                     Toast.makeText(
                         context, "Playlist Updated!", Toast.LENGTH_LONG
@@ -88,7 +89,8 @@ class CreatePlaylistFragment : Fragment() {
                                 0,
                                 playlistGenre,
                                 playlistTitle,
-                                mutableListOf()
+                                mutableListOf(),
+                                sharable
                             )
                         )
 

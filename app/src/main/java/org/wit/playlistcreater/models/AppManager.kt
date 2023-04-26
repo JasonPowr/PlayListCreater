@@ -87,7 +87,8 @@ object AppManager : AppStore {
                             document.id.toLong(),
                             document.data["playListGenre"].toString(),
                             document.data["title"].toString(),
-                            mutableListOf()
+                            mutableListOf(),
+                            document.data["sharable"].toString().toBoolean(),
                         )
                     )
                     addBackIntoPlaylist(document.id.toLong(), songData)
@@ -123,6 +124,7 @@ object AppManager : AppStore {
         if (foundPlaylist != null) {
             foundPlaylist.title = updatedPlaylist.title
             foundPlaylist.playListGenre = updatedPlaylist.playListGenre
+            foundPlaylist.sharable = updatedPlaylist.sharable
             db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
                 .document(playlistId.toString()).update("title", updatedPlaylist.title)
         }

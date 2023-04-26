@@ -55,5 +55,8 @@
     <string name="user_display_name">User Display Name</string>
     <string name="user_email">User Email</string>
     <string name="loading_playlists">Loading…</string>
+    <string name="auth_failed">Auth Failed</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="access_control">Access Control</string>
 
 </resources>

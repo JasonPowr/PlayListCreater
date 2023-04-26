@@ -22,4 +22,14 @@
             android:title="@string/your_profile" />
     </group>
 
+    <item android:title="@string/access_control">
+        <menu>
+            <item
+                android:id="@+id/nav_sign_out"
+                android:onClick="signOut"
+                android:icon="@android:drawable/ic_menu_revert"
+                android:title="@string/sign_out" />
+        </menu>
+    </item>
+
 </menu>

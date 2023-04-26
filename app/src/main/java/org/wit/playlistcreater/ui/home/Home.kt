@@ -1,25 +1,33 @@
-package org.wit.playlistcreater.activities
+package org.wit.playlistcreater.ui.home
 
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseUser
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.databinding.HomeBinding
+import org.wit.playlistcreater.databinding.NavHeaderBinding
+import org.wit.playlistcreater.ui.auth.LoggedInViewModel
 
 
 class Home : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var homeBinding: HomeBinding
+    private lateinit var navHeaderBinding: NavHeaderBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var loggedInViewModel: LoggedInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +47,35 @@ class Home : AppCompatActivity() {
                 R.id.createPlaylistFragment,
                 R.id.playlistFragment,
                 R.id.songFragment,
-                R.id.profileFragment
+                R.id.profileFragment,
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
 
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        loggedInViewModel = ViewModelProvider(this)[LoggedInViewModel::class.java]
+        loggedInViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
+            if (firebaseUser != null)
+                updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
+        })
+    }
+
+    fun signOut(item: MenuItem) {
+        loggedInViewModel.logOut()
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.navigate(R.id.loginFragment)
+    }
+
+    private fun updateNavHeader(currentUser: FirebaseUser) {
+        val headerView = homeBinding.navView.getHeaderView(0)
+        navHeaderBinding = NavHeaderBinding.bind(headerView)
+        navHeaderBinding.navHeaderEmail.text = currentUser.email
     }
 
     override fun onSupportNavigateUp(): Boolean {

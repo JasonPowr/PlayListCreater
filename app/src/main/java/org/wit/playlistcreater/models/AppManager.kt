@@ -1,6 +1,7 @@
 package org.wit.playlistcreater.models
 
 import android.annotation.SuppressLint
+import android.os.Handler
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -34,7 +35,9 @@ object AppManager : AppStore {
 
     init {
         getSongs()
-        getAllPlaylistsFromDb()
+        Handler().postDelayed({
+            getAllPlaylistsFromDb() //allows for enough time to load all songs and playlists
+        }, 2000)
     }
 
     private fun getSongs() {
@@ -74,28 +77,26 @@ object AppManager : AppStore {
     }
 
     override fun getAllPlaylistsFromDb(): List<PlaylistModel> {
-        if (playlists.isEmpty()) {
-            db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
-                .get()
-                .addOnSuccessListener { result ->
-                    for (document in result) {
-                        val songData = document.data["songs"] as List<*>
-                        playlists.add(
-                            PlaylistModel(
-                                document.id.toLong(),
-                                document.data["playListGenre"].toString(),
-                                document.data["title"].toString(),
-                                mutableListOf()
-                            )
+        db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val songData = document.data["songs"] as List<*>
+                    playlists.add(
+                        PlaylistModel(
+                            document.id.toLong(),
+                            document.data["playListGenre"].toString(),
+                            document.data["title"].toString(),
+                            mutableListOf()
                         )
-                        addBackIntoPlaylist(document.id.toLong(), songData)
-                    }
-                    isLoaded = true
+                    )
+                    addBackIntoPlaylist(document.id.toLong(), songData)
                 }
-                .addOnFailureListener { exception ->
-                    Log.e("data", "Error getting playlists: ", exception)
-                }
-        }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("data", "Error getting playlists: ", exception)
+            }
+        isLoaded = true
         return playlists
     }
 
@@ -106,7 +107,6 @@ object AppManager : AppStore {
             if (songs.isNotEmpty())
                 foundPlaylist!!.songs.add(findSongByID(id.toString())!!)
         }
-
     }
 
     override fun findAllSongsInPlaylist(playlistId: Long): MutableList<Songs> {
@@ -132,9 +132,9 @@ object AppManager : AppStore {
         val foundPlaylist = findPlaylistById(playlistId)
         if (foundPlaylist != null) {
             playlists.remove(foundPlaylist)
-            db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
-                .document(playlistId.toString()).delete()
         }
+        db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
+            .document(playlistId.toString()).delete()
     }
 
     override fun findAllSongsInStore(): List<Songs?> {

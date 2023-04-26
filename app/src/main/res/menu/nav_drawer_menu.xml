@@ -16,14 +16,21 @@
             android:id="@+id/songFragment"
             android:icon="@drawable/ic_baseline_library_music_24"
             android:title="@string/browse_songs" />
+
         <item
-            android:id="@+id/profileFragment"
-            android:icon="@drawable/ic_baseline_supervised_user_circle_24"
-            android:title="@string/your_profile" />
+            android:id="@+id/publicPlaylistsFragment"
+            android:icon="@drawable/ic_baseline_playlist_play_24"
+            android:title="@string/public_playlists" />
     </group>
 
-    <item android:title="@string/access_control">
+    <item android:title="@string/profile">
         <menu>
+
+            <item
+                android:id="@+id/profileFragment"
+                android:icon="@drawable/ic_baseline_supervised_user_circle_24"
+                android:title="@string/your_profile" />
+
             <item
                 android:id="@+id/nav_sign_out"
                 android:onClick="signOut"

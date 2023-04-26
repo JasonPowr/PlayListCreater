@@ -50,6 +50,7 @@ class Home : AppCompatActivity() {
                 R.id.playlistFragment,
                 R.id.songFragment,
                 R.id.profileFragment,
+                R.id.publicPlaylistsFragment,
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

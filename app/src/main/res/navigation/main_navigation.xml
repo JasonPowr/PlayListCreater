@@ -121,4 +121,10 @@
         android:id="@+id/profileFragment"
         android:name="org.wit.playlistcreater.ui.profile.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/publicPlaylistsFragment"
+        android:name="org.wit.playlistcreater.ui.publicPlaylists.PublicPlaylistsFragment"
+        tools:layout="@layout/fragment_public_playlists" />
+
 </navigation>

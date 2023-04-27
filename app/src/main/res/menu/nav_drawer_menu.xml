@@ -21,6 +21,11 @@
             android:id="@+id/publicPlaylistsFragment"
             android:icon="@drawable/ic_baseline_playlist_play_24"
             android:title="@string/public_playlists" />
+
+        <item
+            android:id="@+id/mapsFragment"
+            android:icon="@mipmap/ic_launcher"
+            android:title="@string/map" />
     </group>
 
     <item android:title="@string/profile">

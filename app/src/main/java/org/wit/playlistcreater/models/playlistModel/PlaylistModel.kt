@@ -9,6 +9,7 @@ data class PlaylistModel(
     var id: Long,
     var playListGenre: String,
     var title: String,
-    val songs: MutableList<Songs>,
-    var sharable: Boolean,
+    var songs: MutableList<Songs>,
+    var isShared: Boolean,
+    var publicID: String,
 ) : Parcelable

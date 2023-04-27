@@ -66,9 +66,8 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = fragBinding.recyclerViewForPlaylists.adapter as PlaylistAdapter
                 val playlistId = viewHolder.itemView.tag as Long
+                playlistViewModel.swipeDelete(playlistViewModel.getPlaylist(playlistId)!!)
                 adapter.removeAt(viewHolder.adapterPosition)
-                playlistViewModel.swipeDelete(playlistId)
-
                 if (playlistViewModel.observablePlaylistList.value?.isEmpty() == true) {
                     fragBinding.noPlaylistTxt.visibility = View.VISIBLE
                 }

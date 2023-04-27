@@ -1,8 +1,14 @@
 package org.wit.playlistcreater.ui.home
 
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -15,12 +21,14 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseUser
-import com.squareup.picasso.Picasso
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.databinding.HomeBinding
 import org.wit.playlistcreater.databinding.NavHeaderBinding
+import org.wit.playlistcreater.firebase.FirebaseImageManager
 import org.wit.playlistcreater.ui.auth.LoggedInViewModel
-import org.wit.playlistcreater.utils.customTransformation
+import org.wit.playlistcreater.utils.readImageUri
+import org.wit.playlistcreater.utils.showImagePicker
+import timber.log.Timber
 
 
 class Home : AppCompatActivity() {
@@ -30,6 +38,8 @@ class Home : AppCompatActivity() {
     private lateinit var navHeaderBinding: NavHeaderBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel: LoggedInViewModel
+    private lateinit var headerView: View
+    private lateinit var intentLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +66,50 @@ class Home : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
+        initNavHeader()
+
+        navHeaderBinding.navHeaderImage.setOnClickListener {
+            showImagePicker(intentLauncher)
+        }
+        registerImagePickerCallback()
+    }
+
+    private fun registerImagePickerCallback() {
+        intentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            Timber.i(
+                                "DX registerPickerCallback() ${
+                                    readImageUri(
+                                        result.resultCode,
+                                        result.data
+                                    ).toString()
+                                }"
+                            )
+                            FirebaseImageManager
+                                .updateUserImage(
+                                    loggedInViewModel.liveFirebaseUser.value!!.uid,
+                                    readImageUri(result.resultCode, result.data),
+                                    navHeaderBinding.navHeaderImage,
+                                    true
+                                )
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> {}
+                    else -> {}
+                }
+            }
+    }
+
+    private fun initNavHeader() {
+        headerView = homeBinding.navView.getHeaderView(0)
+        navHeaderBinding = NavHeaderBinding.bind(headerView)
+
+        navHeaderBinding.navHeaderImage.setOnClickListener {
+            Toast.makeText(this, "Click To Change Image", Toast.LENGTH_SHORT).show()
+        }
 
     }
 
@@ -64,31 +118,47 @@ class Home : AppCompatActivity() {
         loggedInViewModel = ViewModelProvider(this)[LoggedInViewModel::class.java]
         loggedInViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
             if (firebaseUser != null)
-                updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
+                updateNavHeader(firebaseUser)
         })
     }
 
     fun signOut(item: MenuItem) {
         loggedInViewModel.logOut()
-
-        val navController = findNavController(R.id.nav_host_fragment)
-        navController.navigate(R.id.loginFragment)
+        val intent = Intent(this, Home::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
-        val headerView = homeBinding.navView.getHeaderView(0)
-        navHeaderBinding = NavHeaderBinding.bind(headerView)
-        navHeaderBinding.navHeaderEmail.text = currentUser.email
-
-        if (currentUser.photoUrl != null && currentUser.displayName != null) {
-            navHeaderBinding.navHeaderName.text = currentUser.displayName
-            Picasso.get().load(currentUser.photoUrl)
-                .resize(200, 200)
-                .transform(customTransformation())
-                .centerCrop()
-                .into(navHeaderBinding.navHeaderImage)
+        FirebaseImageManager.imageUri.observe(this) { result ->
+            if (result == Uri.EMPTY) {
+                if (currentUser.photoUrl != null) {
+                    //if you're a google user
+                    FirebaseImageManager.updateUserImage(
+                        currentUser.uid,
+                        currentUser.photoUrl,
+                        navHeaderBinding.navHeaderImage,
+                        false
+                    )
+                } else {
+                    FirebaseImageManager.updateDefaultImage(
+                        currentUser.uid,
+                        R.drawable.ic_baseline_library_music_24,
+                        navHeaderBinding.navHeaderImage
+                    )
+                }
+            } else // load existing image from firebase
+            {
+                FirebaseImageManager.updateUserImage(
+                    currentUser.uid,
+                    FirebaseImageManager.imageUri.value,
+                    navHeaderBinding.navHeaderImage, false
+                )
+            }
         }
-
+        navHeaderBinding.navHeaderEmail.text = currentUser.email
+        if (currentUser.displayName != null)
+            navHeaderBinding.navHeaderName.text = currentUser.displayName
     }
 
     override fun onSupportNavigateUp(): Boolean {

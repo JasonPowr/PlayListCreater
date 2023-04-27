@@ -32,7 +32,11 @@ class PlaylistViewModel : ViewModel() {
         return AppManager.isLoaded
     }
 
-    fun swipeDelete(playlistId: Long) {
-        AppManager.deletePlaylist(playlistId)
+    fun getPlaylist(playlistId: Long): PlaylistModel? {
+        return AppManager.findPlaylistById(playlistId)
+    }
+
+    fun swipeDelete(playlist: PlaylistModel) {
+        AppManager.deletePlaylist(playlist)
     }
 }

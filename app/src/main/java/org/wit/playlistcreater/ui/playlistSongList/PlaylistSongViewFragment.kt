@@ -43,6 +43,8 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
             })
         setEditPlaylistBtnListener(fragBinding)
         setDelPlaylistBtnListener(fragBinding)
+        setSharePlaylistListener(fragBinding)
+        setStopSharePlaylistListener(fragBinding)
         return root
     }
 
@@ -58,8 +60,21 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
 
     private fun setDelPlaylistBtnListener(layout: FragmentPlaylistSongViewBinding) {
         layout.deleteBtn.setOnClickListener {
-            playlistSongViewViewModel.deletePlaylist(args.playlistId)
+            playlistSongViewViewModel.deletePlaylist(playlistSongViewViewModel.getPlaylist(args.playlistId)!!)
             findNavController().popBackStack()
+        }
+    }
+
+    private fun setSharePlaylistListener(layout: FragmentPlaylistSongViewBinding) {
+        layout.shareBtn.setOnClickListener {
+            playlistSongViewViewModel.sharePlaylist(playlistSongViewViewModel.getPlaylist(args.playlistId)!!)
+        }
+    }
+
+    private fun setStopSharePlaylistListener(layout: FragmentPlaylistSongViewBinding) {
+        layout.deleteShare.setOnClickListener {
+
+
         }
     }
 

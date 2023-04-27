@@ -21,8 +21,12 @@ class PlaylistSongViewViewModel : ViewModel() {
         return AppManager.findPlaylistById(playlistId)
     }
 
-    fun deletePlaylist(playlistId: Long) {
-        AppManager.deletePlaylist(playlistId)
+    fun deletePlaylist(playlist: PlaylistModel) {
+        AppManager.deletePlaylist(playlist)
+    }
+
+    fun sharePlaylist(playlist: PlaylistModel) {
+        AppManager.sharePlaylist(playlist)
     }
 
 }

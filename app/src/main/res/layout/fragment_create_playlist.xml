@@ -150,19 +150,4 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextPlaylistTitle"
         android:textColor="@color/white" />
 
-    <Switch
-        android:id="@+id/sharable"
-        android:layout_width="265dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/would_you_like_to_share_this_playlist_with_others"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/slectGenre"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

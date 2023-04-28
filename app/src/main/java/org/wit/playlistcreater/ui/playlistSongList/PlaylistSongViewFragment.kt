@@ -9,11 +9,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.adapters.SongClickListener
 import org.wit.playlistcreater.databinding.FragmentPlaylistSongViewBinding
 import org.wit.playlistcreater.models.songModel.Songs
+import org.wit.playlistcreater.utils.SwipeToDeleteCallback
 
 class PlaylistSongViewFragment : Fragment(), SongClickListener {
 
@@ -39,10 +42,33 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         playlistSongViewViewModel.observablePlaylistSongs.observe(
             viewLifecycleOwner,
             Observer { song ->
-                song?.let { render(song) }
+                song?.let { render(song as ArrayList<Songs?>) }
             })
         setEditPlaylistBtnListener(fragBinding)
         setDelPlaylistBtnListener(fragBinding)
+
+
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = fragBinding.recyclerViewForSongsInPlaylist.adapter as SongAdapter
+                val songId = viewHolder.itemView.tag as String
+                adapter.removeAt(viewHolder.adapterPosition)
+
+                playlistSongViewViewModel.swipeDelete(
+                    songId,
+                    playlistSongViewViewModel.getPlaylist(args.playlistId)!!
+                )
+                
+                if (playlistSongViewViewModel.observablePlaylistSongs.value?.isEmpty() == true) {
+                    fragBinding.noSongsInPlaylist.visibility = View.VISIBLE
+                }
+
+
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerViewForSongsInPlaylist)
+
         return root
     }
 
@@ -63,7 +89,7 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         }
     }
 
-    private fun render(songs: List<Songs?>) {
+    private fun render(songs: ArrayList<Songs?>) {
         fragBinding.recyclerViewForSongsInPlaylist.adapter = SongAdapter(songs, this)
         fragBinding.playlistTitle.text =
             playlistSongViewViewModel.getPlaylist(args.playlistId)!!.title

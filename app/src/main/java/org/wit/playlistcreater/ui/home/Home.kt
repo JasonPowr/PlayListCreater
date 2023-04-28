@@ -6,6 +6,7 @@ import android.content.Intent
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -166,8 +167,11 @@ class Home : AppCompatActivity() {
         loggedInViewModel.liveFirebaseUser.observe(this) { firebaseUser ->
             if (firebaseUser != null)
                 updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
-            loggedInViewModel.getAllPlaylists()
-            loggedInViewModel.getAllPublicPlaylists()
+            loggedInViewModel.loadAllSongs()
+            Handler().postDelayed({
+                loggedInViewModel.getAllPlaylists()
+                loggedInViewModel.getAllPublicPlaylists()
+            }, 1000)
         }
 
         loggedInViewModel.loggedOut.observe(this) { loggedout ->

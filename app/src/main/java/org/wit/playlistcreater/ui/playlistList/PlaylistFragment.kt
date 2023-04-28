@@ -50,7 +50,7 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
 
-        if (!playlistViewModel.getIsLoaded()) {
+        if (!playlistViewModel.getIsLoaded() && (args.songId == "default")) {
             showLoader(loader)
         }
 
@@ -65,8 +65,6 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
                         hideLoader(loader)
                     }, 3000)
                 }
-
-
             }
         })
 

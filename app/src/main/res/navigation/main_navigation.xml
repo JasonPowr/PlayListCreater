@@ -123,7 +123,13 @@
     <fragment
         android:id="@+id/publicPlaylistsFragment"
         android:name="org.wit.playlistcreater.ui.publicPlaylists.PublicPlaylistsFragment"
-        tools:layout="@layout/fragment_public_playlists" />
+        tools:layout="@layout/fragment_public_playlists">
+        <action
+            android:id="@+id/action_publicPlaylistsFragment_to_publicPlaylistViewFragment"
+            app:destination="@id/publicPlaylistViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/mapsFragment"
         android:name="org.wit.playlistcreater.ui.maps.MapsFragment"
@@ -137,6 +143,19 @@
             app:destination="@id/songFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/publicPlaylistViewFragment"
+        android:name="org.wit.playlistcreater.ui.publicPlaylistView.PublicPlaylistViewFragment"
+        tools:layout="@layout/fragment_public_playlist_view">
+        <action
+            android:id="@+id/action_publicPlaylistViewFragment_to_publicPlaylistsFragment"
+            app:destination="@id/publicPlaylistsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="publicPlaylistId"
+            app:argType="string" />
     </fragment>
 
 </navigation>

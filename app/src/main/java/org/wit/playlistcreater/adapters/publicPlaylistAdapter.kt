@@ -9,8 +9,13 @@ import org.wit.playlistcreater.databinding.CardPublicPlaylistBinding
 import org.wit.playlistcreater.models.publicPlaylistModel.PublicPlaylistModel
 import org.wit.playlistcreater.utils.customTransformation
 
+interface PublicPlaylistClickListener {
+    fun onPublicPlaylistClick(publicPlaylist: PublicPlaylistModel)
+}
+
 class PublicPlaylistAdapter(
-    private var publicPlaylists: ArrayList<PublicPlaylistModel>
+    private var publicPlaylists: ArrayList<PublicPlaylistModel>,
+    private val listner: PublicPlaylistClickListener
 ) : RecyclerView.Adapter<PublicPlaylistAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(
@@ -35,6 +40,7 @@ class PublicPlaylistAdapter(
         fun bind(publicPlaylist: PublicPlaylistModel) {
             binding.root.tag = publicPlaylist.playlist.id
             binding.publicPlaylist = publicPlaylist
+            binding.root.setOnClickListener { listner.onPublicPlaylistClick(publicPlaylist) }
 
             Picasso.get().load(publicPlaylist.profilePic.toUri())
                 .resize(200, 200)

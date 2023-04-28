@@ -10,9 +10,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.adapters.PublicPlaylistAdapter
+import org.wit.playlistcreater.adapters.PublicPlaylistClickListener
 import org.wit.playlistcreater.databinding.FragmentPublicPlaylistsBinding
 import org.wit.playlistcreater.models.publicPlaylistModel.PublicPlaylistModel
 import org.wit.playlistcreater.utils.createLoader
@@ -20,7 +22,7 @@ import org.wit.playlistcreater.utils.hideLoader
 import org.wit.playlistcreater.utils.showLoader
 
 
-class PublicPlaylistsFragment : Fragment() {
+class PublicPlaylistsFragment : Fragment(), PublicPlaylistClickListener {
 
     private var _fragBinding: FragmentPublicPlaylistsBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -73,7 +75,7 @@ class PublicPlaylistsFragment : Fragment() {
     }
 
     private fun render(publicPlaylist: ArrayList<PublicPlaylistModel>) {
-        fragBinding.recyclerViewForPlaylists.adapter = PublicPlaylistAdapter(publicPlaylist)
+        fragBinding.recyclerViewForPlaylists.adapter = PublicPlaylistAdapter(publicPlaylist, this)
     }
 
     override fun onResume() {
@@ -84,6 +86,14 @@ class PublicPlaylistsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
+    }
+
+    override fun onPublicPlaylistClick(publicPlaylist: PublicPlaylistModel) {
+        val action =
+            PublicPlaylistsFragmentDirections.actionPublicPlaylistsFragmentToPublicPlaylistViewFragment(
+                publicPlaylist.playlist.publicID
+            )
+        findNavController().navigate(action)
     }
 
 

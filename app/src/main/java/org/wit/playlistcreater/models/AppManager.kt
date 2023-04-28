@@ -152,8 +152,10 @@ object AppManager : AppStore {
     }
 
     private fun addBackIntoPlaylist(playlist: PlaylistModel, songIdList: List<*>) {
-        for (id in songIdList) {
-            playlist.songs.add(findSongByID(id.toString())!!)
+        if (songs.isNotEmpty()) {
+            for (id in songIdList) {
+                playlist.songs.add(findSongByID(id.toString())!!)
+            }
         }
     }
 
@@ -189,6 +191,20 @@ object AppManager : AppStore {
             if (songs.isNotEmpty())
                 playlist.songs.add(findSongByID(id.toString())!!)
         }
+    }
+
+    fun getAllSongsInPublicPlaylist(publicId: String): MutableList<Songs> {
+        val foundSongs = mutableListOf<Songs>()
+        for (publicPlaylist in publicPlaylists) {
+            if (publicPlaylist.playlist.publicID == publicId) {
+                foundSongs.addAll(publicPlaylist.playlist.songs)
+            }
+        }
+        return foundSongs
+    }
+
+    fun getPublicPlaylist(publicId: String): PublicPlaylistModel? {
+        return publicPlaylists.find { p -> p.playlist.publicID == publicId }
     }
 
     override fun sharePlaylist(playlist: PlaylistModel) {

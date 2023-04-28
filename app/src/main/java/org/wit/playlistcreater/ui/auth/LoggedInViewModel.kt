@@ -4,17 +4,17 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
-import org.wit.playlistcreater.firebase.FirebaseAuthManager
 import org.wit.playlistcreater.models.AppManager
 
 class LoggedInViewModel(app: Application) : AndroidViewModel(app) {
 
-    var firebaseAuthManager: FirebaseAuthManager = FirebaseAuthManager(app)
-    var liveFirebaseUser: MutableLiveData<FirebaseUser> = firebaseAuthManager.liveFirebaseUser
-    var loggedOut: MutableLiveData<Boolean> = firebaseAuthManager.loggedOut
+    var liveFirebaseUser = MutableLiveData<FirebaseUser>()
+    var loggedOut = MutableLiveData<Boolean>()
+    var errorStatus = MutableLiveData<Boolean>()
 
-    fun logOut() {
+    fun signOut() {
         AppManager.deleteAll()
-        firebaseAuthManager.logOut()
+        loggedOut.postValue(true)
+        errorStatus.postValue(false)
     }
 }

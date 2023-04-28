@@ -73,6 +73,7 @@
     <string name="sign_in_phone">Sign In with Phone</string>
     <string name="share_playlist">Share Playlist</string>
     <string name="browse_new_releases">Browse New Releases</string>
-    <string name="song_menu">Song Menu</string>
+    <string name="song_menu">Browse Songs</string>
+    <string name="display_name">Display_name</string>
 
 </resources>

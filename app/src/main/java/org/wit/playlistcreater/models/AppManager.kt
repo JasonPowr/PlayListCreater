@@ -164,7 +164,16 @@ object AppManager : AppStore {
     }
 
     override fun stopSharePlaylist(playlist: PlaylistModel) {
+        db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
+            .document(playlist.id.toString()).update(
+                "publicID", "",
+                "isShared", false
+            )
+
         db.collection("publicPlaylists").document(playlist.publicID).delete()
+
+        playlist.publicID = ""
+        playlist.isShared = false
     }
 
     override fun getAllPublicPlaylists(): List<PublicPlaylistModel> {

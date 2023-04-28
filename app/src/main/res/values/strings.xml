@@ -71,5 +71,6 @@
     <string name="sign_in_google">Sign In with Google</string>
     <string name="sign_in_email">Sign In with Email</string>
     <string name="sign_in_phone">Sign In with Phone</string>
+    <string name="share_playlist">Share Playlist</string>
 
 </resources>

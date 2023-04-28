@@ -43,8 +43,6 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
             })
         setEditPlaylistBtnListener(fragBinding)
         setDelPlaylistBtnListener(fragBinding)
-        setSharePlaylistListener(fragBinding)
-        setStopSharePlaylistListener(fragBinding)
         return root
     }
 
@@ -65,18 +63,6 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         }
     }
 
-    private fun setSharePlaylistListener(layout: FragmentPlaylistSongViewBinding) {
-        layout.shareBtn.setOnClickListener {
-            playlistSongViewViewModel.sharePlaylist(playlistSongViewViewModel.getPlaylist(args.playlistId)!!)
-        }
-    }
-
-    private fun setStopSharePlaylistListener(layout: FragmentPlaylistSongViewBinding) {
-        layout.deleteShare.setOnClickListener {
-            playlistSongViewViewModel.stopShare(playlistSongViewViewModel.getPlaylist(args.playlistId)!!)
-        }
-    }
-
     private fun render(songs: List<Songs?>) {
         fragBinding.recyclerViewForSongsInPlaylist.adapter = SongAdapter(songs, this)
         fragBinding.playlistTitle.text =
@@ -89,10 +75,24 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         if (songs.isEmpty()) {
             fragBinding.noSongsInPlaylist.visibility = View.VISIBLE
             fragBinding.recyclerViewForSongsInPlaylist.visibility = View.GONE
+            fragBinding.toggleShare.visibility = View.GONE
         } else {
             fragBinding.recyclerViewForSongsInPlaylist.visibility = View.VISIBLE
             fragBinding.noSongsInPlaylist.visibility = View.GONE
+            fragBinding.toggleShare.visibility = View.VISIBLE
         }
+
+        fragBinding.toggleShare.isChecked =
+            playlistSongViewViewModel.getPlaylist(args.playlistId)!!.isShared
+        fragBinding.toggleShare.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) playlistSongViewViewModel.sharePlaylist(
+                playlistSongViewViewModel.getPlaylist(
+                    args.playlistId
+                )!!
+            )
+            else playlistSongViewViewModel.stopShare(playlistSongViewViewModel.getPlaylist(args.playlistId)!!)
+        }
+
     }
 
     override fun onDestroyView() {

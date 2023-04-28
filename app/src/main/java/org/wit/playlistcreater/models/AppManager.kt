@@ -163,6 +163,10 @@ object AppManager : AppStore {
 
     }
 
+    override fun stopSharePlaylist(playlist: PlaylistModel) {
+        db.collection("publicPlaylists").document(playlist.publicID).delete()
+    }
+
     override fun getAllPublicPlaylists(): List<PublicPlaylistModel> {
         return publicPlaylists
     }

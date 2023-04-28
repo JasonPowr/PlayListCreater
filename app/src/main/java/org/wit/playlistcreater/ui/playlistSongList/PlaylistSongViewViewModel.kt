@@ -29,4 +29,8 @@ class PlaylistSongViewViewModel : ViewModel() {
         AppManager.sharePlaylist(playlist)
     }
 
+    fun stopShare(playlist: PlaylistModel) {
+        AppManager.stopSharePlaylist(playlist)
+    }
+
 }

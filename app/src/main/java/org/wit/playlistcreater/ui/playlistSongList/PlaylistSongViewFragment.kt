@@ -73,8 +73,7 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
 
     private fun setStopSharePlaylistListener(layout: FragmentPlaylistSongViewBinding) {
         layout.deleteShare.setOnClickListener {
-
-
+            playlistSongViewViewModel.stopShare(playlistSongViewViewModel.getPlaylist(args.playlistId)!!)
         }
     }
 

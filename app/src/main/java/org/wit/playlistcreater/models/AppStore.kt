@@ -22,6 +22,7 @@ interface AppStore {
     fun getAllPlaylistsFromDb(): List<PlaylistModel>
     fun getAllPublicPlaylistsFromDb(): List<PublicPlaylistModel>
     fun sharePlaylist(playlist: PlaylistModel)
+    fun stopSharePlaylist(playlist: PlaylistModel)
     fun getAllPublicPlaylists(): List<PublicPlaylistModel>
     fun removeAllPublicPlaylistsFromMem()
     fun updateImageRef(userid: String, imageUri: String)

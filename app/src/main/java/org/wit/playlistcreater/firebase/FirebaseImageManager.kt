@@ -21,18 +21,16 @@ object FirebaseImageManager {
     var imageUri = MutableLiveData<Uri>()
 
     fun uploadImageToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
-        // Get the data from an ImageView as bytes
+
         val imageRef = storage.child("photos").child("${userid}.jpg")
-        //val bitmap = (imageView as BitmapDrawable).bitmap
         val baos = ByteArrayOutputStream()
         lateinit var uploadTask: UploadTask
 
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val data = baos.toByteArray()
 
-        imageRef.metadata.addOnSuccessListener { //File Exists
-            if (updating) // Update existing Image
-            {
+        imageRef.metadata.addOnSuccessListener {
+            if (updating) {
                 uploadTask = imageRef.putBytes(data)
                 uploadTask.addOnSuccessListener { ut ->
                     ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
@@ -41,7 +39,7 @@ object FirebaseImageManager {
                     }
                 }
             }
-        }.addOnFailureListener { //File Doesn't Exist
+        }.addOnFailureListener {
             uploadTask = imageRef.putBytes(data)
             uploadTask.addOnSuccessListener { ut ->
                 ut.metadata!!.reference!!.downloadUrl.addOnCompleteListener { task ->
@@ -113,7 +111,6 @@ object FirebaseImageManager {
             imageRef.downloadUrl.addOnCompleteListener { task ->
                 imageUri.value = task.result!!
             }
-            //File Doesn't Exist
         }.addOnFailureListener {
             imageUri.value = Uri.EMPTY
         }

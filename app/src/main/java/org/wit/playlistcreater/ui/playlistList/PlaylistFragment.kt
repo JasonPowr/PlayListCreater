@@ -2,6 +2,7 @@ package org.wit.playlistcreater.ui.playlistList
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,15 +50,26 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
 
-        setSwipeRefresh()
-        showLoader(loader)
+        if (!playlistViewModel.getIsLoaded()) {
+            showLoader(loader)
+        }
 
+        setSwipeRefresh()
         playlistViewModel.observablePlaylistList.observe(viewLifecycleOwner, Observer { playlists ->
             playlists?.let {
                 render(playlists as ArrayList<PlaylistModel>)
                 checkSwipeRefresh()
+
+                if (!playlistViewModel.getIsLoaded()) {
+                    Handler().postDelayed({
+                        hideLoader(loader)
+                    }, 3000)
+                }
+
+
             }
         })
+
         (activity as AppCompatActivity).supportActionBar?.show()
         (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
             .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
@@ -92,14 +104,14 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         return root;
     }
 
-    fun setSwipeRefresh() {
+    private fun setSwipeRefresh() {
         fragBinding.swipeRefresh.setOnRefreshListener {
             playlistViewModel.load()
             fragBinding.swipeRefresh.isRefreshing = false
         }
     }
 
-    fun checkSwipeRefresh() {
+    private fun checkSwipeRefresh() {
         if (fragBinding.swipeRefresh.isRefreshing)
             fragBinding.swipeRefresh.isRefreshing = false
     }
@@ -111,17 +123,14 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
             2
         ) //https://stackoverflow.com/questions/50697791/android-recyclerview-item-side-by-sid
 
-        fragBinding.noPlaylistTxt.visibility = View.GONE
-        if (playlistViewModel.getIsLoaded()) {
-            hideLoader(loader)
-            if (playlistList.isEmpty()) {
-                fragBinding.noPlaylistTxt.visibility = View.VISIBLE
-                fragBinding.recyclerViewForPlaylists.visibility = View.GONE
-            } else {
-                fragBinding.noPlaylistTxt.visibility = View.GONE
-                fragBinding.recyclerViewForPlaylists.visibility = View.VISIBLE
-            }
 
+        fragBinding.noPlaylistTxt.visibility = View.GONE
+        if (playlistList.isEmpty()) {
+            fragBinding.noPlaylistTxt.visibility = View.VISIBLE
+            fragBinding.recyclerViewForPlaylists.visibility = View.GONE
+        } else {
+            fragBinding.noPlaylistTxt.visibility = View.GONE
+            fragBinding.recyclerViewForPlaylists.visibility = View.VISIBLE
         }
 
     }

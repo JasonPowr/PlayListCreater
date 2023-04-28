@@ -10,6 +10,7 @@ import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 class PlaylistViewModel : ViewModel() {
 
     private val playlistList = MutableLiveData<List<PlaylistModel>>()
+    private var isLoaded = false
 
     val observablePlaylistList: LiveData<List<PlaylistModel>>
         get() = playlistList
@@ -17,6 +18,7 @@ class PlaylistViewModel : ViewModel() {
     init {
         Handler().postDelayed({
             load()
+            isLoaded = true
         }, 3000)
     }
 
@@ -28,12 +30,12 @@ class PlaylistViewModel : ViewModel() {
         return AppManager.addSongToPlaylist(songId, playlist)
     }
 
-    fun getIsLoaded(): Boolean {
-        return AppManager.isLoaded
-    }
-
     fun getPlaylist(playlistId: Long): PlaylistModel? {
         return AppManager.findPlaylistById(playlistId)
+    }
+
+    fun getIsLoaded(): Boolean {
+        return isLoaded
     }
 
     fun swipeDelete(playlist: PlaylistModel) {

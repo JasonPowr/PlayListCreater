@@ -42,7 +42,7 @@ class SongFragment : Fragment(), SongClickListener {
         showLoader(loader)
         songViewModel.observableSongs.observe(viewLifecycleOwner, Observer { songs ->
             songs?.let {
-                render(songs)
+                render(songs as ArrayList<Songs?>)
                 hideLoader(loader)
             }
         })
@@ -60,7 +60,7 @@ class SongFragment : Fragment(), SongClickListener {
     }
 
 
-    private fun render(songs: List<Songs?>) {
+    private fun render(songs: ArrayList<Songs?>) {
         fragBinding.recyclerViewForSongs.adapter = SongAdapter(songs, this)
     }
 

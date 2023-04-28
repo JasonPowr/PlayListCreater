@@ -33,4 +33,8 @@ class PlaylistSongViewViewModel : ViewModel() {
         AppManager.stopSharePlaylist(playlist)
     }
 
+    fun swipeDelete(songID: String, playlist: PlaylistModel) {
+        AppManager.deleteSongFromPlaylist(songID, playlist)
+    }
+
 }

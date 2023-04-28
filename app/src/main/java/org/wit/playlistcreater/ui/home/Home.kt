@@ -15,7 +15,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -23,12 +22,15 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import org.wit.playlistcreater.R
 import org.wit.playlistcreater.databinding.HomeBinding
 import org.wit.playlistcreater.databinding.NavHeaderBinding
 import org.wit.playlistcreater.firebase.FirebaseImageManager
+import org.wit.playlistcreater.firebaseui.FirebaseUIAuthManager
 import org.wit.playlistcreater.ui.auth.LoggedInViewModel
+import org.wit.playlistcreater.ui.auth.Login
 import org.wit.playlistcreater.ui.maps.MapsViewModel
 import org.wit.playlistcreater.utils.checkLocationPermissions
 import org.wit.playlistcreater.utils.isPermissionGranted
@@ -62,6 +64,10 @@ class Home : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
+        FirebaseUIAuthManager.auth = FirebaseAuth.getInstance()
+        loggedInViewModel = ViewModelProvider(this)[LoggedInViewModel::class.java]
+        loggedInViewModel.liveFirebaseUser.value = FirebaseUIAuthManager.auth.currentUser
+
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.createPlaylistFragment,
@@ -85,6 +91,13 @@ class Home : AppCompatActivity() {
         if (checkLocationPermissions(this)) {
             mapsViewModel.updateCurrentLocation()
         }
+
+        FirebaseUIAuthManager.auth.currentUser?.let {
+            FirebaseImageManager.checkStorageForExistingProfilePic(
+                it.uid
+            )
+        }
+        
     }
 
     @SuppressLint("MissingPermission")
@@ -97,6 +110,7 @@ class Home : AppCompatActivity() {
         if (isPermissionGranted(requestCode, grantResults))
             mapsViewModel.updateCurrentLocation()
         else {
+            // permissions denied, so use a default location
             mapsViewModel.currentLocation.value = Location("Default").apply {
                 latitude = 52.245696
                 longitude = -7.139102
@@ -147,31 +161,57 @@ class Home : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        loggedInViewModel = ViewModelProvider(this)[LoggedInViewModel::class.java]
-        loggedInViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
+
+        Timber.i("EMAIL IS : %s", loggedInViewModel.liveFirebaseUser.value?.email)
+        loggedInViewModel.liveFirebaseUser.observe(this) { firebaseUser ->
             if (firebaseUser != null)
-                updateNavHeader(firebaseUser)
-        })
+                updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
+        }
+
+        loggedInViewModel.loggedOut.observe(this) { loggedout ->
+            if (loggedout) {
+                startActivity(Intent(this, Login::class.java))
+            }
+        }
+
     }
 
     fun signOut(item: MenuItem) {
-        loggedInViewModel.logOut()
-        val intent = Intent(this, Home::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        loggedInViewModel.signOut()
+        FirebaseUIAuthManager.auth.signOut()
+        finish()
     }
 
+//    private fun updateNavHeader(currentUser: FirebaseUser) {
+//        val headerView = homeBinding.navView.getHeaderView(0)
+//        navHeaderBinding = NavHeaderBinding.bind(headerView)
+//
+//        if (currentUser.email != null) {
+//            navHeaderBinding.navHeaderName.text = currentUser.displayName
+//            navHeaderBinding.navHeaderEmail.text = currentUser.email
+//
+//            if (currentUser.photoUrl != null)
+//                Picasso.get().load(currentUser.photoUrl)
+//                    .resize(200, 200)
+//                    .transform(customTransformation())
+//                    .centerCrop()
+//                    .into(navHeaderBinding.navHeaderImage)
+//        } else
+//            navHeaderBinding.navHeaderEmail.text = currentUser.phoneNumber
+//    }
+
     private fun updateNavHeader(currentUser: FirebaseUser) {
+
         FirebaseImageManager.imageUri.observe(this) { result ->
             if (result == Uri.EMPTY) {
                 if (currentUser.photoUrl != null) {
-                    //if you're a google user
                     FirebaseImageManager.updateUserImage(
                         currentUser.uid,
                         currentUser.photoUrl,
                         navHeaderBinding.navHeaderImage,
                         false
                     )
+
                 } else {
                     FirebaseImageManager.updateDefaultImage(
                         currentUser.uid,
@@ -179,8 +219,7 @@ class Home : AppCompatActivity() {
                         navHeaderBinding.navHeaderImage
                     )
                 }
-            } else // load existing image from firebase
-            {
+            } else {
                 FirebaseImageManager.updateUserImage(
                     currentUser.uid,
                     FirebaseImageManager.imageUri.value,
@@ -188,9 +227,13 @@ class Home : AppCompatActivity() {
                 )
             }
         }
+
+
         navHeaderBinding.navHeaderEmail.text = currentUser.email
         if (currentUser.displayName != null)
             navHeaderBinding.navHeaderName.text = currentUser.displayName
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

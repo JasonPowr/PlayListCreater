@@ -72,5 +72,7 @@
     <string name="sign_in_email">Sign In with Email</string>
     <string name="sign_in_phone">Sign In with Phone</string>
     <string name="share_playlist">Share Playlist</string>
+    <string name="browse_new_releases">Browse New Releases</string>
+    <string name="song_menu">Song Menu</string>
 
 </resources>

@@ -34,18 +34,23 @@ object AppManager : AppStore {
     private val playlists = ArrayList<PlaylistModel>()
     private val publicPlaylists = ArrayList<PublicPlaylistModel>()
     val songs = ArrayList<SongModel?>()
+    val irelandsTop50 = ArrayList<SongModel?>()
+    val spotifyTop50 = ArrayList<SongModel?>()
+    val newReleases = ArrayList<SongModel?>()
 
-    fun getSongs() {
+
+    fun getIrelandsTop50() {
         if (songs.isEmpty()) {
             val listOfSongs = mutableListOf<SongModel?>()
             val retro = Retro().getRetroClient().create(ApiInterface::class.java)
-            retro.getSongs().enqueue(object : Callback<SongModel> {
+            retro.getIrelandsTop50().enqueue(object : Callback<SongModel> {
                 override fun onResponse(
                     call: Call<SongModel>,
                     response: Response<SongModel>
                 ) {
                     listOfSongs.addAll(listOf(response.body()))
                     addAllSongsToStore(listOfSongs)
+                    irelandsTop50.addAll(listOfSongs)
                 }
 
                 override fun onFailure(call: Call<SongModel>, t: Throwable) {
@@ -53,6 +58,56 @@ object AppManager : AppStore {
                 }
             })
         }
+    }
+
+    fun getIrelandsTop50FromMem(): List<Songs> {
+        return irelandsTop50[0]!!.items
+    }
+
+    fun getSpotifyTop50() {
+        val listOfSongs = mutableListOf<SongModel?>()
+        val retro = Retro().getRetroClient().create(ApiInterface::class.java)
+        retro.getSpotifyTop50().enqueue(object : Callback<SongModel> {
+            override fun onResponse(
+                call: Call<SongModel>,
+                response: Response<SongModel>
+            ) {
+                listOfSongs.addAll(listOf(response.body()))
+                songs.addAll(listOfSongs)
+                spotifyTop50.addAll(listOfSongs)
+            }
+
+            override fun onFailure(call: Call<SongModel>, t: Throwable) {
+                Log.e("API", t.message.toString())
+            }
+        })
+    }
+
+    fun getSpotifyTop50FromMem(): List<Songs> {
+        return spotifyTop50[0]!!.items
+    }
+
+    fun getNewReleases() {
+        val listOfSongs = mutableListOf<SongModel?>()
+        val retro = Retro().getRetroClient().create(ApiInterface::class.java)
+        retro.getNewReleases().enqueue(object : Callback<SongModel> {
+            override fun onResponse(
+                call: Call<SongModel>,
+                response: Response<SongModel>
+            ) {
+                listOfSongs.addAll(listOf(response.body()))
+                songs.addAll(listOfSongs)
+                newReleases.addAll(listOfSongs)
+            }
+
+            override fun onFailure(call: Call<SongModel>, t: Throwable) {
+                Log.e("API", t.message.toString())
+            }
+        })
+    }
+
+    fun getNewReleasesFromMem(): List<Songs> {
+        return newReleases[0]!!.items
     }
 
     override fun createUser(uid: String, email: String) {

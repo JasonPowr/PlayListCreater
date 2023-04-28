@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.adapters.SongClickListener
@@ -20,6 +21,7 @@ import org.wit.playlistcreater.utils.showLoader
 
 class SongFragment : Fragment(), SongClickListener {
 
+    private val args by navArgs<SongFragmentArgs>()
     private var _fragBinding: FragmentSongBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var songViewModel: SongViewModel
@@ -38,14 +40,37 @@ class SongFragment : Fragment(), SongClickListener {
         loader = createLoader(requireActivity())
         fragBinding.recyclerViewForSongs.layoutManager = LinearLayoutManager(activity)
         songViewModel = ViewModelProvider(this)[SongViewModel::class.java]
-
         showLoader(loader)
-        songViewModel.observableSongs.observe(viewLifecycleOwner, Observer { songs ->
-            songs?.let {
-                render(songs as ArrayList<Songs?>)
-                hideLoader(loader)
+
+        when (args.context) {
+            "option1" -> {
+                songViewModel.observableSongsOption1.observe(viewLifecycleOwner, Observer { songs ->
+                    songs?.let {
+                        render(songs as ArrayList<Songs?>)
+                        hideLoader(loader)
+                    }
+                })
             }
-        })
+            "option2" -> {
+                fragBinding.titleTxt.text = "Spotify's Top 50"
+                songViewModel.observableSongsOption2.observe(viewLifecycleOwner, Observer { songs ->
+                    songs?.let {
+                        render(songs as ArrayList<Songs?>)
+                        hideLoader(loader)
+                    }
+                })
+
+            }
+            "option3" -> {
+                fragBinding.titleTxt.text = "New Releases"
+                songViewModel.observableSongsOption3.observe(viewLifecycleOwner, Observer { songs ->
+                    songs?.let {
+                        render(songs as ArrayList<Songs?>)
+                        hideLoader(loader)
+                    }
+                })
+            }
+        }
 
         setSwipeRefresh()
         return root

@@ -1,7 +1,6 @@
 package org.wit.playlistcreater.models
 
 import android.annotation.SuppressLint
-import android.os.Handler
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -31,7 +30,6 @@ object AppManager : AppStore {
     @SuppressLint("StaticFieldLeak")
     private var db = Firebase.firestore
     var auth: FirebaseAuth = Firebase.auth
-    var isLoaded: Boolean = false
 
     private val playlists = ArrayList<PlaylistModel>()
     private val publicPlaylists = ArrayList<PublicPlaylistModel>()
@@ -39,10 +37,6 @@ object AppManager : AppStore {
 
     init {
         getSongs()
-        Handler().postDelayed({
-            getAllPlaylistsFromDb() //allows for enough time to load all songs and playlists
-            getAllPublicPlaylistsFromDb()
-        }, 2000)
     }
 
     private fun getSongs() {
@@ -103,7 +97,6 @@ object AppManager : AppStore {
             .addOnFailureListener { exception ->
                 Log.e("data", "Error getting playlists: ", exception)
             }
-        isLoaded = true
         return playlists
     }
 
@@ -138,7 +131,6 @@ object AppManager : AppStore {
                     publicPlaylists.add(publicPlaylist)
                 }
             }
-        isLoaded = true
         return publicPlaylists
     }
 
@@ -276,7 +268,7 @@ object AppManager : AppStore {
     }
 
     fun deleteAll() {
-        playlists.removeAll(findAllPlaylistsInStore())
+        playlists.clear()
     }
 
     override fun updateImageRef(userid: String, imageUri: String) {

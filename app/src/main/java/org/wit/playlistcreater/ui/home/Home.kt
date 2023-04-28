@@ -97,7 +97,7 @@ class Home : AppCompatActivity() {
                 it.uid
             )
         }
-        
+
     }
 
     @SuppressLint("MissingPermission")
@@ -166,6 +166,8 @@ class Home : AppCompatActivity() {
         loggedInViewModel.liveFirebaseUser.observe(this) { firebaseUser ->
             if (firebaseUser != null)
                 updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
+            loggedInViewModel.getAllPlaylists()
+            loggedInViewModel.getAllPublicPlaylists()
         }
 
         loggedInViewModel.loggedOut.observe(this) { loggedout ->

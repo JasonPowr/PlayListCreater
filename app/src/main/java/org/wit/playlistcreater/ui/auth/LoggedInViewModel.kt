@@ -17,4 +17,12 @@ class LoggedInViewModel(app: Application) : AndroidViewModel(app) {
         loggedOut.postValue(true)
         errorStatus.postValue(false)
     }
+
+    fun getAllPlaylists() {
+        AppManager.getAllPlaylistsFromDb()
+    }
+
+    fun getAllPublicPlaylists() {
+        AppManager.getAllPublicPlaylistsFromDb()
+    }
 }

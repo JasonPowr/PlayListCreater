@@ -12,10 +12,11 @@
             android:id="@+id/playlistFragment"
             android:icon="@drawable/ic_baseline_playlist_play_24"
             android:title="@string/your_playlists" />
+
         <item
-            android:id="@+id/songFragment"
+            android:id="@+id/songMenuFragment"
             android:icon="@drawable/ic_baseline_library_music_24"
-            android:title="@string/browse_songs" />
+            android:title="@string/song_menu" />
 
         <item
             android:id="@+id/publicPlaylistsFragment"

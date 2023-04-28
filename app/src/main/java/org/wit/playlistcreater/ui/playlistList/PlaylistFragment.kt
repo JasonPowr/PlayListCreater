@@ -121,6 +121,12 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
             2
         ) //https://stackoverflow.com/questions/50697791/android-recyclerview-item-side-by-sid
 
+        if (args.songId != "default") {
+            (activity as AppCompatActivity).supportActionBar?.hide() //https://stackoverflow.com/questions/26998455/how-to-get-toolbar-from-fragment
+            (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
+                .setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }
+
 
         fragBinding.noPlaylistTxt.visibility = View.GONE
         if (playlistList.isEmpty()) {

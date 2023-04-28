@@ -13,7 +13,19 @@ interface ApiInterface {
         "X-RapidAPI-Host: ${BuildConfig.X_RapidAPI_Host}",
     )
     @GET("playlist_tracks/?id=37i9dQZEVXbKM896FDX8L1&offset=0&limit=100")
-    fun getSongs(): Call<SongModel>
+    fun getIrelandsTop50(): Call<SongModel>
 
+    @Headers(
+        "X-RapidAPI-Key: ${BuildConfig.X_RapidAPI_Key}",
+        "X-RapidAPI-Host: ${BuildConfig.X_RapidAPI_Host}",
+    )
+    @GET("playlist_tracks/?id=4OIVU71yO7SzyGrh0ils2i&offset=0&limit=100")
+    fun getSpotifyTop50(): Call<SongModel>
 
+    @Headers(
+        "X-RapidAPI-Key: ${BuildConfig.X_RapidAPI_Key}",
+        "X-RapidAPI-Host: ${BuildConfig.X_RapidAPI_Host}",
+    )
+    @GET("playlist_tracks/?id=4OIVU71yO7SzyGrh0ils2i&offset=0&limit=100")
+    fun getNewReleases(): Call<SongModel>
 }

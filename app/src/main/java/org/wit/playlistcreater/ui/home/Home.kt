@@ -73,10 +73,10 @@ class Home : AppCompatActivity() {
             setOf(
                 R.id.createPlaylistFragment,
                 R.id.playlistFragment,
-                R.id.songFragment,
                 R.id.profileFragment,
                 R.id.publicPlaylistsFragment,
                 R.id.mapsFragment,
+                R.id.songMenuFragment,
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -171,7 +171,7 @@ class Home : AppCompatActivity() {
             Handler().postDelayed({
                 loggedInViewModel.getAllPlaylists()
                 loggedInViewModel.getAllPublicPlaylists()
-            }, 1000)
+            }, 2000)
         }
 
         loggedInViewModel.loggedOut.observe(this) { loggedout ->

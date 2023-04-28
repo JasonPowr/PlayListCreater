@@ -35,11 +35,7 @@ object AppManager : AppStore {
     private val publicPlaylists = ArrayList<PublicPlaylistModel>()
     val songs = ArrayList<SongModel?>()
 
-    init {
-        getSongs()
-    }
-
-    private fun getSongs() {
+    fun getSongs() {
         if (songs.isEmpty()) {
             val listOfSongs = mutableListOf<SongModel?>()
             val retro = Retro().getRetroClient().create(ApiInterface::class.java)
@@ -102,8 +98,7 @@ object AppManager : AppStore {
 
     private fun addBackIntoPlaylist(playlist: PlaylistModel, songIdList: List<*>) {
         for (id in songIdList) {
-            if (songs.isNotEmpty())
-                playlist.songs.add(findSongByID(id.toString())!!)
+            playlist.songs.add(findSongByID(id.toString())!!)
         }
     }
 

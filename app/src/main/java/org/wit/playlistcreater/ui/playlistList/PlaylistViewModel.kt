@@ -18,12 +18,12 @@ class PlaylistViewModel : ViewModel() {
     init {
         Handler().postDelayed({
             load()
-            isLoaded = true
         }, 3000)
     }
 
     fun load() {
         playlistList.value = AppManager.findAllPlaylistsInStore()
+        isLoaded = true
     }
 
     fun addSongToPlaylist(songId: String, playlist: PlaylistModel): Boolean {

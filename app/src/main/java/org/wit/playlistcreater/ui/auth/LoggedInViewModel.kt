@@ -25,4 +25,9 @@ class LoggedInViewModel(app: Application) : AndroidViewModel(app) {
     fun getAllPublicPlaylists() {
         AppManager.getAllPublicPlaylistsFromDb()
     }
+
+
+    fun loadAllSongs() {
+        AppManager.getSongs()
+    }
 }

@@ -8,7 +8,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
-import timber.log.Timber
 
 @SuppressLint("MissingPermission")
 class MapsViewModel(application: Application) : AndroidViewModel(application) {
@@ -42,13 +41,11 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
             locationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     currentLocation.value = location!!
-                    Timber.i("MAP VM LOC SUCCESS: %s", currentLocation.value)
                 }
-        else // Couldn't get Last Location
+        else
             currentLocation.value = Location("Default").apply {
                 latitude = 52.245696
                 longitude = -7.139102
             }
-        Timber.i("MAP VM LOC : %s", currentLocation.value)
     }
 }

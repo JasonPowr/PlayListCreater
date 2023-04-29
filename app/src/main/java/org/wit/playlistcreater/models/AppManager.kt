@@ -131,6 +131,7 @@ object AppManager : AppStore {
 
     override fun getAllPlaylistsFromDb(): List<PlaylistModel> {
         playlists.clear()
+        likedPlaylists.clear()
         db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
             .get()
             .addOnSuccessListener { result ->
@@ -142,8 +143,6 @@ object AppManager : AppStore {
             .addOnFailureListener { exception ->
                 Log.e("data", "Error getting playlists: ", exception)
             }
-
-
 
         db.collection("users").document(auth.currentUser!!.uid).collection("likedPlaylists")
             .get()
@@ -384,6 +383,10 @@ object AppManager : AppStore {
                 likedPlaylists.remove(playlist)
             }
         }
+    }
+
+    fun getAllLikedPlaylists(): ArrayList<PublicPlaylistModel> {
+        return likedPlaylists
     }
 
 

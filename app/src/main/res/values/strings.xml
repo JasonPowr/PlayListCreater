@@ -78,5 +78,6 @@
     <string name="like">Like this Playlist</string>
     <string name="likes">Likes</string>
     <string name="likecount">likeCount</string>
+    <string name="liked_playlists">Liked Playlists</string>
 
 </resources>

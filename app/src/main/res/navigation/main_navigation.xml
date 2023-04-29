@@ -118,7 +118,13 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="org.wit.playlistcreater.ui.profile.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_publicPlaylistViewFragment"
+            app:destination="@id/publicPlaylistViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
 
     <fragment
         android:id="@+id/publicPlaylistsFragment"
@@ -159,6 +165,11 @@
         <action
             android:id="@+id/action_publicPlaylistViewFragment_to_songInfoFragment"
             app:destination="@id/songInfoFragment" />
+        <action
+            android:id="@+id/action_publicPlaylistViewFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
 
 </navigation>

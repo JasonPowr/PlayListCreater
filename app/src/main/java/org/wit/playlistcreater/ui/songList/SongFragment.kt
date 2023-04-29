@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +20,8 @@ import org.wit.playlistcreater.models.songModel.Songs
 import org.wit.playlistcreater.utils.createLoader
 import org.wit.playlistcreater.utils.hideLoader
 import org.wit.playlistcreater.utils.showLoader
+import java.util.*
+
 
 class SongFragment : Fragment(), SongClickListener {
 
@@ -72,9 +76,42 @@ class SongFragment : Fragment(), SongClickListener {
             }
         }
 
+        handleSearch(fragBinding)
         setSwipeRefresh()
         return root
     }
+
+    private fun handleSearch(fragBinding: FragmentSongBinding) {
+        fragBinding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filter(newText)
+                return false
+            }
+        })
+    }
+
+    private fun filter(text: String) {
+        val filteredList: ArrayList<Songs?> = ArrayList<Songs?>()
+        for (songs in songViewModel.observableSongsOption1.value!!) {
+            if (songs != null) {
+                if (songs.track!!.name!!.lowercase(Locale.ROOT)
+                        .contains(text.lowercase(Locale.getDefault()))
+                ) {
+                    filteredList.add(songs)
+                }
+            }
+        }
+        if (filteredList.isEmpty()) {
+            Toast.makeText(context, "No Data Found..", Toast.LENGTH_SHORT).show()
+        } else {
+            fragBinding.recyclerViewForSongs.adapter = SongAdapter(filteredList, this)
+        }
+    }
+    //https://www.geeksforgeeks.org/searchview-in-android-with-recyclerview/
 
     private fun setSwipeRefresh() {
         fragBinding.swipeRefresh.setOnRefreshListener {

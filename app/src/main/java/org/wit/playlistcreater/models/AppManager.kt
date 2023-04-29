@@ -181,13 +181,9 @@ object AppManager : AppStore {
     }
 
     fun isPlaylistLiked(publicId: String): Boolean {
-        for (publicPlaylist in publicPlaylists) {
-            for (likedPlaylist in likedPlaylists) {
-                if (publicPlaylist.playlist?.publicID.toString()
-                        .equals(likedPlaylist.playlist?.publicID.toString())
-                ) {
-                    return true
-                }
+        for (likedPlaylist in likedPlaylists) {
+            if (publicId == likedPlaylist.playlist!!.publicID) {
+                return true
             }
         }
         return false
@@ -338,7 +334,13 @@ object AppManager : AppStore {
     }
 
     fun deleteAll() {
+        likedPlaylists.clear()
         playlists.clear()
+        publicPlaylists.clear()
+        songs.clear()
+        newReleases.clear()
+        spotifyTop50.clear()
+        irelandsTop50.clear()
     }
 
     override fun updateImageRef(userid: String, imageUri: String) {
@@ -377,9 +379,12 @@ object AppManager : AppStore {
             if (playlist.playlist!!.publicID == publicId) {
                 db.collection("users").document(auth.currentUser!!.uid).collection("likedPlaylists")
                     .document(playlist.playlist!!.publicID.toString()).delete()
-                db.collection("publicPlaylists").document(publicId)
-                    .update("likes", playlist.likes!! - 1)
-                playlist.likes = playlist.likes!! - 1
+
+                if (playlist.likes != 0) {
+                    db.collection("publicPlaylists").document(publicId)
+                        .update("likes", playlist.likes!! - 1)
+                    playlist.likes = playlist.likes!! - 1
+                }
                 likedPlaylists.remove(playlist)
             }
         }

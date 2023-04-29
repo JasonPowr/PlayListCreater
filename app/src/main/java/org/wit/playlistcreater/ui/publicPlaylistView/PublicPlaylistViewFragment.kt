@@ -87,6 +87,7 @@ class PublicPlaylistViewFragment : Fragment(), SongClickListener {
 
         if (publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.uid == FirebaseAuth.getInstance().currentUser!!.uid) {
             fragBinding.like.visibility = View.GONE
+            fragBinding.unlike.visibility = View.GONE
         }
 
         if (publicPlaylistViewViewModel.isPlaylistLiked(args.publicPlaylistId)) {
@@ -98,7 +99,7 @@ class PublicPlaylistViewFragment : Fragment(), SongClickListener {
         val action =
             PublicPlaylistViewFragmentDirections.actionPublicPlaylistViewFragmentToSongInfoFragment(
                 songs!!.track!!.id.toString()
-            ).setCameFromPlaylist(true)
+            )
         findNavController().navigate(action)
     }
 

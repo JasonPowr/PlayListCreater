@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -153,10 +152,6 @@ class Home : AppCompatActivity() {
     private fun initNavHeader() {
         headerView = homeBinding.navView.getHeaderView(0)
         navHeaderBinding = NavHeaderBinding.bind(headerView)
-
-        navHeaderBinding.navHeaderImage.setOnClickListener {
-            Toast.makeText(this, "Click To Change Image", Toast.LENGTH_SHORT).show()
-        }
 
     }
 

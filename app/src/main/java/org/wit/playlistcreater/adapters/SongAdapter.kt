@@ -1,5 +1,6 @@
 package org.wit.playlistcreater.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,12 @@ class SongAdapter(private var songs: ArrayList<Songs?>, private val listener: So
             .inflate(LayoutInflater.from(parent.context), parent, false)
 
         return MainHolder(binding)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun filterList(filterList: ArrayList<Songs?>) {
+        songs = filterList
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {

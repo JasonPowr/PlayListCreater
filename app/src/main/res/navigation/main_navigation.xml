@@ -156,6 +156,9 @@
         <argument
             android:name="publicPlaylistId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_publicPlaylistViewFragment_to_songInfoFragment"
+            app:destination="@id/songInfoFragment" />
     </fragment>
 
 </navigation>

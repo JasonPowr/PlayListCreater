@@ -8,8 +8,10 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import org.wit.playlistcreater.adapters.SongAdapter
 import org.wit.playlistcreater.adapters.SongClickListener
@@ -41,33 +43,63 @@ class PublicPlaylistViewFragment : Fragment(), SongClickListener {
         publicPlaylistViewViewModel.observablePlaylistSongs.observe(
             viewLifecycleOwner,
             Observer { song ->
-                song?.let { render(song as ArrayList<Songs?>) }
+                render(song as ArrayList<Songs?>)
             })
+
+        setLikeBtnListener(fragBinding)
+        setUnlikeBtn(fragBinding)
         return root
+    }
+
+    private fun setLikeBtnListener(fragBinding: FragmentPublicPlaylistViewBinding) {
+        fragBinding.like.setOnClickListener {
+            publicPlaylistViewViewModel.updateLikeCount(args.publicPlaylistId)
+            fragBinding.like.visibility = View.GONE
+        }
+    }
+
+    private fun setUnlikeBtn(fragBinding: FragmentPublicPlaylistViewBinding) {
+        fragBinding.unlike.setOnClickListener {
+            publicPlaylistViewViewModel.unlikePlaylist(args.publicPlaylistId)
+        }
     }
 
 
     private fun render(songs: ArrayList<Songs?>) {
         fragBinding.recyclerViewForSongsInPlaylist.adapter = SongAdapter(songs, this)
         fragBinding.playlistTitle.text =
-            publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.playlist.title
+            publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.playlist!!.title
         fragBinding.genre.text =
-            publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.playlist.playListGenre
+            publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.playlist!!.playListGenre
         fragBinding.count.text =
-            publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.playlist.songs.size.toString()
+            publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.playlist!!.songs!!.size.toString()
 
         Picasso.get()
-            .load(publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.profilePic.toUri())
+            .load(publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.profilePic!!.toUri())
             .resize(200, 200)
             .transform(customTransformation())
             .centerCrop()
             .into(fragBinding.publicPlaylistProfilePic)
 
+        fragBinding.userName.text =
+            publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.displayName
 
+
+        if (publicPlaylistViewViewModel.getPublicPlaylist(args.publicPlaylistId)!!.uid == FirebaseAuth.getInstance().currentUser!!.uid) {
+            fragBinding.like.visibility = View.GONE
+        }
+
+        if (publicPlaylistViewViewModel.isPlaylistLiked(args.publicPlaylistId)) {
+            fragBinding.like.visibility = View.GONE
+        }
     }
 
     override fun onSongClick(songs: Songs?) {
-        TODO("Not yet implemented")
+        val action =
+            PublicPlaylistViewFragmentDirections.actionPublicPlaylistViewFragmentToSongInfoFragment(
+                songs!!.track!!.id.toString()
+            ).setCameFromPlaylist(true)
+        findNavController().navigate(action)
     }
 
 }

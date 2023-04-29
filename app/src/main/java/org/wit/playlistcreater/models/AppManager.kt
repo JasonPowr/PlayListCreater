@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import org.wit.playlistcreater.api.ApiInterface
 import org.wit.playlistcreater.api.Retro
@@ -37,7 +38,7 @@ object AppManager : AppStore {
     val irelandsTop50 = ArrayList<SongModel?>()
     val spotifyTop50 = ArrayList<SongModel?>()
     val newReleases = ArrayList<SongModel?>()
-
+    val likedPlaylists = ArrayList<PublicPlaylistModel>()
 
     fun getIrelandsTop50() {
         if (songs.isEmpty()) {
@@ -61,7 +62,7 @@ object AppManager : AppStore {
     }
 
     fun getIrelandsTop50FromMem(): List<Songs> {
-        return irelandsTop50[0]!!.items
+        return irelandsTop50[0]!!.items!!
     }
 
     fun getSpotifyTop50() {
@@ -84,7 +85,7 @@ object AppManager : AppStore {
     }
 
     fun getSpotifyTop50FromMem(): List<Songs> {
-        return spotifyTop50[0]!!.items
+        return spotifyTop50[0]!!.items!!
     }
 
     fun getNewReleases() {
@@ -106,8 +107,9 @@ object AppManager : AppStore {
         })
     }
 
+
     fun getNewReleasesFromMem(): List<Songs> {
-        return newReleases[0]!!.items
+        return newReleases[0]!!.items!!
     }
 
     override fun createUser(uid: String, email: String) {
@@ -128,83 +130,68 @@ object AppManager : AppStore {
     }
 
     override fun getAllPlaylistsFromDb(): List<PlaylistModel> {
+        playlists.clear()
         db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    val songData = document.data["songs"] as List<*>
-                    val playlist = PlaylistModel(
-                        document.id.toLong(),
-                        document.data["playListGenre"].toString(),
-                        document.data["title"].toString(),
-                        mutableListOf(),
-                        document.data["isShared"].toString().toBoolean(),
-                        document.data["publicID"].toString(),
-                    )
+                    val playlist = document.toObject<PlaylistModel>()
                     playlists.add(playlist)
-                    addBackIntoPlaylist(playlist, songData)
                 }
             }
             .addOnFailureListener { exception ->
                 Log.e("data", "Error getting playlists: ", exception)
             }
+
+
+
+        db.collection("users").document(auth.currentUser!!.uid).collection("likedPlaylists")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val likedPlaylist = document.toObject<PublicPlaylistModel>()
+                    likedPlaylists.add(likedPlaylist)
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("data", "Error getting playlists: ", exception)
+            }
+
         return playlists
     }
 
-    private fun addBackIntoPlaylist(playlist: PlaylistModel, songIdList: List<*>) {
-        if (songs.isNotEmpty()) {
-            for (id in songIdList) {
-                playlist.songs.add(findSongByID(id.toString())!!)
-            }
-        }
-    }
 
     override fun getAllPublicPlaylistsFromDb(): List<PublicPlaylistModel> {
         publicPlaylists.clear()
         db.collection("publicPlaylists").get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    val dbPlaylist = document.data.getValue("playlist") as Map<*, *>
-                    val uid = document.data.getValue("uid").toString()
-                    val profilePic = document.data.getValue("profilePic").toString()
-                    val songData = dbPlaylist["songs"] as List<*>
-
-                    val playlist = PlaylistModel(
-                        dbPlaylist["id"].toString().toLong(),
-                        dbPlaylist["playListGenre"].toString(),
-                        dbPlaylist["title"].toString(),
-                        mutableListOf(),
-                        dbPlaylist["isShared"].toString().toBoolean(),
-                        dbPlaylist["publicID"].toString(),
-                    )
-                    addBackIntoPublicPlaylist(playlist, songData)
-
-                    val publicPlaylist = PublicPlaylistModel(uid, profilePic, playlist)
+                    val publicPlaylist = document.toObject<PublicPlaylistModel>()
                     publicPlaylists.add(publicPlaylist)
                 }
             }
         return publicPlaylists
     }
 
-    private fun addBackIntoPublicPlaylist(playlist: PlaylistModel, songIdList: List<*>) {
-        for (id in songIdList) {
-            if (songs.isNotEmpty())
-                playlist.songs.add(findSongByID(id.toString())!!)
-        }
-    }
-
-    fun getAllSongsInPublicPlaylist(publicId: String): MutableList<Songs> {
-        val foundSongs = mutableListOf<Songs>()
-        for (publicPlaylist in publicPlaylists) {
-            if (publicPlaylist.playlist.publicID == publicId) {
-                foundSongs.addAll(publicPlaylist.playlist.songs)
-            }
-        }
-        return foundSongs
+    fun findAllPublicPlaylistsInStore(): List<PublicPlaylistModel>? {
+        return publicPlaylists
     }
 
     fun getPublicPlaylist(publicId: String): PublicPlaylistModel? {
-        return publicPlaylists.find { p -> p.playlist.publicID == publicId }
+        return publicPlaylists.find { p -> p.playlist!!.publicID == publicId }
+    }
+
+    fun isPlaylistLiked(publicId: String): Boolean {
+        for (publicPlaylist in publicPlaylists) {
+            for (likedPlaylist in likedPlaylists) {
+                if (publicPlaylist.playlist?.publicID.toString()
+                        .equals(likedPlaylist.playlist?.publicID.toString())
+                ) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 
     override fun sharePlaylist(playlist: PlaylistModel) {
@@ -220,17 +207,11 @@ object AppManager : AppStore {
 
         val publicPlaylist = PublicPlaylistModel(
             auth.currentUser!!.uid,
-            FirebaseImageManager.imageUri.value.toString(), playlist
+            FirebaseImageManager.imageUri.value.toString(), playlist,
+            auth.currentUser!!.displayName!!,
+            0
         )
         db.collection("publicPlaylists").document(publicID).set(publicPlaylist)
-
-        for (song in playlist.songs) {
-            db.collection("publicPlaylists").document(publicID)
-                .update("playlist.songs", FieldValue.arrayRemove(song))
-
-            db.collection("publicPlaylists").document(publicID)
-                .update("playlist.songs", FieldValue.arrayUnion(song.track.id))
-        }
 
     }
 
@@ -241,10 +222,20 @@ object AppManager : AppStore {
                 "isShared", false
             )
 
-        db.collection("publicPlaylists").document(playlist.publicID).delete()
+        db.collection("publicPlaylists").document(playlist.publicID!!).delete()
 
         playlist.publicID = ""
         playlist.isShared = false
+    }
+
+    fun getAllSongsInPublicPlaylist(publicId: String): List<Songs?> {
+        val songs = mutableListOf<Songs?>()
+        for (playlists in publicPlaylists) {
+            if (playlists.playlist!!.publicID == publicId) {
+                songs.addAll(playlists.playlist!!.songs!!)
+            }
+        }
+        return songs
     }
 
     override fun getAllPublicPlaylists(): List<PublicPlaylistModel> {
@@ -255,11 +246,10 @@ object AppManager : AppStore {
         publicPlaylists.removeAll(getAllPublicPlaylists().toSet())
     }
 
-    //https://developer.android.com/training/articles/user-data-ids
 
     override fun findAllSongsInPlaylist(playlistId: Long): MutableList<Songs> {
         val foundPlaylist = findPlaylistById(playlistId)
-        return foundPlaylist!!.songs
+        return foundPlaylist!!.songs!!
     }
 
     override fun findAllPlaylistsInStore(): List<PlaylistModel> {
@@ -284,13 +274,13 @@ object AppManager : AppStore {
         db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
             .document(playlist.id.toString()).delete()
 
-        if (playlist.isShared) {
-            db.collection("publicPlaylists").document(playlist.publicID).delete()
+        if (playlist.publicID != "") {
+            db.collection("publicPlaylists").document(playlist.publicID!!).delete()
         }
     }
 
     override fun findAllSongsInStore(): List<Songs?> {
-        return songs[0]!!.items
+        return songs[0]!!.items!!
     }
 
     override fun addAllSongsToStore(songItemList: List<SongModel?>) {
@@ -302,7 +292,7 @@ object AppManager : AppStore {
     }
 
     override fun findSongByID(id: String): Songs? {
-        return songs[0]!!.items.find { s -> s.track.id == id }
+        return songs[0]!!.items!!.find { s -> s.track!!.id == id }
     }
 
     override fun addSongToPlaylist(songId: String, playlist: PlaylistModel): Boolean {
@@ -310,16 +300,16 @@ object AppManager : AppStore {
         if (foundSong != null) {
 
             foundSong.isInPlaylist = true
-            playlist.songs.add(foundSong)
+            playlist.songs!!.add(foundSong)
 
             db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
                 .document(playlist.id.toString())
-                .update("songs", FieldValue.arrayUnion(foundSong.track.id))
+                .update("songs", FieldValue.arrayUnion(foundSong))
 
 
-            if (playlist.isShared) {
-                db.collection("publicPlaylists").document(playlist.publicID)
-                    .update("playlist.songs", FieldValue.arrayUnion(foundSong.track.id))
+            if (playlist.publicID != "") {
+                db.collection("publicPlaylists").document(playlist.publicID!!)
+                    .update("playlist.songs", FieldValue.arrayUnion(foundSong))
             }
 
             return true
@@ -332,16 +322,18 @@ object AppManager : AppStore {
     override fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel) {
         val foundSong = findSongByID(songId)
         foundSong!!.isInPlaylist = false
-        playlist.songs.remove(foundSong)
+        playlist.songs!!.remove(foundSong)
+        playlist.isShared = playlist.isShared
+
 
         db.collection("users").document(auth.currentUser!!.uid).collection("playlists")
-            .document(playlist.id.toString())
-            .update("songs", FieldValue.arrayRemove(foundSong.track.id))
+            .document(playlist.id.toString()).set(playlist)
 
 
-        if (playlist.isShared) {
-            db.collection("publicPlaylists").document(playlist.publicID)
-                .update("playlist.songs", FieldValue.arrayRemove(foundSong.track.id))
+        if (playlist.publicID != "") {
+            val publicPlaylist = getPublicPlaylist(playlist.publicID.toString())
+            publicPlaylist!!.playlist = playlist
+            db.collection("publicPlaylists").document(playlist.publicID!!).set(publicPlaylist)
         }
 
     }
@@ -352,13 +344,48 @@ object AppManager : AppStore {
 
     override fun updateImageRef(userid: String, imageUri: String) {
         for (playlist in playlists) {
-            if (playlist.isShared) {
-                db.collection("publicPlaylists").document(playlist.publicID)
+            if (playlist.publicID != "") {
+                db.collection("publicPlaylists").document(playlist.publicID!!)
                     .update("profilePic", imageUri)
             }
 
         }
     }
+
+    override fun updateLikeCount(publicId: String) {
+        for (playlist in publicPlaylists) {
+            if (playlist.playlist!!.publicID == publicId) {
+
+
+                db.collection("users").document(auth.currentUser!!.uid).collection("likedPlaylists")
+                    .document(
+                        playlist.playlist!!.publicID.toString()
+                    ).set(playlist)
+
+                db.collection("publicPlaylists").document(publicId)
+                    .update("likes", playlist.likes!! + 1)
+
+                playlist.likes = playlist.likes!! + 1
+
+                likedPlaylists.add(playlist)
+
+            }
+        }
+    }
+
+    fun unlikePlaylist(publicId: String) {
+        for (playlist in publicPlaylists) {
+            if (playlist.playlist!!.publicID == publicId) {
+                db.collection("users").document(auth.currentUser!!.uid).collection("likedPlaylists")
+                    .document(playlist.playlist!!.publicID.toString()).delete()
+                db.collection("publicPlaylists").document(publicId)
+                    .update("likes", playlist.likes!! - 1)
+                playlist.likes = playlist.likes!! - 1
+                likedPlaylists.remove(playlist)
+            }
+        }
+    }
+
 
 }
 

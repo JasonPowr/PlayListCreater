@@ -40,11 +40,11 @@ class PublicPlaylistsFragment : Fragment(), PublicPlaylistClickListener {
     ): View? {
         _fragBinding = FragmentPublicPlaylistsBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-        loader = createLoader(requireActivity())
-
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
         publicPlaylistsViewModel = ViewModelProvider(this)[PublicPlaylistsViewModel::class.java]
+        loader = createLoader(requireActivity())
 
+        showLoader(loader)
         setSwipeRefresh()
         publicPlaylistsViewModel.observablePlaylistList.observe(
             viewLifecycleOwner,
@@ -63,9 +63,9 @@ class PublicPlaylistsFragment : Fragment(), PublicPlaylistClickListener {
 
     private fun setSwipeRefresh() {
         fragBinding.swipeRefresh.setOnRefreshListener {
+            publicPlaylistsViewModel.getPlaylistsFromDB()
             showLoader(loader)
-            publicPlaylistsViewModel.getPublicPlaylistsFromDB()
-            fragBinding.swipeRefresh.isRefreshing = true
+            fragBinding.swipeRefresh.isRefreshing = false
         }
     }
 
@@ -91,7 +91,7 @@ class PublicPlaylistsFragment : Fragment(), PublicPlaylistClickListener {
     override fun onPublicPlaylistClick(publicPlaylist: PublicPlaylistModel) {
         val action =
             PublicPlaylistsFragmentDirections.actionPublicPlaylistsFragmentToPublicPlaylistViewFragment(
-                publicPlaylist.playlist.publicID
+                publicPlaylist.playlist!!.publicID.toString()
             )
         findNavController().navigate(action)
     }

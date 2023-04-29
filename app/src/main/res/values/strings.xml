@@ -75,5 +75,8 @@
     <string name="browse_new_releases">Browse New Releases</string>
     <string name="song_menu">Browse Songs</string>
     <string name="display_name">Display_name</string>
+    <string name="like">Like this Playlist</string>
+    <string name="likes">Likes</string>
+    <string name="likecount">likeCount</string>
 
 </resources>

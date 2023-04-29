@@ -5,5 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ExternalIds(
-    val isrc: String
+    val isrc: String? = null,
 ) : Parcelable

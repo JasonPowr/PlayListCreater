@@ -58,7 +58,7 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
                     songId,
                     playlistSongViewViewModel.getPlaylist(args.playlistId)!!
                 )
-                
+
                 if (playlistSongViewViewModel.observablePlaylistSongs.value?.isEmpty() == true) {
                     fragBinding.noSongsInPlaylist.visibility = View.VISIBLE
                 }
@@ -109,7 +109,7 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         }
 
         fragBinding.toggleShare.isChecked =
-            playlistSongViewViewModel.getPlaylist(args.playlistId)!!.isShared
+            playlistSongViewViewModel.getPlaylist(args.playlistId)!!.publicID != ""
         fragBinding.toggleShare.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) playlistSongViewViewModel.sharePlaylist(
                 playlistSongViewViewModel.getPlaylist(
@@ -129,7 +129,7 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
     override fun onSongClick(songs: Songs?) {
         val action =
             PlaylistSongViewFragmentDirections.actionPlaylistSongViewFragmentToSongInfoFragment(
-                songs!!.track.id
+                songs!!.track!!.id.toString()
             ).setCameFromPlaylist(true).setPlaylistId(args.playlistId)
         findNavController().navigate(action)
     }

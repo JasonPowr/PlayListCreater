@@ -5,9 +5,9 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class ArtistX(
-    val external_urls: ExternalUrls,
-    val id: String,
-    val name: String,
-    val type: String,
-    val uri: String
+    val external_urls: ExternalUrls? = null,
+    val id: String? = null,
+    val name: String? = null,
+    val type: String? = null,
+    val uri: String? = null,
 ) : Parcelable

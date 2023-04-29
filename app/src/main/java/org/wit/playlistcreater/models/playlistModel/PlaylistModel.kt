@@ -6,10 +6,10 @@ import org.wit.playlistcreater.models.songModel.Songs
 
 @Parcelize
 data class PlaylistModel(
-    var id: Long,
-    var playListGenre: String,
-    var title: String,
-    var songs: MutableList<Songs>,
-    var isShared: Boolean,
-    var publicID: String,
+    var id: Long? = null,
+    var playListGenre: String? = null,
+    var title: String? = null,
+    var songs: MutableList<Songs>? = null,
+    var isShared: Boolean? = null,
+    var publicID: String? = null,
 ) : Parcelable

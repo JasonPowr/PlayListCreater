@@ -20,16 +20,13 @@ class LoggedInViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getAllPlaylists() {
         AppManager.getAllPlaylistsFromDb()
-    }
-
-    fun getAllPublicPlaylists() {
         AppManager.getAllPublicPlaylistsFromDb()
     }
-
 
     fun loadAllSongs() {
         AppManager.getIrelandsTop50()
         AppManager.getSpotifyTop50()
         AppManager.getNewReleases()
     }
+
 }

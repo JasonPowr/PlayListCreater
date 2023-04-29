@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +19,7 @@ import org.wit.playlistcreater.adapters.SongClickListener
 import org.wit.playlistcreater.databinding.FragmentPlaylistSongViewBinding
 import org.wit.playlistcreater.models.songModel.Songs
 import org.wit.playlistcreater.utils.SwipeToDeleteCallback
+import java.util.*
 
 class PlaylistSongViewFragment : Fragment(), SongClickListener {
 
@@ -68,9 +71,42 @@ class PlaylistSongViewFragment : Fragment(), SongClickListener {
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
         itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerViewForSongsInPlaylist)
+        handleSearch(fragBinding)
 
         return root
     }
+
+    private fun handleSearch(fragBinding: FragmentPlaylistSongViewBinding) {
+        fragBinding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                filter(newText)
+                return false
+            }
+        })
+    }
+
+    private fun filter(text: String) {
+        val filteredList: ArrayList<Songs?> = ArrayList<Songs?>()
+        for (songs in playlistSongViewViewModel.observablePlaylistSongs.value!!) {
+            if (songs != null) {
+                if (songs.track!!.name!!.lowercase(Locale.ROOT)
+                        .contains(text.lowercase(Locale.getDefault()))
+                ) {
+                    filteredList.add(songs)
+                }
+            }
+        }
+        if (filteredList.isEmpty()) {
+            Toast.makeText(context, "No Data Found..", Toast.LENGTH_SHORT).show()
+        } else {
+            fragBinding.recyclerViewForSongsInPlaylist.adapter = SongAdapter(filteredList, this)
+        }
+    }
+    //https://www.geeksforgeeks.org/searchview-in-android-with-recyclerview/
 
     private fun setEditPlaylistBtnListener(layout: FragmentPlaylistSongViewBinding) {
 

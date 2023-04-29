@@ -29,7 +29,6 @@ class PublicPlaylistsFragment : Fragment(), PublicPlaylistClickListener {
     private lateinit var publicPlaylistsViewModel: PublicPlaylistsViewModel
     lateinit var loader: AlertDialog
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -41,6 +40,7 @@ class PublicPlaylistsFragment : Fragment(), PublicPlaylistClickListener {
         _fragBinding = FragmentPublicPlaylistsBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         fragBinding.recyclerViewForPlaylists.layoutManager = LinearLayoutManager(activity)
+        fragBinding.recyclerViewForMostLikedPlaylist.layoutManager = LinearLayoutManager(activity)
         publicPlaylistsViewModel = ViewModelProvider(this)[PublicPlaylistsViewModel::class.java]
         loader = createLoader(requireActivity())
 
@@ -74,9 +74,20 @@ class PublicPlaylistsFragment : Fragment(), PublicPlaylistClickListener {
             fragBinding.swipeRefresh.isRefreshing = false
     }
 
+
     private fun render(publicPlaylist: ArrayList<PublicPlaylistModel>) {
+
+        val sortedArray = arrayListOf<PublicPlaylistModel>()
+        sortedArray.addAll(publicPlaylist)
+        sortedArray.sortByDescending { list -> list.likes }
+
+        fragBinding.recyclerViewForMostLikedPlaylist.adapter =
+            PublicPlaylistAdapter(sortedArray, this)
+        fragBinding.recyclerViewForMostLikedPlaylist.suppressLayout(true)
+
         fragBinding.recyclerViewForPlaylists.adapter = PublicPlaylistAdapter(publicPlaylist, this)
     }
+    //https://stackoverflow.com/questions/60926218/sorting-arraylist-in-kotlin
 
     override fun onResume() {
         super.onResume()

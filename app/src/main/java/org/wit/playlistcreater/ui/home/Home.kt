@@ -170,8 +170,7 @@ class Home : AppCompatActivity() {
             loggedInViewModel.loadAllSongs()
             Handler().postDelayed({
                 loggedInViewModel.getAllPlaylists()
-                loggedInViewModel.getAllPublicPlaylists()
-            }, 2000)
+            }, 1000)
         }
 
         loggedInViewModel.loggedOut.observe(this) { loggedout ->
@@ -179,7 +178,6 @@ class Home : AppCompatActivity() {
                 startActivity(Intent(this, Login::class.java))
             }
         }
-
     }
 
     fun signOut(item: MenuItem) {
@@ -188,23 +186,6 @@ class Home : AppCompatActivity() {
         finish()
     }
 
-//    private fun updateNavHeader(currentUser: FirebaseUser) {
-//        val headerView = homeBinding.navView.getHeaderView(0)
-//        navHeaderBinding = NavHeaderBinding.bind(headerView)
-//
-//        if (currentUser.email != null) {
-//            navHeaderBinding.navHeaderName.text = currentUser.displayName
-//            navHeaderBinding.navHeaderEmail.text = currentUser.email
-//
-//            if (currentUser.photoUrl != null)
-//                Picasso.get().load(currentUser.photoUrl)
-//                    .resize(200, 200)
-//                    .transform(customTransformation())
-//                    .centerCrop()
-//                    .into(navHeaderBinding.navHeaderImage)
-//        } else
-//            navHeaderBinding.navHeaderEmail.text = currentUser.phoneNumber
-//    }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
 

@@ -20,4 +20,16 @@ class PublicPlaylistViewViewModel : ViewModel() {
     fun getPublicPlaylist(publicId: String): PublicPlaylistModel? {
         return AppManager.getPublicPlaylist(publicId)
     }
+
+    fun updateLikeCount(publicId: String) {
+        AppManager.updateLikeCount(publicId)
+    }
+
+    fun isPlaylistLiked(publicId: String): Boolean {
+        return AppManager.isPlaylistLiked(publicId)
+    }
+
+    fun unlikePlaylist(publicId: String) {
+        AppManager.unlikePlaylist(publicId)
+    }
 }

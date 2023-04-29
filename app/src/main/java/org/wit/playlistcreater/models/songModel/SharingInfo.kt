@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SharingInfo(
-    val share_id: String,
-    val share_url: String,
-    val uri: String
+    val share_id: String? = null,
+    val share_url: String? = null,
+    val uri: String? = null,
 ) : Parcelable

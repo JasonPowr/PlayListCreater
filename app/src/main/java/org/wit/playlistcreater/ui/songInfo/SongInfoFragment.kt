@@ -45,7 +45,7 @@ class SongInfoFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.show()//https://stackoverflow.com/questions/26998455/how-to-get-toolbar-from-fragment
         (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
             .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        
+
 
         setMediaPlayerListner(fragBinding)
         setAddToPlaylistBtn(fragBinding)
@@ -54,10 +54,10 @@ class SongInfoFragment : Fragment() {
     }
 
     private fun render(songs: Songs) {
-        fragBinding.songName.text = songs.track.name
-        Picasso.get().load(songs.track.album.images[0].url).into(fragBinding.songImg)
-        fragBinding.albumName.text = songs.track.album.name
-        fragBinding.artistName.text = songs.track.artists[0].name
+        fragBinding.songName.text = songs.track!!.name
+        Picasso.get().load(songs.track.album!!.images!![0].url).into(fragBinding.songImg)
+        fragBinding.albumName.text = songs.track.album!!.name
+        fragBinding.artistName.text = songs.track.artists!![0].name
     }
 
     private fun setAddToPlaylistBtn(layout: FragmentSongInfoBinding) {
@@ -73,7 +73,7 @@ class SongInfoFragment : Fragment() {
     }
 
     private fun setDeleteFromPlaylistBtn(layout: FragmentSongInfoBinding) {
-        if (!songInfoViewModel.observableSongs.value!!.isInPlaylist || !args.cameFromPlaylist) {
+        if (songInfoViewModel.observableSongs.value!!.isInPlaylist == false || args.cameFromPlaylist) {
             layout.deleteSongFromPlaylistBtn.visibility = View.GONE
         } else {
             layout.deleteSongFromPlaylistBtn.setOnClickListener {
@@ -89,13 +89,13 @@ class SongInfoFragment : Fragment() {
     private fun setMediaPlayerListner(layout: FragmentSongInfoBinding) {
         var isStopped = false
         mediaPlayer = MediaPlayer()
-        mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track.preview_url)
+        mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track!!.preview_url)
         mediaPlayer.prepare()
 
         layout.playBtn.setOnClickListener {
             if (isStopped) {
                 mediaPlayer = MediaPlayer()
-                mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track.preview_url)
+                mediaPlayer.setDataSource(songInfoViewModel.observableSongs.value!!.track!!.preview_url)
                 mediaPlayer.prepare()
                 mediaPlayer.start()
             } else {

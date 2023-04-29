@@ -90,7 +90,8 @@ class SongFragment : Fragment(), SongClickListener {
     }
 
     override fun onSongClick(songs: Songs?) {
-        val action = SongFragmentDirections.actionSongFragmentToSongInfoFragment(songs!!.track.id)
+        val action =
+            SongFragmentDirections.actionSongFragmentToSongInfoFragment(songs!!.track!!.id.toString())
         findNavController().navigate(action)
     }
 

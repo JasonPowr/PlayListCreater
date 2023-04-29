@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SongModel(
-    val items: List<Songs>,
+    val items: List<Songs>? = null,
 ) : Parcelable
 
 //https://rapidapi.com/Glavier/api/spotify23/

@@ -6,8 +6,10 @@ import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 
 @Parcelize
 data class PublicPlaylistModel(
-    val uid: String,
-    val profilePic: String,
-    var playlist: PlaylistModel,
-): Parcelable
+    var uid: String? = null,
+    val profilePic: String? = null,
+    var playlist: PlaylistModel? = null,
+    var displayName: String? = null,
+    var likes: Int? = null,
+) : Parcelable
 

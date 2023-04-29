@@ -38,11 +38,11 @@ class PublicPlaylistAdapter(
     inner class MainHolder(val binding: CardPublicPlaylistBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(publicPlaylist: PublicPlaylistModel) {
-            binding.root.tag = publicPlaylist.playlist.id
+            binding.root.tag = publicPlaylist.playlist!!.id
             binding.publicPlaylist = publicPlaylist
             binding.root.setOnClickListener { listner.onPublicPlaylistClick(publicPlaylist) }
 
-            Picasso.get().load(publicPlaylist.profilePic.toUri())
+            Picasso.get().load(publicPlaylist.profilePic!!.toUri())
                 .resize(200, 200)
                 .transform(customTransformation())
                 .centerCrop()

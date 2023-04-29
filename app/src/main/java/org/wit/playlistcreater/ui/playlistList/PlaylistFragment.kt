@@ -153,7 +153,7 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
         if (args.songId == "default") {
             val action =
                 PlaylistFragmentDirections.actionPlaylistFragmentToPlaylistSongViewFragment(
-                    playlist.id
+                    playlist.id!!
                 )
             findNavController().navigate(action)
         } else {

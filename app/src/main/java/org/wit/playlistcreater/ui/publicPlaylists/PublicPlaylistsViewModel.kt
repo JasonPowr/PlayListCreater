@@ -1,5 +1,6 @@
 package org.wit.playlistcreater.ui.publicPlaylists
 
+import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,19 +11,32 @@ class PublicPlaylistsViewModel : ViewModel() {
 
 
     private val publicPlaylistsList = MutableLiveData<List<PublicPlaylistModel>>()
-
     val observablePlaylistList: LiveData<List<PublicPlaylistModel>>
         get() = publicPlaylistsList
+    var isLoading: Boolean = false
 
-    fun load() {
-        publicPlaylistsList.value = AppManager.getAllPublicPlaylists()
-    }
 
-    fun getPublicPlaylistsFromDB() {
-        AppManager.getAllPublicPlaylistsFromDb()
-        android.os.Handler().postDelayed({
+    init {
+        Handler().postDelayed({
             load()
         }, 2000)
+    }
+
+    fun load() {
+        publicPlaylistsList.value = AppManager.findAllPublicPlaylistsInStore()
+    }
+
+    fun getPlaylistsFromDB() {
+        isLoading = true
+        AppManager.getAllPublicPlaylistsFromDb()
+        Handler().postDelayed({
+            load()
+            isLoading = false
+        }, 2000)
+    }
+
+    fun getIsLoading(): Boolean {
+        return isLoading
     }
 
 }

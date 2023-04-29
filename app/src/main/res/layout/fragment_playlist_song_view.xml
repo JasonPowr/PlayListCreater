@@ -8,16 +8,28 @@
     android:background="@drawable/background_colour"
     tools:context=".ui.playlistSongList.PlaylistSongViewFragment">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewForSongsInPlaylist"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="449dp"
+        android:layout_marginTop="300dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/searchBar"
+        android:layout_width="350dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="31dp"
+        android:background="@drawable/rounded_corners_edit_text"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewForSongsInPlaylist"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+        app:layout_constraintVertical_bias="0.882" />
 
     <TextView
         android:id="@+id/noSongsInPlaylist"
@@ -116,17 +128,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
+        android:layout_marginTop="140dp"
         android:layout_marginEnd="248dp"
         android:minHeight="48dp"
         android:text="@string/share_playlist"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.222"
         tools:ignore="UseSwitchCompatOrMaterialXml" />
 </androidx.constraintlayout.widget.ConstraintLayout>

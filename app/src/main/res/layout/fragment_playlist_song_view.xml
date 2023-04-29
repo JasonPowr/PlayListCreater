@@ -23,13 +23,12 @@
         android:layout_width="350dp"
         android:layout_height="45dp"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="196dp"
         android:layout_marginEnd="31dp"
         android:background="@drawable/rounded_corners_edit_text"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewForSongsInPlaylist"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.882" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/noSongsInPlaylist"

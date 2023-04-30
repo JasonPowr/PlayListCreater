@@ -55,12 +55,15 @@ class PublicPlaylistViewFragment : Fragment(), SongClickListener {
         fragBinding.like.setOnClickListener {
             publicPlaylistViewViewModel.updateLikeCount(args.publicPlaylistId)
             fragBinding.like.visibility = View.GONE
+            fragBinding.unlike.visibility = View.VISIBLE
         }
     }
 
     private fun setUnlikeBtn(fragBinding: FragmentPublicPlaylistViewBinding) {
         fragBinding.unlike.setOnClickListener {
             publicPlaylistViewViewModel.unlikePlaylist(args.publicPlaylistId)
+            fragBinding.like.visibility = View.VISIBLE
+            fragBinding.unlike.visibility = View.GONE
         }
     }
 
@@ -92,7 +95,12 @@ class PublicPlaylistViewFragment : Fragment(), SongClickListener {
 
         if (publicPlaylistViewViewModel.isPlaylistLiked(args.publicPlaylistId)) {
             fragBinding.like.visibility = View.GONE
+            fragBinding.unlike.visibility = View.VISIBLE
+        } else {
+            fragBinding.like.visibility = View.VISIBLE
+            fragBinding.unlike.visibility = View.GONE
         }
+
     }
 
     override fun onSongClick(songs: Songs?) {

@@ -35,21 +35,21 @@ class SongInfoFragment : Fragment() {
     ): View? {
         _fragBinding = FragmentSongInfoBinding.inflate(inflater, container, false)
         val root = fragBinding.root
-
         songInfoViewModel = ViewModelProvider(this)[SongInfoViewModel::class.java]
-        songInfoViewModel.getSong(args.songId)
+        songInfoViewModel.getSong(args.songId, args.context)
         songInfoViewModel.observableSongs.observe(viewLifecycleOwner, Observer { song ->
-            song?.let { render(song) }
+            song?.let {
+                render(song)
+            }
         })
 
         (activity as AppCompatActivity).supportActionBar?.show()//https://stackoverflow.com/questions/26998455/how-to-get-toolbar-from-fragment
         (activity as AppCompatActivity).findViewById<DrawerLayout>(R.id.drawer_layout)
             .setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
-
-        setMediaPlayerListner(fragBinding)
         setAddToPlaylistBtn(fragBinding)
         setDeleteFromPlaylistBtn(fragBinding)
+        setMediaPlayerListner(fragBinding)
         return root;
     }
 
@@ -73,7 +73,7 @@ class SongInfoFragment : Fragment() {
     }
 
     private fun setDeleteFromPlaylistBtn(layout: FragmentSongInfoBinding) {
-        if (songInfoViewModel.observableSongs.value!!.isInPlaylist == false || args.cameFromPlaylist) {
+        if (songInfoViewModel.observableSongs.value!!.isInPlaylist == null || !args.cameFromPlaylist) {
             layout.deleteSongFromPlaylistBtn.visibility = View.GONE
         } else {
             layout.deleteSongFromPlaylistBtn.setOnClickListener {

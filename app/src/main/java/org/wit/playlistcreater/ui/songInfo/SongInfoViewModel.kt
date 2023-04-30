@@ -13,11 +13,11 @@ class SongInfoViewModel : ViewModel() {
     val observableSongs: LiveData<Songs>
         get() = songs
 
-    fun getSong(id: String) {
-        songs.value = AppManager.findSongByID(id)
+    fun getSong(id: String, context: String) {
+        songs.value = AppManager.findSongByIDForInfo(id, context)
     }
 
-    fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel){
+    fun deleteSongFromPlaylist(songId: String, playlist: PlaylistModel) {
         AppManager.deleteSongFromPlaylist(songId, playlist)
     }
 

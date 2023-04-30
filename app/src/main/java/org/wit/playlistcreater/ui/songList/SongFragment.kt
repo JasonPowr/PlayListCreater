@@ -127,9 +127,28 @@ class SongFragment : Fragment(), SongClickListener {
     }
 
     override fun onSongClick(songs: Songs?) {
-        val action =
-            SongFragmentDirections.actionSongFragmentToSongInfoFragment(songs!!.track!!.id.toString())
-        findNavController().navigate(action)
+
+        when (args.context) {
+            "option1" -> {
+                val action =
+                    SongFragmentDirections.actionSongFragmentToSongInfoFragment(songs!!.track!!.id.toString())
+                        .setContext("irelandTop50")
+                findNavController().navigate(action)
+            }
+            "option2" -> {
+                val action =
+                    SongFragmentDirections.actionSongFragmentToSongInfoFragment(songs!!.track!!.id.toString())
+                        .setContext("spotify50")
+                findNavController().navigate(action)
+            }
+            "option3" -> {
+                val action =
+                    SongFragmentDirections.actionSongFragmentToSongInfoFragment(songs!!.track!!.id.toString())
+                        .setContext("newReleases")
+                findNavController().navigate(action)
+            }
+        }
+
     }
 
     override fun onResume() {

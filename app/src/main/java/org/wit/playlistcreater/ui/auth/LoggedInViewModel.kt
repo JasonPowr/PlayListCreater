@@ -25,8 +25,6 @@ class LoggedInViewModel(app: Application) : AndroidViewModel(app) {
 
     fun loadAllSongs() {
         AppManager.getIrelandsTop50()
-        AppManager.getSpotifyTop50()
-        AppManager.getNewReleases()
     }
 
     fun getAllEvents() {

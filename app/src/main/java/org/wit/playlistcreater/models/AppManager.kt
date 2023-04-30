@@ -60,6 +60,7 @@ object AppManager : AppStore {
                     Log.e("API", t.message.toString())
                 }
             })
+            getSpotifyTop50()
         }
     }
 
@@ -84,6 +85,7 @@ object AppManager : AppStore {
                 Log.e("API", t.message.toString())
             }
         })
+        getNewReleases()
     }
 
     fun getSpotifyTop50FromMem(): List<Songs> {
@@ -292,6 +294,23 @@ object AppManager : AppStore {
         return songs[0]!!.items!!.find { s -> s.track!!.id == id }
     }
 
+    override fun findSongByIDForInfo(id: String, context: String): Songs? {
+        return when (context) {
+            "irelandTop50" -> {
+                irelandsTop50[0]!!.items!!.find { s -> s.track!!.id == id }
+            }
+            "spotify50" -> {
+                spotifyTop50[0]!!.items!!.find { s -> s.track!!.id == id }
+            }
+            "newReleases" -> {
+                newReleases[0]!!.items!!.find { s -> s.track!!.id == id }
+            }
+            else -> {
+                songs[0]!!.items!!.find { s -> s.track!!.id == id }
+            }
+        }
+    }
+
     override fun addSongToPlaylist(songId: String, playlist: PlaylistModel): Boolean {
         val foundSong = findSongByID(songId)
         if (foundSong != null) {
@@ -358,8 +377,6 @@ object AppManager : AppStore {
     override fun updateLikeCount(publicId: String) {
         for (playlist in publicPlaylists) {
             if (playlist.playlist!!.publicID == publicId) {
-
-
                 db.collection("users").document(auth.currentUser!!.uid).collection("likedPlaylists")
                     .document(
                         playlist.playlist!!.publicID.toString()
@@ -369,9 +386,7 @@ object AppManager : AppStore {
                     .update("likes", playlist.likes!! + 1)
 
                 playlist.likes = playlist.likes!! + 1
-
                 likedPlaylists.add(playlist)
-
             }
         }
     }
@@ -447,6 +462,7 @@ object AppManager : AppStore {
         db.collection("events").document(publicId).delete()
         events.remove(event)
     }
+
 }
 
 //https://firebase.google.com/docs/firestore/manage-data/add-data

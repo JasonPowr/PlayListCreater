@@ -26,6 +26,6 @@ interface ApiInterface {
         "X-RapidAPI-Key: ${BuildConfig.X_RapidAPI_Key}",
         "X-RapidAPI-Host: ${BuildConfig.X_RapidAPI_Host}",
     )
-    @GET("playlist_tracks/?id=4OIVU71yO7SzyGrh0ils2i&offset=0&limit=100")
+    @GET("playlist_tracks/?id=593HKP3qHQXS0RLZmeeHly&offset=0&limit=100")
     fun getNewReleases(): Call<SongModel>
 }

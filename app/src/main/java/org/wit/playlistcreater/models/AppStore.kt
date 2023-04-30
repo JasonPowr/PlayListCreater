@@ -27,4 +27,5 @@ interface AppStore {
     fun removeAllPublicPlaylistsFromMem()
     fun updateImageRef(userid: String, imageUri: String)
     fun updateLikeCount(publicId: String)
+    fun findSongByIDForInfo(id: String, context: String): Songs?
 }

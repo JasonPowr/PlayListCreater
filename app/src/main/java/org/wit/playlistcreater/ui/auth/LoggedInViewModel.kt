@@ -29,4 +29,8 @@ class LoggedInViewModel(app: Application) : AndroidViewModel(app) {
         AppManager.getNewReleases()
     }
 
+    fun getAllEvents() {
+        AppManager.getAllEventsFromDB()
+    }
+
 }

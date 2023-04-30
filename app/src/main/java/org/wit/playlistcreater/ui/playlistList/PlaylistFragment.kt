@@ -22,7 +22,6 @@ import org.wit.playlistcreater.R
 import org.wit.playlistcreater.adapters.PlayistClickListner
 import org.wit.playlistcreater.adapters.PlaylistAdapter
 import org.wit.playlistcreater.databinding.FragmentPlaylistBinding
-import org.wit.playlistcreater.models.AppManager
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 import org.wit.playlistcreater.utils.*
 
@@ -162,15 +161,11 @@ class PlaylistFragment : Fragment(), PlayistClickListner {
             when (error) {
                 true -> {
                     Toast.makeText(
-                        context,
-                        AppManager.findSongByID(args.songId)?.track!!.name + " Added to Playlist: " + playlist.title,
-                        Toast.LENGTH_LONG
+                        context, "Song Added", Toast.LENGTH_LONG
                     ).show()
                 }
                 false -> Toast.makeText(
-                    context,
-                    "Error Adding " + AppManager.findSongByID(args.songId)?.track!!.name + " to " + playlist.title,
-                    Toast.LENGTH_LONG
+                    context, "Error Adding Song", Toast.LENGTH_LONG
                 ).show()
             }
         }

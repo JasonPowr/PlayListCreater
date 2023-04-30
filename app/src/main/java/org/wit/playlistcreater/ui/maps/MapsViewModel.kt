@@ -18,6 +18,7 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
     var currentLocation = MutableLiveData<Location>()
     var locationClient: FusedLocationProviderClient
     var eventLocations = MutableLiveData<ArrayList<EventModel>>()
+    val currentUser = AppManager.auth.currentUser
 
     val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
         .setWaitForAccurateLocation(false)
@@ -42,6 +43,10 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateEventList() {
         AppManager.getAllEventsFromDB()
+    }
+
+    fun deleteEvent(publicId: String) {
+        AppManager.deleteEvent(publicId)
     }
 
     fun updateCurrentLocation() {

@@ -66,7 +66,7 @@ class SongInfoFragment : Fragment() {
         } else {
             layout.addSongToPlaylistBtn.setOnClickListener {
                 val action = SongInfoFragmentDirections.actionSongInfoFragmentToPlaylistFragment()
-                    .setSongId(args.songId)
+                    .setSongId(args.songId).setContext(args.context)
                 findNavController().navigate(action)
             }
         }

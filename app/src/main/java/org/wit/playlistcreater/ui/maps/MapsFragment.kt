@@ -46,17 +46,15 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
             mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
             mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
-
-            mapsViewModel.eventLocations.observe(
-                viewLifecycleOwner,
-                Observer { events ->
-                    events?.let {
-                        render(events)
-                        hideLoader(loader)
-                    }
-                })
         }
-
+        mapsViewModel.eventLocations.observe(
+            viewLifecycleOwner,
+            Observer { events ->
+                events?.let {
+                    render(events)
+                    hideLoader(loader)
+                }
+            })
     }
 
     override fun onCreateView(
@@ -117,6 +115,8 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                     fragBinding.deleteBtn.visibility = View.GONE
                     fragBinding.editBtn.visibility = View.GONE
                 } else {
+                    fragBinding.deleteBtn.visibility = View.VISIBLE
+                    fragBinding.editBtn.visibility = View.VISIBLE
                     fragBinding.editBtn.setOnClickListener {
                         val action =
                             MapsFragmentDirections.actionMapsFragmentToCreateEventFragment()
@@ -129,7 +129,7 @@ class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
                             context, "Event Deleted", Toast.LENGTH_LONG
                         ).show()
                         fragBinding.eventCard.visibility = View.GONE
-                        findNavController().navigate(R.id.mapsFragment)
+                        p0.isVisible = false
                     }
                 }
 

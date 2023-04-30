@@ -4,7 +4,8 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple</item>
         <item name="colorPrimaryVariant">@color/purple</item>
-        <item name="colorOnPrimary">@color/pink</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:windowBackground">@drawable/background_colour</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -12,6 +13,15 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="FirebaseUI.TextInputLayout" parent="FirebaseUI">
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="FirebaseUI.Text" parent="FirebaseUI">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Theme.PlaylistCreater.NoActionBar">
@@ -22,4 +32,4 @@
     <style name="Theme.PlaylistCreater.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PlaylistCreater.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-</resources>
+</resources><!--    https://stackoverflow.com/questions/65571207/firebase-authentication-ui-hint-color-android-->

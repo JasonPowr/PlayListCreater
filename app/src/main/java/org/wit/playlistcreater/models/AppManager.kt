@@ -11,6 +11,7 @@ import com.google.firebase.ktx.Firebase
 import org.wit.playlistcreater.api.ApiInterface
 import org.wit.playlistcreater.api.Retro
 import org.wit.playlistcreater.firebase.FirebaseImageManager
+import org.wit.playlistcreater.models.eventModel.EventModel
 import org.wit.playlistcreater.models.playlistModel.PlaylistModel
 import org.wit.playlistcreater.models.publicPlaylistModel.PublicPlaylistModel
 import org.wit.playlistcreater.models.songModel.SongModel
@@ -39,6 +40,7 @@ object AppManager : AppStore {
     val spotifyTop50 = ArrayList<SongModel?>()
     val newReleases = ArrayList<SongModel?>()
     val likedPlaylists = ArrayList<PublicPlaylistModel>()
+    val events = ArrayList<EventModel>()
 
     fun getIrelandsTop50() {
         if (songs.isEmpty()) {
@@ -394,7 +396,50 @@ object AppManager : AppStore {
         return likedPlaylists
     }
 
+    fun createEvent(event: EventModel) {
+        val eventId = UUID.randomUUID().toString()
+        event.id = eventId
+        db.collection("events").document(eventId).set(event)
+        events.add(event)
+    }
 
+    fun updateEvent(event: EventModel, updatedEvent: EventModel) {
+        event.date = updatedEvent.date
+        event.description = updatedEvent.description
+        event.time = updatedEvent.time
+        event.type = updatedEvent.type
+
+        db.collection("events").document(event.id.toString()).update(
+            "date", updatedEvent.date,
+            "description", updatedEvent.description,
+            "time", updatedEvent.time,
+            "type", updatedEvent.type,
+        )
+    }
+
+    fun getAllEventsFromDB() {
+        events.clear()
+        db.collection("events").get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val event = document.toObject<EventModel>()
+                    events.add(event)
+                }
+            }
+    }
+
+    fun getAllEventsFromStore(): ArrayList<EventModel> {
+        return events
+    }
+
+    fun getEventById(id: String): EventModel? {
+        for (event in events) {
+            if (event.id == id) {
+                return event
+            }
+        }
+        return null
+    }
 }
 
 //https://firebase.google.com/docs/firestore/manage-data/add-data

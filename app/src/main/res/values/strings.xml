@@ -81,5 +81,10 @@
     <string name="liked_playlists">Liked Playlists</string>
     <string name="most_like_playlist">Most Like Playlist</string>
     <string name="other_playlists">Other Playlists</string>
+    <string name="create_an_event">Create an Event</string>
+    <string name="event_description">Event Description</string>
+    <string name="date_amp_time"><![CDATA[Date & Time]]></string>
+    <string name="type">Type</string>
+    <string name="add_location">Add Location</string>
 
 </resources>

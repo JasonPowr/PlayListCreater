@@ -171,5 +171,9 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim" />
     </fragment>
+    <fragment
+        android:id="@+id/createEventFragment"
+        android:name="org.wit.playlistcreater.ui.event.CreateEventFragment"
+        tools:layout="@layout/fragment_create_event" />
 
 </navigation>

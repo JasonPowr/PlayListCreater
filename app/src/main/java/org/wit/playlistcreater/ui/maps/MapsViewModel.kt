@@ -8,6 +8,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.GoogleMap
+import org.wit.playlistcreater.models.AppManager
+import org.wit.playlistcreater.models.eventModel.EventModel
 
 @SuppressLint("MissingPermission")
 class MapsViewModel(application: Application) : AndroidViewModel(application) {
@@ -15,6 +17,7 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
     lateinit var map: GoogleMap
     var currentLocation = MutableLiveData<Location>()
     var locationClient: FusedLocationProviderClient
+    var eventLocations = MutableLiveData<ArrayList<EventModel>>()
 
     val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
         .setWaitForAccurateLocation(false)
@@ -34,6 +37,11 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
             locationRequest, locationCallback,
             Looper.getMainLooper()
         )
+        eventLocations.value = AppManager.getAllEventsFromStore()
+    }
+
+    fun updateEventList() {
+        AppManager.getAllEventsFromDB()
     }
 
     fun updateCurrentLocation() {

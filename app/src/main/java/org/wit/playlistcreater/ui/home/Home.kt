@@ -76,6 +76,7 @@ class Home : AppCompatActivity() {
                 R.id.publicPlaylistsFragment,
                 R.id.mapsFragment,
                 R.id.songMenuFragment,
+                R.id.createEventFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -110,7 +111,6 @@ class Home : AppCompatActivity() {
         if (isPermissionGranted(requestCode, grantResults))
             mapsViewModel.updateCurrentLocation()
         else {
-            // permissions denied, so use a default location
             mapsViewModel.currentLocation.value = Location("Default").apply {
                 latitude = 52.245696
                 longitude = -7.139102
@@ -165,6 +165,7 @@ class Home : AppCompatActivity() {
             loggedInViewModel.loadAllSongs()
             Handler().postDelayed({
                 loggedInViewModel.getAllPlaylists()
+                loggedInViewModel.getAllEvents()
             }, 1000)
         }
 

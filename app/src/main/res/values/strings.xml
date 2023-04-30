@@ -89,5 +89,10 @@
     <string name="update_event">Update Event</string>
     <string name="delete_event">Delete Event</string>
     <string name="delete">Delete</string>
+    <string name="sign_in">Sign In</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="or_">OR</string>
+    <string name="playlist_creator">Playlist Creator</string>
+    <string name="please_login_or_sign_up">Please Login or Sign up</string>
 
 </resources>

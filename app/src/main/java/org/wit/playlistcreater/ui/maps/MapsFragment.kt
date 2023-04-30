@@ -6,27 +6,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import org.wit.playlistcreater.R
+import org.wit.playlistcreater.databinding.FragmentMapsBinding
 import org.wit.playlistcreater.models.eventModel.EventModel
-import org.wit.playlistcreater.ui.auth.LoggedInViewModel
 import org.wit.playlistcreater.utils.createLoader
 import org.wit.playlistcreater.utils.hideLoader
 import org.wit.playlistcreater.utils.showLoader
 
-class MapsFragment : Fragment() {
+
+class MapsFragment : Fragment(), GoogleMap.OnMarkerClickListener {
 
     private val mapsViewModel: MapsViewModel by activityViewModels()
-    private val loggedInViewModel: LoggedInViewModel by activityViewModels()
+    private var _fragBinding: FragmentMapsBinding? = null
+    private val fragBinding get() = _fragBinding!!
     lateinit var loader: AlertDialog
+    private var myMarker: Marker? = null
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -37,7 +43,6 @@ class MapsFragment : Fragment() {
                 mapsViewModel.currentLocation.value!!.latitude,
                 mapsViewModel.currentLocation.value!!.longitude
             )
-
             mapsViewModel.map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 14f))
             mapsViewModel.map.uiSettings.isZoomControlsEnabled = true
             mapsViewModel.map.uiSettings.isMyLocationButtonEnabled = true
@@ -60,8 +65,16 @@ class MapsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         loader = createLoader(requireActivity())
+        _fragBinding = FragmentMapsBinding.inflate(inflater, container, false)
+        setCloseBinding(fragBinding)
 
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+        return fragBinding.root;
+    }
+
+    private fun setCloseBinding(fragBinding: FragmentMapsBinding) {
+        fragBinding.closePopup.setOnClickListener {
+            fragBinding.eventCard.visibility = View.GONE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,17 +84,16 @@ class MapsFragment : Fragment() {
     }
 
     private fun render(eventList: ArrayList<EventModel>) {
-        if (!eventList.isEmpty()) {
+        fragBinding.eventCard.visibility = View.GONE
+        if (eventList.isNotEmpty()) {
             mapsViewModel.map.clear()
             eventList.forEach {
-                mapsViewModel.map.addMarker(
+                mapsViewModel.map.setOnMarkerClickListener(this)
+                myMarker = mapsViewModel.map.addMarker(
                     MarkerOptions().position(LatLng(it.latitude!!, it.longitude!!))
-                        .title(it.description)
-                        .snippet("${it.time}, ${it.date}")
-                        .icon(
-                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)
-                        )
                 )
+                mapsViewModel.map.setOnMarkerClickListener(this)
+                myMarker!!.tag = it.id
             }
         }
     }
@@ -91,4 +103,41 @@ class MapsFragment : Fragment() {
         showLoader(loader)
         mapsViewModel.updateEventList()
     }
+
+
+    override fun onMarkerClick(p0: Marker): Boolean {
+        for (event in mapsViewModel.eventLocations.value!!) {
+            if (p0.tag == event.id) {
+                fragBinding.eventCard.visibility = View.VISIBLE
+                fragBinding.eventType.text = event.type.toString()
+                fragBinding.EventDescription.text = event.description.toString()
+                fragBinding.EventTimeAndDate.text = "${event.time} - ${event.date}"
+
+                if (event.uid != mapsViewModel.currentUser!!.uid) {
+                    fragBinding.deleteBtn.visibility = View.GONE
+                    fragBinding.editBtn.visibility = View.GONE
+                } else {
+                    fragBinding.editBtn.setOnClickListener {
+                        val action =
+                            MapsFragmentDirections.actionMapsFragmentToCreateEventFragment()
+                                .setEventId(event.id)
+                        findNavController().navigate(action)
+                    }
+                    fragBinding.deleteBtn.setOnClickListener {
+                        mapsViewModel.deleteEvent(event.id.toString())
+                        Toast.makeText(
+                            context, "Event Deleted", Toast.LENGTH_LONG
+                        ).show()
+                        fragBinding.eventCard.visibility = View.GONE
+                        findNavController().navigate(R.id.mapsFragment)
+                    }
+                }
+
+                return true
+            }
+        }
+        return false
+        //https://stackoverflow.com/questions/14226453/google-maps-api-v2-how-to-make-markers-clickable
+    }
+
 }

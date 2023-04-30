@@ -14,4 +14,8 @@ class CreateEventViewModel : ViewModel() {
         AppManager.updateEvent(event, updatedEvent)
     }
 
+    fun getEvent(id: String): EventModel? {
+        return AppManager.getEventById(id)
+    }
+
 }

@@ -139,7 +139,13 @@
     <fragment
         android:id="@+id/mapsFragment"
         android:name="org.wit.playlistcreater.ui.maps.MapsFragment"
-        tools:layout="@layout/fragment_maps" />
+        tools:layout="@layout/fragment_maps">
+        <action
+            android:id="@+id/action_mapsFragment_to_createEventFragment"
+            app:destination="@id/createEventFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
     <fragment
         android:id="@+id/songMenuFragment"
         android:name="org.wit.playlistcreater.ui.songMenu.SongMenuFragment"
@@ -174,6 +180,17 @@
     <fragment
         android:id="@+id/createEventFragment"
         android:name="org.wit.playlistcreater.ui.event.CreateEventFragment"
-        tools:layout="@layout/fragment_create_event" />
+        tools:layout="@layout/fragment_create_event">
+        <action
+            android:id="@+id/action_createEventFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <argument
+            android:name="eventId"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue='default' />
+    </fragment>
 
 </navigation>

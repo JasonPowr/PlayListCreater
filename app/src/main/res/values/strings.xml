@@ -86,5 +86,8 @@
     <string name="date_amp_time"><![CDATA[Date & Time]]></string>
     <string name="type">Type</string>
     <string name="add_location">Add Location</string>
+    <string name="update_event">Update Event</string>
+    <string name="delete_event">Delete Event</string>
+    <string name="delete">Delete</string>
 
 </resources>

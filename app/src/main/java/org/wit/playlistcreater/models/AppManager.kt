@@ -399,6 +399,7 @@ object AppManager : AppStore {
     fun createEvent(event: EventModel) {
         val eventId = UUID.randomUUID().toString()
         event.id = eventId
+        event.uid = auth.currentUser!!.uid
         db.collection("events").document(eventId).set(event)
         events.add(event)
     }
@@ -439,6 +440,12 @@ object AppManager : AppStore {
             }
         }
         return null
+    }
+
+    fun deleteEvent(publicId: String) {
+        val event = getEventById(publicId)
+        db.collection("events").document(publicId).delete()
+        events.remove(event)
     }
 }
 
